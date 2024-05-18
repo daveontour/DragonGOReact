@@ -657,6 +657,7 @@ export default function ControlLayout({
                     <option value="corner">Corner</option>
                     <option value="knuth">Knuth Cell</option>
                     <option value="knuthcurve">Knuth Cell Curve</option>
+                    <option value="knuthtri">Knuth Cell Triangle</option>
                   </FormControl>
                 </Col>
               </Row>
@@ -669,7 +670,11 @@ export default function ControlLayout({
                   <FormControl
                     size="sm"
                     as="select"
-                    disabled={slideShow || state.cellType !== "triangle"}
+                    disabled={
+                      slideShow ||
+                      (state.cellType !== "triangle" &&
+                        state.cellType !== "knuthtri")
+                    }
                     value={state.triangleAngle}
                     onChange={(e) => {
                       setDirty(true);

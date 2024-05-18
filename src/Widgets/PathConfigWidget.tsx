@@ -140,6 +140,7 @@ export default function CellConfig({
                             });
                           }}
                         >
+                          <option value="0px">None</option>
                           <option value="1px">1px</option>
                           <option value="2px">2px</option>
                           <option value="3px">3px</option>

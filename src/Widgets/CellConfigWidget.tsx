@@ -33,6 +33,26 @@ export default function CellConfig({
     if (!slideShow) setShow(true);
   };
 
+  const setBorderEnabled = (enabled: boolean) => {
+    setState({
+      ...state,
+      borderEnabled: enabled,
+      borderStyle: enabled ? "solid" : "none",
+    });
+    debugger;
+    // if (!enabled) {
+    //   setState({
+    //     ...state,
+    //     borderStyle: "none",
+    //   });
+    // } else {
+    //   setState({
+    //     ...state,
+    //     borderStyle: "solid",
+    //     borderWidth: "1px",
+    //   });
+    //}
+  };
   return (
     <>
       <Stack direction="horizontal" gap={2}>
@@ -110,12 +130,9 @@ export default function CellConfig({
                         checked={state.borderEnabled}
                         onChange={(
                           event: React.ChangeEvent<HTMLInputElement>
-                        ): void =>
-                          setState({
-                            ...state,
-                            borderEnabled: event.target.checked,
-                          })
-                        }
+                        ): void => {
+                          setBorderEnabled(event.target.checked);
+                        }}
                       />
                     </Col>
                   </Row>
@@ -135,6 +152,7 @@ export default function CellConfig({
                           });
                         }}
                       >
+                        <option value="0px">None</option>
                         <option value="1px">1px</option>
                         <option value="2px">2px</option>
                         <option value="3px">3px</option>
