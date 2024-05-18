@@ -13,12 +13,12 @@ export default function BodyLayout() {
   });
 
   const [state, setState] = useState({
-    folds: "10",
+    folds: "9",
     margin: "12",
-    cellType: "quadrant",
+    cellType: "knuthcurve",
     triangleAngle: "45",
-    radius: "10",
-    grouting: "0",
+    radius: "15",
+    grouting: "1",
   });
 
   const [pathState, setPathState] = useState({
@@ -69,8 +69,8 @@ export default function BodyLayout() {
       Math.floor(Math.random() * 9)
     ];
     state.margin = "5";
-    state.cellType = ["quadrant", "line", "corner"][
-      Math.floor(Math.random() * 2)
+    state.cellType = ["quadrant", "line", "corner", "knuth", "knuthcurve"][
+      Math.floor(Math.random() * 5)
     ];
     state.triangleAngle = ["0", "10", "20", "30", "45", "50", "60", "65"][
       Math.floor(Math.random() * 8)
@@ -121,16 +121,18 @@ export default function BodyLayout() {
   };
 
   const setRandomCurrentSizeState = () => {
-    state.cellType = ["quadrant", "line", "corner"][
-      Math.floor(Math.random() * 3)
+    state.cellType = ["quadrant", "line", "corner", "knuth", "knuthcurve"][
+      Math.floor(Math.random() * 5)
     ];
     state.triangleAngle = ["0", "10", "20", "30", "45", "50", "60", "65"][
       Math.floor(Math.random() * 8)
     ];
-    // state.grouting = ["0", "0", "0", "0", "0", "1", "2", "3", "4", "5"][
-    //   Math.floor(Math.random() * 9)
-    // ];
-    state.grouting = "0";
+
+    if (state.cellType === "knuthcurve" || state.cellType === "knuth") {
+      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
+    } else {
+      state.grouting = "0";
+    }
 
     pathState.borderStyle = "solid";
     pathState.borderWidth = Math.floor(Math.random() * 4).toString() + "px";

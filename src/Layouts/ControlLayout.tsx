@@ -655,6 +655,8 @@ export default function ControlLayout({
                     <option value="triangle">Triangle</option>
                     <option value="line">Line</option>
                     <option value="corner">Corner</option>
+                    <option value="knuth">Knuth Cell</option>
+                    <option value="knuthcurve">Knuth Cell Curve</option>
                   </FormControl>
                 </Col>
               </Row>
