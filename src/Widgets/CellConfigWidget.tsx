@@ -18,11 +18,15 @@ export default function CellConfig({
   setState,
   slideShow,
   setDirty,
+  isActive,
+  activeState,
 }: {
   state: any;
   setState: any;
   slideShow: any;
   setDirty: any;
+  isActive: boolean;
+  activeState: any;
 }) {
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -32,27 +36,26 @@ export default function CellConfig({
   const handleShow = () => {
     if (!slideShow) setShow(true);
   };
-
+  const matchActive = () => {
+    setState({
+      ...state,
+      borderEnabled: activeState.borderEnabled,
+      borderStyle: activeState.borderStyle,
+      borderWidth: activeState.borderWidth,
+      borderColor: activeState.borderColor,
+      borderRadius: activeState.borderRadius,
+      fillEnabled: activeState.fillEnabled,
+      backgroundColor: activeState.backgroundColor,
+    });
+  };
   const setBorderEnabled = (enabled: boolean) => {
     setState({
       ...state,
       borderEnabled: enabled,
       borderStyle: enabled ? "solid" : "none",
     });
-    debugger;
-    // if (!enabled) {
-    //   setState({
-    //     ...state,
-    //     borderStyle: "none",
-    //   });
-    // } else {
-    //   setState({
-    //     ...state,
-    //     borderStyle: "solid",
-    //     borderWidth: "1px",
-    //   });
-    //}
   };
+
   return (
     <>
       <Stack direction="horizontal" gap={2}>
@@ -200,6 +203,11 @@ export default function CellConfig({
                     </Col>
                   </Row>
                 </Container>
+                <div style={{ display: isActive ? "none" : "blocK" }}>
+                  <Button variant="primary" onClick={matchActive}>
+                    Match Active Cell Style
+                  </Button>
+                </div>
               </Stack>
             </Form>
             <div>

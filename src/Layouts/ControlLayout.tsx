@@ -507,18 +507,24 @@ export default function ControlLayout({
               setState={setActiveCellState}
               slideShow={slideShow}
               setDirty={setDirty}
+              isActive={true}
+              activeState={activeCellState}
             ></CellConfig>
             <CellConfig
               state={insideCellState}
               setState={setInsideCellState}
               slideShow={slideShow}
               setDirty={setDirty}
+              isActive={false}
+              activeState={activeCellState}
             ></CellConfig>
             <CellConfig
               state={outsideCellState}
               setState={setOutsideCellState}
               slideShow={slideShow}
               setDirty={setDirty}
+              isActive={false}
+              activeState={activeCellState}
             ></CellConfig>
           </Stack>
 
