@@ -41,17 +41,6 @@ export default function Heading() {
               <h5>About</h5>
             </OverlayTrigger>
           </Stack>
-          {/* <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Heighway_dragon.svg/1200px-Heighway_dragon.svg.png"
-            alt="Heighway-Hater Dragon"
-            style={{
-              width: "100px",
-              height: "100px",
-              position: "absolute",
-              top: "15px",
-              right: "5px",
-            }}
-          /> */}
         </div>
       </div>
     </>

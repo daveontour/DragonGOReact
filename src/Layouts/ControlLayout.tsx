@@ -4,6 +4,7 @@ import {
   Col,
   Container,
   Dropdown,
+  FormCheck,
   OverlayTrigger,
   Row,
   Stack,
@@ -141,6 +142,7 @@ export default function ControlLayout({
   &triangleAngle=${state.triangleAngle}
   &radius=${state.radius}
   &grouting=${state.grouting}
+  &gridlines=${state.gridlines}
   &startDirection=${pathState.startDirection}
   &pathStroke=${pathState.borderEnabled}
   &pathWidth=${pathState.borderWidth}
@@ -625,7 +627,6 @@ export default function ControlLayout({
                       setState({
                         ...state,
                         margin: e.target.value,
-                        generateEnabled: true,
                       });
                     }}
                   >
@@ -635,6 +636,26 @@ export default function ControlLayout({
                       </option>
                     ))}
                   </FormControl>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={7}>
+                  <FormLabel>Grid Lines</FormLabel>
+                </Col>
+                <Col xs={5}>
+                  <FormCheck
+                    type="checkbox"
+                    checked={state.gridlines}
+                    onChange={(
+                      event: React.ChangeEvent<HTMLInputElement>
+                    ): void => {
+                      setDirty(true);
+                      setState({
+                        ...state,
+                        gridlines: event.target.checked,
+                      });
+                    }}
+                  />
                 </Col>
               </Row>
 
@@ -708,7 +729,7 @@ export default function ControlLayout({
             <Button
               id="generate-dragon-curve-button"
               size="sm"
-              variant="secondary"
+              variant="primary"
               onClick={generate}
               disabled={slideShow}
               style={{
@@ -720,7 +741,7 @@ export default function ControlLayout({
             </Button>
             <Button
               size="sm"
-              variant="primary"
+              variant="success"
               onClick={generate}
               disabled={slideShow}
               style={{

@@ -3,8 +3,8 @@ import ControlLayout from "./ControlLayout";
 import ImageLayout from "./ImageLayout";
 
 export default function BodyLayout() {
-  //const urlHead = "http://localhost:8080";
-  const urlHead = "..";
+  const urlHead = "http://localhost:8080";
+  //const urlHead = "..";
 
   const [imageSize, setImageSize] = useState({
     width: "calc(100vw - 320px)",
@@ -19,6 +19,7 @@ export default function BodyLayout() {
     triangleAngle: "45",
     radius: "15",
     grouting: "1",
+    gridlines: false,
   });
 
   const [pathState, setPathState] = useState({
@@ -186,6 +187,7 @@ export default function BodyLayout() {
     &triangleAngle=${state.triangleAngle}
     &radius=${state.radius}
     &grouting=${state.grouting}
+    &gridlines=${state.gridlines}
     &startDirection=${pathState.startDirection}
     &pathStroke=${pathState.borderEnabled}
     &pathWidth=${pathState.borderWidth}
@@ -224,9 +226,7 @@ export default function BodyLayout() {
           rowGap: "10px",
           justifyContent: "left",
           alignItems: "center",
-          // marginBottom: "5px",
           marginLeft: "5px",
-          // marginRight: "5px",
         }}
       >
         <ControlLayout
