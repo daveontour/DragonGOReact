@@ -1,12 +1,18 @@
-import { Stack } from "react-bootstrap";
+import { Button, Stack } from "react-bootstrap";
+import CurveStatsModal from "../DialogBoxes/CurveStatsModal";
+import { useState } from "react";
 
 export default function ZoomControl({
   imageSize,
   setImageSize,
+  statsURL,
 }: {
   imageSize: any;
   setImageSize: any;
+  statsURL: any;
 }) {
+  const [statsShow, setStatsShow] = useState(false);
+
   const handleZoomIn = () => {
     debugger;
 
@@ -90,6 +96,32 @@ export default function ZoomControl({
           <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
         </svg>
       </div>
+
+      <div
+        onClick={() => {
+          setStatsShow(true);
+        }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "9pt",
+          cursor: "pointer",
+          color: "white",
+          backgroundColor: "#0E6EFD",
+          marginLeft: "35px",
+          height: "20px",
+          width: "100px",
+          borderRadius: "5px",
+          border: "1px solid black",
+        }}
+      >
+        Show Curve Stats
+      </div>
+      <CurveStatsModal
+        statsShow={statsShow}
+        setStatsShow={setStatsShow}
+        statsURL={statsURL}
+      ></CurveStatsModal>
     </Stack>
   );
 }

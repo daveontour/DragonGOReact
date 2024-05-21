@@ -4,10 +4,12 @@ export default function ImageLayout({
   imgUrl,
   imageSize,
   setImageSize,
+  statsURL,
 }: {
   imgUrl: string;
   imageSize: any;
   setImageSize: any;
+  statsURL: any;
 }) {
   return (
     <>
@@ -57,7 +59,11 @@ export default function ImageLayout({
             borderRadius: "5px",
           }}
         >
-          <ZoomControl imageSize={imageSize} setImageSize={setImageSize} />
+          <ZoomControl
+            imageSize={imageSize}
+            setImageSize={setImageSize}
+            statsURL={statsURL}
+          />
         </div>
       </div>
     </>

@@ -5,7 +5,7 @@ import {
   Container,
   // Dropdown,
   // Form,
-  FormCheck,
+  // FormCheck,
   OverlayTrigger,
   Row,
   Stack,
@@ -24,6 +24,8 @@ import DownloadZipModal from "../DialogBoxes/DownloadZipModal";
 import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
 import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
 import { JSX } from "react/jsx-runtime";
+import GroutingConfig from "../Widgets/GroutingConfigWidget";
+import CurveStatsModal from "../DialogBoxes/CurveStatsModal";
 
 var stopSlideShow = false;
 var opened = true;
@@ -143,6 +145,7 @@ export default function ControlLayout({
   &triangleAngle=${state.triangleAngle}
   &radius=${state.radius}
   &grouting=${state.grouting}
+  &groutingColor=${state.groutingColor}
   &gridlines=${state.gridlines}
   &startDirection=${pathState.startDirection}
   &pathStroke=${pathState.borderEnabled}
@@ -196,6 +199,17 @@ export default function ControlLayout({
       updateImage(newURL);
     });
   };
+  // const generateStats = () => {
+  //   setImageSize({
+  //     ...imageSize,
+  //     width: 800,
+  //     height: 800,
+  //     zoom: 100,
+  //   });
+  //   var newURL = getSingleURL();
+  //   var statsURL = newURL.replace("getTile", "getStats");
+  //   updateImage(statsURL);
+  // };
 
   const randomDragonCurve = () => {
     if (slideShow) {
@@ -535,6 +549,12 @@ export default function ControlLayout({
               isActive={false}
               activeState={activeCellState}
             ></CellConfig>
+            <GroutingConfig
+              state={state}
+              setState={setState}
+              slideShow={slideShow}
+              setDirty={setDirty}
+            ></GroutingConfig>
           </Stack>
 
           {/* The Dragon Curve Configuration Stack */}
@@ -593,7 +613,7 @@ export default function ControlLayout({
                 </Col>
               </Row>
 
-              <Row>
+              {/* <Row>
                 <Col xs={7}>
                   <FormLabel>Tile Grouting Width</FormLabel>
                 </Col>
@@ -618,7 +638,7 @@ export default function ControlLayout({
                     ))}
                   </FormControl>
                 </Col>
-              </Row>
+              </Row> */}
               <Row>
                 <Col xs={7}>
                   <FormLabel>Outer Margin</FormLabel>
@@ -645,7 +665,7 @@ export default function ControlLayout({
                   </FormControl>
                 </Col>
               </Row>
-              <Row>
+              {/* <Row>
                 <Col xs={7}>
                   <FormLabel>Grid Lines</FormLabel>
                 </Col>
@@ -664,7 +684,7 @@ export default function ControlLayout({
                     }}
                   />
                 </Col>
-              </Row>
+              </Row> */}
 
               <Row>
                 <Col xs={7}>
@@ -746,6 +766,7 @@ export default function ControlLayout({
             >
               Regenerate Current Dragon Curve
             </Button>
+
             <Button
               size="sm"
               variant="success"

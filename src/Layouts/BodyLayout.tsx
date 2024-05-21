@@ -20,6 +20,7 @@ export default function BodyLayout() {
     radius: "35",
     grouting: "4",
     gridlines: true,
+    groutingColor: "#ffffffff",
   });
 
   const [pathState, setPathState] = useState({
@@ -87,6 +88,13 @@ export default function BodyLayout() {
       state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
     }
 
+    state.groutingColor =
+      "#" + Math.floor(Math.random() * 4294967295).toString(16);
+
+    if (Math.random() > 0.5) {
+      state.groutingColor = "#ffffffff";
+    }
+
     pathState.borderStyle = "solid";
     pathState.borderWidth = Math.floor(Math.random() * 4).toString() + "px";
     pathState.borderColor =
@@ -143,6 +151,12 @@ export default function BodyLayout() {
     } else {
       state.grouting = "0";
     }
+    state.groutingColor =
+      "#" + Math.floor(Math.random() * 4294967295).toString(16);
+
+    if (Math.random() > 0.5) {
+      state.groutingColor = "#ffffffff";
+    }
     state.gridlines = Math.random() > 0.75;
 
     pathState.borderStyle = "solid";
@@ -197,6 +211,7 @@ export default function BodyLayout() {
     &triangleAngle=${state.triangleAngle}
     &radius=${state.radius}
     &grouting=${state.grouting}
+    &groutingColor=${state.groutingColor}
     &gridlines=${state.gridlines}
     &startDirection=${pathState.startDirection}
     &pathStroke=${pathState.borderEnabled}
@@ -221,9 +236,13 @@ export default function BodyLayout() {
         .replace(/#/g, "")
         .replace(/\s/g, "")
   );
+
+  const [statsURL, setStatsURL] = useState("");
   const generate = (newImgUrl: string) => {
     newImgUrl = newImgUrl.replace(/#/g, "").replace(/\s/g, "");
     setImgUrl(newImgUrl);
+    let statsURL = newImgUrl.replace("getTile", "getStats");
+    setStatsURL(statsURL);
   };
 
   return (
@@ -262,6 +281,7 @@ export default function BodyLayout() {
           imgUrl={imgUrl}
           imageSize={imageSize}
           setImageSize={setImageSize}
+          statsURL={statsURL}
         ></ImageLayout>
       </div>
     </>
