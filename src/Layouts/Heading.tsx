@@ -19,7 +19,9 @@ export default function Heading() {
       <div
         className="w-auto p-3 form-control"
         style={{
-          display: "flex", // Add this line to make the children position horizontally
+          display: "flex",
+          justifyContent: "space-between", // Add this line to align the children in the center horizontally
+          alignItems: "flex-end", // Add this line to align the children in the center vertically
           backgroundColor: "#eee",
           maxHeight: "130px",
           minHeight: "130px",
@@ -31,16 +33,25 @@ export default function Heading() {
           <h1>Dragon Art</h1>
           <h4>Generate variations of Heighway-Hater Dragon</h4>
         </Stack>
-        <div style={{ position: "relative" }}>
-          <Stack direction="horizontal" gap={1}>
-            <OverlayTrigger
-              placement="left"
-              delay={{ show: 250, hide: 4000 }}
-              overlay={aboutTooltip}
-            >
-              <h5>About</h5>
-            </OverlayTrigger>
-          </Stack>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+            width: "400px",
+            height: "100%",
+          }}
+        >
+          <OverlayTrigger
+            placement="left"
+            delay={{ show: 250, hide: 4000 }}
+            overlay={aboutTooltip}
+          >
+            <h5>About</h5>
+          </OverlayTrigger>
+
+          <h6>Version 1.1</h6>
         </div>
       </div>
     </>

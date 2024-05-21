@@ -3,8 +3,8 @@ import ControlLayout from "./ControlLayout";
 import ImageLayout from "./ImageLayout";
 
 export default function BodyLayout() {
-  const urlHead = "http://localhost:8080";
-  //const urlHead = "..";
+  //const urlHead = "http://localhost:8080";
+  const urlHead = "..";
 
   const [imageSize, setImageSize] = useState({
     width: "calc(100vw - 320px)",
@@ -13,13 +13,13 @@ export default function BodyLayout() {
   });
 
   const [state, setState] = useState({
-    folds: "9",
+    folds: "7",
     margin: "12",
     cellType: "knuthcurve",
     triangleAngle: "45",
-    radius: "15",
-    grouting: "1",
-    gridlines: false,
+    radius: "35",
+    grouting: "4",
+    gridlines: true,
   });
 
   const [pathState, setPathState] = useState({
@@ -39,8 +39,8 @@ export default function BodyLayout() {
     backgroundColor: "#7090B7FF",
     borderEnabled: true,
     fillEnabled: true,
-    title: "Active Cell Configuration (Cells that the path passes through)",
-    shortTitle: "Active Cell Configuration",
+    title: "Active Tile Configuration (Tiles that the path passes through)",
+    shortTitle: "Active Tile Configuration",
   });
   const [insideCellState, setInsideCellState] = useState({
     borderStyle: "solid",
@@ -49,19 +49,19 @@ export default function BodyLayout() {
     backgroundColor: "#ff0000",
     borderEnabled: false,
     fillEnabled: false,
-    title: "Inside Cell Configuration (Empty cells encompassed by the path)",
-    shortTitle: "Inside Cell Configuration",
+    title: "Inside Tile Configuration (Empty tiles encompassed by the path)",
+    shortTitle: "Inside Tile Configuration",
   });
   const [outsideCellState, setOutsideCellState] = useState({
     borderStyle: "solid",
-    borderWidth: "2px",
-    borderColor: "#00ffff",
-    backgroundColor: "#ff0000",
-    borderEnabled: false,
-    fillEnabled: false,
+    borderWidth: "1px",
+    borderColor: "#000000ff",
+    backgroundColor: "#7090b7cc",
+    borderEnabled: true,
+    fillEnabled: true,
     title:
-      "Outside Cell Configuration (Empty cells not encompassed by the path)",
-    shortTitle: "Outside Cell Configuration",
+      "Outside Tile Configuration (Empty tiles not encompassed by the path)",
+    shortTitle: "Outside Tile Configuration",
   });
 
   const setRandomState = () => {
@@ -77,6 +77,15 @@ export default function BodyLayout() {
       Math.floor(Math.random() * 8)
     ];
     state.radius = ["5", "8", "10", "12"][Math.floor(Math.random() * 4)];
+    state.gridlines = Math.random() > 0.75;
+
+    if (
+      state.cellType === "knuthcurve" ||
+      state.cellType === "knuth" ||
+      state.cellType === "knuthtri"
+    ) {
+      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
+    }
 
     pathState.borderStyle = "solid";
     pathState.borderWidth = Math.floor(Math.random() * 4).toString() + "px";
@@ -134,6 +143,7 @@ export default function BodyLayout() {
     } else {
       state.grouting = "0";
     }
+    state.gridlines = Math.random() > 0.75;
 
     pathState.borderStyle = "solid";
     pathState.borderWidth = Math.floor(Math.random() * 4).toString() + "px";

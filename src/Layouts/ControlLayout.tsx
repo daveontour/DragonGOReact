@@ -3,7 +3,8 @@ import {
   Button,
   Col,
   Container,
-  Dropdown,
+  // Dropdown,
+  // Form,
   FormCheck,
   OverlayTrigger,
   Row,
@@ -269,31 +270,31 @@ export default function ControlLayout({
     });
   };
 
-  const downloadDragonCurve = () => {
-    setDownloadingShow(true);
-    var url = getSingleURL() + "&format=png";
+  // const downloadDragonCurve = () => {
+  //   setDownloadingShow(true);
+  //   var url = getSingleURL() + "&format=png";
 
-    axios({
-      url: url, //your url
-      method: "GET",
-      responseType: "blob", // important
-    }).then((response) => {
-      // create file link in browser's memory
-      const href = URL.createObjectURL(response.data);
+  //   axios({
+  //     url: url, //your url
+  //     method: "GET",
+  //     responseType: "blob", // important
+  //   }).then((response) => {
+  //     // create file link in browser's memory
+  //     const href = URL.createObjectURL(response.data);
 
-      // create "a" HTML element with href to file & click
-      const link = document.createElement("a");
-      link.href = href;
-      link.setAttribute("download", "Dragon.png"); //or any other extension
-      document.body.appendChild(link);
-      link.click();
+  //     // create "a" HTML element with href to file & click
+  //     const link = document.createElement("a");
+  //     link.href = href;
+  //     link.setAttribute("download", "Dragon.png"); //or any other extension
+  //     document.body.appendChild(link);
+  //     link.click();
 
-      // clean up "a" element & remove ObjectURL
-      document.body.removeChild(link);
-      URL.revokeObjectURL(href);
-      setDownloadingShow(false);
-    });
-  };
+  //     // clean up "a" element & remove ObjectURL
+  //     document.body.removeChild(link);
+  //     URL.revokeObjectURL(href);
+  //     setDownloadingShow(false);
+  //   });
+  // };
 
   const downloadDragonCurveSVG = () => {
     setDownloadingShow(true);
@@ -325,9 +326,9 @@ export default function ControlLayout({
     setCollageShow(true);
   };
 
-  const createZip = () => {
-    setZipShow(true);
-  };
+  // const createZip = () => {
+  //   setZipShow(true);
+  // };
 
   const loadCurve = () => {
     setLoadShow(true);
@@ -368,16 +369,16 @@ export default function ControlLayout({
     </Tooltip>
   );
 
-  const renderMultiDragonTooltip = (
-    props: JSX.IntrinsicAttributes &
-      TooltipProps &
-      RefAttributes<HTMLDivElement>
-  ) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Creates and downloads a zip file containing multiple dragon curves with a
-      range of sizes and configurations.
-    </Tooltip>
-  );
+  // const renderMultiDragonTooltip = (
+  //   props: JSX.IntrinsicAttributes &
+  //     TooltipProps &
+  //     RefAttributes<HTMLDivElement>
+  // ) => (
+  //   <Tooltip id="button-tooltip" {...props}>
+  //     Creates and downloads a zip file containing multiple dragon curves with a
+  //     range of sizes and configurations.
+  //   </Tooltip>
+  // );
 
   const renderSaveTooltip = (
     props: JSX.IntrinsicAttributes &
@@ -496,7 +497,7 @@ export default function ControlLayout({
           {/* The Cell Config Stack */}
           <Stack direction="vertical" gap={2}>
             <FormLabel style={{ fontWeight: "bold" }}>
-              Dragon Path and Cell Configuration
+              Dragon Path and Tile Configuration
             </FormLabel>
             <PathConfig
               state={pathState}
@@ -504,14 +505,20 @@ export default function ControlLayout({
               slideShow={slideShow}
               setDirty={setDirty}
             ></PathConfig>
-            <CellConfig
-              state={activeCellState}
-              setState={setActiveCellState}
-              slideShow={slideShow}
-              setDirty={setDirty}
-              isActive={true}
-              activeState={activeCellState}
-            ></CellConfig>
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 250, hide: 400 }}
+              overlay={renderLoadTooltip}
+            >
+              <CellConfig
+                state={activeCellState}
+                setState={setActiveCellState}
+                slideShow={slideShow}
+                setDirty={setDirty}
+                isActive={true}
+                activeState={activeCellState}
+              ></CellConfig>
+            </OverlayTrigger>
             <CellConfig
               state={insideCellState}
               setState={setInsideCellState}
@@ -561,7 +568,7 @@ export default function ControlLayout({
               </Row>
               <Row>
                 <Col xs={7}>
-                  <FormLabel>Cell Width</FormLabel>
+                  <FormLabel>Tile Width</FormLabel>
                 </Col>
                 <Col xs={5}>
                   <FormControl
@@ -614,7 +621,7 @@ export default function ControlLayout({
               </Row>
               <Row>
                 <Col xs={7}>
-                  <FormLabel>Margin</FormLabel>
+                  <FormLabel>Outer Margin</FormLabel>
                 </Col>
                 <Col xs={5}>
                   <FormControl
@@ -661,7 +668,7 @@ export default function ControlLayout({
 
               <Row>
                 <Col xs={7}>
-                  <FormLabel>Cell Renderer</FormLabel>
+                  <FormLabel>Tile Renderer</FormLabel>
                 </Col>
                 <Col xs={5}>
                   <FormControl
@@ -682,9 +689,9 @@ export default function ControlLayout({
                     <option value="triangle">Triangle</option>
                     <option value="line">Line</option>
                     <option value="corner">Corner</option>
-                    <option value="knuth">Knuth Cell</option>
-                    <option value="knuthcurve">Knuth Cell Curve</option>
-                    <option value="knuthtri">Knuth Cell Triangle</option>
+                    <option value="knuth">Knuth Tile</option>
+                    <option value="knuthcurve">Knuth Tile Curve</option>
+                    <option value="knuthtri">Knuth Tile Triangle</option>
                   </FormControl>
                 </Col>
               </Row>
@@ -751,7 +758,18 @@ export default function ControlLayout({
             >
               Generate Dragon Curve
             </Button>
-            <Dropdown>
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={downloadDragonCurveSVG}
+              disabled={slideShow}
+              style={{
+                width: "280px",
+              }}
+            >
+              Download Dragon Curve
+            </Button>
+            {/* <Dropdown>
               <Dropdown.Toggle
                 disabled={slideShow}
                 size="sm"
@@ -769,7 +787,7 @@ export default function ControlLayout({
                   Download PNG Format
                 </Dropdown.Item>
               </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
             <Stack direction="horizontal" gap={1}>
               <OverlayTrigger
                 placement="right"
@@ -809,7 +827,7 @@ export default function ControlLayout({
             <FormLabel style={{ fontWeight: "bold" }}>
               Slideshow of Random Dragon Curve
             </FormLabel>
-            <Stack direction="horizontal" gap={1}>
+            <Stack direction="vertical" gap={1}>
               <OverlayTrigger
                 placement="right"
                 delay={{ show: 250, hide: 400 }}
@@ -820,9 +838,9 @@ export default function ControlLayout({
                   size="sm"
                   variant="primary"
                   onClick={randomDragonCurveCurrentSize}
-                  style={{ width: "137px" }}
+                  style={{ width: "280px" }}
                 >
-                  Current Size
+                  Radomise Keeping Current Size
                 </Button>
               </OverlayTrigger>
               <OverlayTrigger
@@ -835,9 +853,9 @@ export default function ControlLayout({
                   size="sm"
                   variant="primary"
                   onClick={randomDragonCurve}
-                  style={{ width: "137px" }}
+                  style={{ width: "280px" }}
                 >
-                  Random
+                  Randomise
                 </Button>
               </OverlayTrigger>
             </Stack>
@@ -870,7 +888,7 @@ export default function ControlLayout({
 
           {/* The Miscellaneous Button Stack */}
           <Stack direction="vertical" gap={1} style={{ marginTop: "20px" }}>
-            <OverlayTrigger
+            {/* <OverlayTrigger
               placement="right"
               delay={{ show: 250, hide: 400 }}
               overlay={renderMultiDragonTooltip}
@@ -893,7 +911,7 @@ export default function ControlLayout({
               style={{ width: "280px" }}
             >
               Raw Turns
-            </Button>
+            </Button> */}
             <CollageModal
               show={collageShow}
               setState={setCollageShow}
