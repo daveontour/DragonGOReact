@@ -25,7 +25,6 @@ import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
 import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
 import { JSX } from "react/jsx-runtime";
 import GroutingConfig from "../Widgets/GroutingConfigWidget";
-import CurveStatsModal from "../DialogBoxes/CurveStatsModal";
 
 var stopSlideShow = false;
 var opened = true;
