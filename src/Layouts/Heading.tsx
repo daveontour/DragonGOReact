@@ -1,7 +1,11 @@
 import { RefAttributes } from "react";
 import { OverlayTrigger, Stack, Tooltip, TooltipProps } from "react-bootstrap";
 
-export default function Heading() {
+export default function Heading({
+  showFullScreen,
+}: {
+  showFullScreen: boolean;
+}) {
   const aboutTooltip = (
     props: JSX.IntrinsicAttributes &
       TooltipProps &
@@ -19,7 +23,7 @@ export default function Heading() {
       <div
         className="w-auto p-3 form-control"
         style={{
-          display: "flex",
+          display: showFullScreen ? "none" : "flex",
           justifyContent: "space-between", // Add this line to align the children in the center horizontally
           alignItems: "flex-end", // Add this line to align the children in the center vertically
           backgroundColor: "#eee",

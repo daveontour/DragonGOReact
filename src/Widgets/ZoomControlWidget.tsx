@@ -1,4 +1,4 @@
-import { Button, Stack } from "react-bootstrap";
+import { Stack } from "react-bootstrap";
 import CurveStatsModal from "../DialogBoxes/CurveStatsModal";
 import { useState } from "react";
 
@@ -6,16 +6,16 @@ export default function ZoomControl({
   imageSize,
   setImageSize,
   statsURL,
+  setShowFullScreen,
 }: {
   imageSize: any;
   setImageSize: any;
   statsURL: any;
+  setShowFullScreen: any;
 }) {
   const [statsShow, setStatsShow] = useState(false);
 
   const handleZoomIn = () => {
-    debugger;
-
     let x = "auto";
     if (imageSize.width != "auto") {
       x = String(parseInt(imageSize.width) * 1.01) + "px";
@@ -116,6 +116,26 @@ export default function ZoomControl({
         }}
       >
         Show Curve Stats
+      </div>
+      <div
+        onClick={() => {
+          setShowFullScreen(true);
+        }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "9pt",
+          cursor: "pointer",
+          color: "white",
+          backgroundColor: "#0E6EFD",
+          marginLeft: "35px",
+          height: "20px",
+          width: "100px",
+          borderRadius: "5px",
+          border: "1px solid black",
+        }}
+      >
+        Full Screen
       </div>
       <CurveStatsModal
         statsShow={statsShow}

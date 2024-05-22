@@ -31,28 +31,39 @@ var opened = true;
 
 function calculateImageSize(
   imgWidth: number,
-  imgHeight: number
+  imgHeight: number,
+  fullScreen: boolean = false
 ): [string, string, string] {
   let hOffset = 170;
   let portalWidth = window.innerWidth - 350;
   let portalHeight = window.innerHeight - hOffset;
 
+  if (fullScreen) {
+    portalWidth = window.innerWidth;
+    portalHeight = window.innerHeight;
+  }
+
   let widthRatio = imgWidth / portalWidth;
   let heightRatio = imgHeight / portalHeight;
 
+  // If the image is smaller than the portal, then just show the image
   if (widthRatio < 1 && heightRatio < 1) {
     return [imgWidth + "px", imgHeight + "px", "100"];
   }
 
+  // If the image is wider than the portal, then zoom out
   if (widthRatio > 1 && heightRatio < 1) {
     let zoom = Math.round(100 / widthRatio);
     return [portalWidth + "px", "auto", String(zoom)];
   }
+
+  // If the image is taller than the portal, then zoom out
   if (widthRatio < 1 && heightRatio > 1) {
     let zoom = Math.round(100 / heightRatio);
     return ["auto", portalHeight + "px", String(zoom)];
   }
 
+  // If the image is wider and taller than the portal, then zoom out to the larger ratio
   if (widthRatio > 1 && heightRatio > 1) {
     if (widthRatio > heightRatio) {
       let zoom = Math.round(100 / widthRatio);
@@ -62,8 +73,6 @@ function calculateImageSize(
       return ["auto", portalHeight + "px", String(zoom)];
     }
   }
-
-  console.log("zoom default", "100");
 
   return ["auto", "auto", "100"];
 }
@@ -85,6 +94,7 @@ export default function ControlLayout({
   urlHead,
   imageSize,
   setImageSize,
+  setFSImageSize,
 }: {
   state: any;
   setState: any;
@@ -102,6 +112,7 @@ export default function ControlLayout({
   urlHead: string;
   imageSize: any;
   setImageSize: any;
+  setFSImageSize: any;
 }) {
   // Generate the initial image on load
   useEffect(() => {
@@ -186,7 +197,8 @@ export default function ControlLayout({
     }).then((response) => {
       let [imgSX, imgSY, zoom] = calculateImageSize(
         response.data.width,
-        response.data.height
+        response.data.height,
+        false
       );
       setImageSize({
         ...imageSize,
@@ -194,6 +206,19 @@ export default function ControlLayout({
         height: imgSY,
         zoom: zoom,
       });
+
+      // Now get the full screen image size
+      let [imgSXFS, imgSYFS, zoomFS] = calculateImageSize(
+        response.data.width,
+        response.data.height,
+        true
+      );
+      setFSImageSize({
+        width: imgSXFS,
+        height: imgSYFS,
+        zoom: zoomFS,
+      });
+
       setDirty(false);
       updateImage(newURL);
     });

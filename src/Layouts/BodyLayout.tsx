@@ -2,7 +2,17 @@ import { useState } from "react";
 import ControlLayout from "./ControlLayout";
 import ImageLayout from "./ImageLayout";
 
-export default function BodyLayout() {
+export default function BodyLayout({
+  showFullScreen,
+  setShowFullScreen,
+  setFSImageURL,
+  setFSImageSize,
+}: {
+  showFullScreen: boolean;
+  setShowFullScreen: any;
+  setFSImageURL: any;
+  setFSImageSize: any;
+}) {
   //const urlHead = "http://localhost:8080";
   const urlHead = "..";
 
@@ -243,6 +253,9 @@ export default function BodyLayout() {
     setImgUrl(newImgUrl);
     let statsURL = newImgUrl.replace("getTile", "getStats");
     setStatsURL(statsURL);
+    //  if (showFullScreen) {
+    setFSImageURL(newImgUrl);
+    //    }
   };
 
   return (
@@ -250,8 +263,8 @@ export default function BodyLayout() {
       <div
         className="mw-100"
         style={{
+          display: showFullScreen ? "none" : "flex",
           height: "calc(100vh - 140px)",
-          display: "flex",
           rowGap: "10px",
           justifyContent: "left",
           alignItems: "center",
@@ -275,6 +288,7 @@ export default function BodyLayout() {
           urlHead={urlHead}
           imageSize={imageSize}
           setImageSize={setImageSize}
+          setFSImageSize={setFSImageSize}
         ></ControlLayout>
 
         <ImageLayout
@@ -282,6 +296,7 @@ export default function BodyLayout() {
           imageSize={imageSize}
           setImageSize={setImageSize}
           statsURL={statsURL}
+          setShowFullScreen={setShowFullScreen}
         ></ImageLayout>
       </div>
     </>

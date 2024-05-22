@@ -1,71 +1,57 @@
-import ZoomControl from "../Widgets/ZoomControlWidget";
-
-export default function ImageLayout({
+export default function FullScreenLayout({
   imgUrl,
   imageSize,
-  setImageSize,
-  statsURL,
+  showFullScreen,
   setShowFullScreen,
 }: {
   imgUrl: string;
   imageSize: any;
   setImageSize: any;
-  statsURL: any;
+  showFullScreen: boolean;
   setShowFullScreen: any;
 }) {
+  const handleImageClick = () => {
+    setShowFullScreen(false);
+  };
+
   return (
     <>
       <div
+        onClick={handleImageClick}
         style={{
-          height: "calc(100vh - 145px)",
-          width: "calc(100vw - 335px)",
+          display: showFullScreen ? "flex" : "none",
+          height: "95%",
+          width: "calc(100vw - 10px)",
           overflow: "hide",
+          marginLeft: "5px",
           backgroundColor: "#FFFFFF",
-          display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          marginLeft: "2px",
-          borderRadius: "5px",
           userSelect: "none",
         }}
       >
         <div
+          onClick={handleImageClick}
           style={{
-            height: "calc(100% - 25px)",
+            height: "100%",
             width: "100%",
-            overflow: "auto",
+            overflow: "hide",
             backgroundColor: "#FFFFFF00",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             marginLeft: "2px",
-            borderRadius: "5px",
             userSelect: "none",
           }}
         >
           <img
+            onClick={handleImageClick}
             src={imgUrl}
             alt="Connecting to server..."
             style={{ width: imageSize.width, height: imageSize.height }}
-            id="imageHTMLElement"
-          />
-        </div>
-        <div
-          style={{
-            width: "100%",
-            height: 25,
-            paddingLeft: 5,
-            backgroundColor: "#ccccccbb",
-            borderRadius: "5px",
-          }}
-        >
-          <ZoomControl
-            imageSize={imageSize}
-            setImageSize={setImageSize}
-            statsURL={statsURL}
-            setShowFullScreen={setShowFullScreen}
+            id="imageHTMLElementFullScreen"
           />
         </div>
       </div>

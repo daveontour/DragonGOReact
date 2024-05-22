@@ -10,7 +10,6 @@ function CurveStatsModal({
   statsURL: any;
 }) {
   const dismiss = () => {
-    debugger;
     setStatsShow(false);
   };
 
