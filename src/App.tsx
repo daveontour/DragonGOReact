@@ -14,6 +14,7 @@ const App: React.FC = () => {
       style={{
         maxHeight: "100vh",
         maxWidth: "100vw",
+        backgroundColor: "aliceblue",
       }}
     >
       <Heading showFullScreen={showFullScreen} />
