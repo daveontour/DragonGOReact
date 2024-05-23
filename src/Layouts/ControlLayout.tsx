@@ -3,9 +3,6 @@ import {
   Button,
   Col,
   Container,
-  // Dropdown,
-  // Form,
-  // FormCheck,
   OverlayTrigger,
   Row,
   Stack,
@@ -25,8 +22,9 @@ import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
 import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
 import { JSX } from "react/jsx-runtime";
 import GroutingConfig from "../Widgets/GroutingConfigWidget";
+import myGlobalObject from "../globals";
 
-var stopSlideShow = false;
+//var stopSlideShow = false;
 var opened = true;
 
 function calculateImageSize(
@@ -95,6 +93,8 @@ export default function ControlLayout({
   imageSize,
   setImageSize,
   setFSImageSize,
+  slideShow,
+  setSlideShow,
 }: {
   state: any;
   setState: any;
@@ -113,6 +113,8 @@ export default function ControlLayout({
   imageSize: any;
   setImageSize: any;
   setFSImageSize: any;
+  slideShow: boolean;
+  setSlideShow: any;
 }) {
   // Generate the initial image on load
   useEffect(() => {
@@ -141,7 +143,7 @@ export default function ControlLayout({
     path: pathState,
     state: state,
   });
-  const [slideShow, setSlideShow] = useState(false);
+  //  const [slideShow, setSlideShow] = useState(false);
 
   const [dirty, setDirty] = useState(false);
 
@@ -223,17 +225,6 @@ export default function ControlLayout({
       updateImage(newURL);
     });
   };
-  // const generateStats = () => {
-  //   setImageSize({
-  //     ...imageSize,
-  //     width: 800,
-  //     height: 800,
-  //     zoom: 100,
-  //   });
-  //   var newURL = getSingleURL();
-  //   var statsURL = newURL.replace("getTile", "getStats");
-  //   updateImage(statsURL);
-  // };
 
   const randomDragonCurve = () => {
     if (slideShow) {
@@ -242,9 +233,9 @@ export default function ControlLayout({
     setSlideShow(true);
     randomDragonCurveLocal();
     generate();
-    stopSlideShow = false;
+    myGlobalObject.stopSlideShow = false;
     const interval = setInterval(() => {
-      if (stopSlideShow) {
+      if (myGlobalObject.stopSlideShow) {
         clearInterval(interval);
         setSlideShow(false);
       } else {
@@ -266,9 +257,9 @@ export default function ControlLayout({
     setSlideShow(true);
     randomDragonCurveLocalCurrentSize();
     generate();
-    stopSlideShow = false;
+    myGlobalObject.stopSlideShow = false;
     const interval = setInterval(() => {
-      if (stopSlideShow) {
+      if (myGlobalObject.stopSlideShow) {
         clearInterval(interval);
         setSlideShow(false);
       } else {
@@ -280,8 +271,7 @@ export default function ControlLayout({
 
   const collageSlideShow = () => {
     setSlideShow(true);
-    stopSlideShow = false;
-
+    myGlobalObject.stopSlideShow = false;
     var url =
       urlHead +
       `/prepareCollage?width=${collageConfig.width}&height=${collageConfig.height}&elementWidth=${collageConfig.elementWidth}&startDirection=${collageConfig.startDirection}&gap=${collageConfig.elementGap}&backgroundColor=${collageConfig.gapColor}&format=${collageConfig.format}`
@@ -299,7 +289,7 @@ export default function ControlLayout({
 
       //wait 2 seconds and then call collageSlideShow again
       setTimeout(() => {
-        if (!stopSlideShow) {
+        if (!myGlobalObject.stopSlideShow) {
           collageSlideShow();
         } else {
           setSlideShow(false);
@@ -307,32 +297,6 @@ export default function ControlLayout({
       }, 2000);
     });
   };
-
-  // const downloadDragonCurve = () => {
-  //   setDownloadingShow(true);
-  //   var url = getSingleURL() + "&format=png";
-
-  //   axios({
-  //     url: url, //your url
-  //     method: "GET",
-  //     responseType: "blob", // important
-  //   }).then((response) => {
-  //     // create file link in browser's memory
-  //     const href = URL.createObjectURL(response.data);
-
-  //     // create "a" HTML element with href to file & click
-  //     const link = document.createElement("a");
-  //     link.href = href;
-  //     link.setAttribute("download", "Dragon.png"); //or any other extension
-  //     document.body.appendChild(link);
-  //     link.click();
-
-  //     // clean up "a" element & remove ObjectURL
-  //     document.body.removeChild(link);
-  //     URL.revokeObjectURL(href);
-  //     setDownloadingShow(false);
-  //   });
-  // };
 
   const downloadDragonCurveSVG = () => {
     setDownloadingShow(true);
@@ -406,26 +370,14 @@ export default function ControlLayout({
       the "Stop Slide Show" button is clicked.
     </Tooltip>
   );
-
-  // const renderMultiDragonTooltip = (
-  //   props: JSX.IntrinsicAttributes &
-  //     TooltipProps &
-  //     RefAttributes<HTMLDivElement>
-  // ) => (
-  //   <Tooltip id="button-tooltip" {...props}>
-  //     Creates and downloads a zip file containing multiple dragon curves with a
-  //     range of sizes and configurations.
-  //   </Tooltip>
-  // );
-
   const renderSaveTooltip = (
     props: JSX.IntrinsicAttributes &
       TooltipProps &
       RefAttributes<HTMLDivElement>
   ) => (
     <Tooltip id="button-tooltip" {...props}>
-      Allows you to save the configuration settings of the current dragon curve
-      by showing the underlying configuration which can be saved as a JSON file.
+      Save the configuration settings of the current dragon curve by showing the
+      underlying configuration which can be saved as a JSON file.
     </Tooltip>
   );
   const renderLoadTooltip = (
@@ -434,8 +386,17 @@ export default function ControlLayout({
       RefAttributes<HTMLDivElement>
   ) => (
     <Tooltip id="button-tooltip" {...props}>
-      Allows you to load a previously saved configuration settings of a dragon
-      curve by uploading a JSON file.
+      Load a previously saved configuration settings of a dragon curve by
+      uploading a JSON file.
+    </Tooltip>
+  );
+  const renderDownLoadTooltip = (
+    props: JSX.IntrinsicAttributes &
+      TooltipProps &
+      RefAttributes<HTMLDivElement>
+  ) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Download the SVG file of the current dragon curve.
     </Tooltip>
   );
   return (
@@ -460,7 +421,8 @@ export default function ControlLayout({
             size="sm"
             variant="danger"
             onClick={() => {
-              stopSlideShow = true;
+              myGlobalObject.stopSlideShow = true;
+              //setStopSlideShow(true);
               stopSlideShowNow();
             }}
             style={{
@@ -637,32 +599,6 @@ export default function ControlLayout({
                 </Col>
               </Row>
 
-              {/* <Row>
-                <Col xs={7}>
-                  <FormLabel>Tile Grouting Width</FormLabel>
-                </Col>
-                <Col xs={5}>
-                  <FormControl
-                    disabled={slideShow}
-                    size="sm"
-                    as="select"
-                    value={state.grouting}
-                    onChange={(e) => {
-                      setDirty(true);
-                      setState({
-                        ...state,
-                        grouting: e.target.value,
-                      });
-                    }}
-                  >
-                    {[...Array(10).keys()].map((i) => (
-                      <option key={i} value={i}>
-                        {i}
-                      </option>
-                    ))}
-                  </FormControl>
-                </Col>
-              </Row> */}
               <Row>
                 <Col xs={7}>
                   <FormLabel>Outer Margin</FormLabel>
@@ -689,27 +625,6 @@ export default function ControlLayout({
                   </FormControl>
                 </Col>
               </Row>
-              {/* <Row>
-                <Col xs={7}>
-                  <FormLabel>Grid Lines</FormLabel>
-                </Col>
-                <Col xs={5}>
-                  <FormCheck
-                    type="checkbox"
-                    checked={state.gridlines}
-                    onChange={(
-                      event: React.ChangeEvent<HTMLInputElement>
-                    ): void => {
-                      setDirty(true);
-                      setState({
-                        ...state,
-                        gridlines: event.target.checked,
-                      });
-                    }}
-                  />
-                </Col>
-              </Row> */}
-
               <Row>
                 <Col xs={7}>
                   <FormLabel>Tile Renderer</FormLabel>
@@ -803,68 +718,71 @@ export default function ControlLayout({
             >
               Generate Dragon Curve
             </Button>
-            <Button
-              size="sm"
-              variant="primary"
-              onClick={downloadDragonCurveSVG}
-              disabled={slideShow}
+            <div
               style={{
+                display: "flex",
                 width: "280px",
+                justifyContent: "center",
               }}
             >
-              Download Dragon Curve
-            </Button>
-            {/* <Dropdown>
-              <Dropdown.Toggle
-                disabled={slideShow}
-                size="sm"
-                variant="primary"
-                id="dropdown-basic"
-                style={{ width: "280px" }}
-              >
-                Download Dragon Curve
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={downloadDragonCurveSVG}>
-                  Download SVG Format
-                </Dropdown.Item>
-                <Dropdown.Item onClick={downloadDragonCurve}>
-                  Download PNG Format
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown> */}
-            <Stack direction="horizontal" gap={1}>
               <OverlayTrigger
                 placement="right"
                 delay={{ show: 250, hide: 400 }}
                 overlay={renderSaveTooltip}
               >
-                <Button
-                  disabled={slideShow}
-                  size="sm"
-                  variant="primary"
+                <svg
                   onClick={saveCurve}
-                  style={{ width: "137px" }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30px"
+                  height="30px"
+                  cursor={"pointer"}
+                  fill="currentColor"
+                  className="bi bi-floppy"
+                  viewBox="0 0 20 20"
                 >
-                  Save
-                </Button>
+                  <path d="M11 2H9v3h2z" />
+                  <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z" />
+                </svg>
               </OverlayTrigger>
               <OverlayTrigger
                 placement="right"
                 delay={{ show: 250, hide: 400 }}
                 overlay={renderLoadTooltip}
               >
-                <Button
-                  disabled={slideShow}
-                  size="sm"
-                  variant="primary"
+                <svg
                   onClick={loadCurve}
-                  style={{ width: "137px" }}
+                  cursor={"pointer"}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30px"
+                  height="30px"
+                  fill="currentColor"
+                  className="bi bi-door-open"
+                  viewBox="0 0 20 20"
                 >
-                  Load
-                </Button>
+                  <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1" />
+                  <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117M11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5M4 1.934V15h6V1.077z" />
+                </svg>
               </OverlayTrigger>
-            </Stack>
+              <OverlayTrigger
+                placement="right"
+                delay={{ show: 250, hide: 400 }}
+                overlay={renderDownLoadTooltip}
+              >
+                <svg
+                  onClick={downloadDragonCurveSVG}
+                  cursor={"pointer"}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30px"
+                  height="30px"
+                  fill="currentColor"
+                  className="bi bi-download"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                  <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
+                </svg>
+              </OverlayTrigger>
+            </div>
           </Stack>
 
           {/* The Slideshow Button  Stack */}

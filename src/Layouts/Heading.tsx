@@ -29,7 +29,7 @@ export default function Heading({
           backgroundColor: "#eee",
           maxHeight: "130px",
           minHeight: "130px",
-          marginLeft: "auto",
+          marginLeft: "5px",
           marginRight: "5px",
         }}
       >

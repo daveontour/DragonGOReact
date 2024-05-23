@@ -6,12 +6,14 @@ export default function ImageLayout({
   setImageSize,
   statsURL,
   setShowFullScreen,
+  stopSlideShowNow,
 }: {
   imgUrl: string;
   imageSize: any;
   setImageSize: any;
   statsURL: any;
   setShowFullScreen: any;
+  stopSlideShowNow: any;
 }) {
   return (
     <>
@@ -66,6 +68,7 @@ export default function ImageLayout({
             setImageSize={setImageSize}
             statsURL={statsURL}
             setShowFullScreen={setShowFullScreen}
+            stopSlideShowNow={stopSlideShowNow}
           />
         </div>
       </div>

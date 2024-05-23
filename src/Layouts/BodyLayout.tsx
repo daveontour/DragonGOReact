@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ControlLayout from "./ControlLayout";
 import ImageLayout from "./ImageLayout";
+import myGlobalObject from "../globals";
 
 export default function BodyLayout({
   showFullScreen,
@@ -16,6 +17,7 @@ export default function BodyLayout({
   //const urlHead = "http://localhost:8080";
   const urlHead = "..";
 
+  const [slideShow, setSlideShow] = useState(false);
   const [imageSize, setImageSize] = useState({
     width: "calc(100vw - 320px)",
     height: "auto",
@@ -289,6 +291,8 @@ export default function BodyLayout({
           imageSize={imageSize}
           setImageSize={setImageSize}
           setFSImageSize={setFSImageSize}
+          slideShow={slideShow}
+          setSlideShow={setSlideShow}
         ></ControlLayout>
 
         <ImageLayout
@@ -297,6 +301,10 @@ export default function BodyLayout({
           setImageSize={setImageSize}
           statsURL={statsURL}
           setShowFullScreen={setShowFullScreen}
+          stopSlideShowNow={() => {
+            setSlideShow(false);
+            myGlobalObject.stopSlideShow = true;
+          }}
         ></ImageLayout>
       </div>
     </>
