@@ -19,7 +19,7 @@ export default function ImageLayout({
     <>
       <div
         style={{
-          height: "calc(100vh - 145px)",
+          height: "calc(100vh - 90px)",
           width: "calc(100vw - 335px)",
           overflow: "hide",
           backgroundColor: "aliceblue",

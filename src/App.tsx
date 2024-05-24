@@ -10,7 +10,6 @@ const App: React.FC = () => {
   const [fsImageSize, setFSImageSize] = useState({ width: 100, height: 100 });
 
   const handleFullScreenExit = () => {
-    debugger;
     if (document.exitFullscreen) {
       document.exitFullscreen();
     }

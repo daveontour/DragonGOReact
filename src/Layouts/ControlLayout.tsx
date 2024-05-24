@@ -3,6 +3,7 @@ import {
   Button,
   Col,
   Container,
+  Form,
   OverlayTrigger,
   Row,
   Stack,
@@ -32,7 +33,7 @@ function calculateImageSize(
   imgHeight: number,
   fullScreen: boolean = false
 ): [string, string, string] {
-  let hOffset = 170;
+  let hOffset = 120;
   let portalWidth = window.innerWidth - 350;
   let portalHeight = window.innerHeight - hOffset;
 
@@ -405,7 +406,7 @@ export default function ControlLayout({
       <div
         className="form-control"
         style={{
-          height: "calc(100vh - 145px)",
+          height: "calc(100vh - 90px)",
           display: slideShow ? "block" : "none",
           justifyContent: "left",
           alignItems: "center",
@@ -417,6 +418,111 @@ export default function ControlLayout({
         }}
       >
         <Stack direction="vertical" gap={1} style={{ marginTop: "20px" }}>
+          <FormLabel style={{ fontWeight: "bold" }}>Color Pallette</FormLabel>
+          <Form.Check
+            type="radio"
+            label="Pastel Colors"
+            name="radioOptions"
+            checked={
+              myGlobalObject.colorPallete === "pastel" &&
+              !myGlobalObject.randomHue
+            }
+            onChange={() => {
+              myGlobalObject.randomHue = false;
+              myGlobalObject.colorPallete = "pastel";
+              setState({ ...state, pallette: "pastel" });
+            }}
+          />
+          <Form.Check
+            type="radio"
+            label="Vibrant Colors"
+            name="radioOptions"
+            checked={
+              myGlobalObject.colorPallete === "vibrant" &&
+              !myGlobalObject.randomHue
+            }
+            onChange={() => {
+              myGlobalObject.randomHue = false;
+              myGlobalObject.colorPallete = "vibrant";
+              setState({ ...state, pallette: "vibrant" });
+            }}
+          />
+          <Form.Check
+            type="radio"
+            label="Red Hue Colors"
+            name="radioOptions"
+            checked={
+              myGlobalObject.colorPallete === "redhue" &&
+              !myGlobalObject.randomHue
+            }
+            onChange={() => {
+              myGlobalObject.randomHue = false;
+              myGlobalObject.colorPallete = "redhue";
+              setState({ ...state, pallette: "redhue" });
+            }}
+          />
+          <Form.Check
+            type="radio"
+            label="Green Hue Colors"
+            name="radioOptions"
+            checked={
+              myGlobalObject.colorPallete === "greenhue" &&
+              !myGlobalObject.randomHue
+            }
+            onChange={() => {
+              myGlobalObject.randomHue = false;
+              myGlobalObject.colorPallete = "greenhue";
+              setState({ ...state, pallette: "greenhue" });
+            }}
+          />
+          <Form.Check
+            type="radio"
+            label="Blue Hue Colors"
+            name="radioOptions"
+            checked={
+              myGlobalObject.colorPallete === "bluehue" &&
+              !myGlobalObject.randomHue
+            }
+            onChange={() => {
+              myGlobalObject.randomHue = false;
+              myGlobalObject.colorPallete = "bluehue";
+              setState({ ...state, pallette: "bluehue" });
+            }}
+          />
+          <Form.Check
+            type="radio"
+            label="Random Hue Set"
+            name="radioOptions"
+            checked={myGlobalObject.randomHue === true}
+            onChange={() => {
+              myGlobalObject.randomHue = true;
+              myGlobalObject.colorPallete = "randomhue";
+              setState({ ...state, pallette: "randomhue" });
+            }}
+          />
+          <Form.Check
+            type="radio"
+            label="Random Colors"
+            name="radioOptions"
+            checked={myGlobalObject.colorPallete === "random"}
+            onChange={() => {
+              myGlobalObject.randomHue = false;
+              myGlobalObject.colorPallete = "random";
+              setState({ ...state, pallette: "random" });
+            }}
+          />
+          <Form.Check
+            type="radio"
+            label="High Contrast Colors"
+            name="radioOptions"
+            checked={myGlobalObject.colorPallete === "highcontrast"}
+            onChange={() => {
+              myGlobalObject.randomHue = false;
+              myGlobalObject.colorPallete = "highcontrast";
+              setState({ ...state, pallette: "highcontrast" });
+            }}
+          />
+
           <Button
             size="sm"
             variant="danger"
@@ -428,6 +534,7 @@ export default function ControlLayout({
             style={{
               width: "280px",
               display: slideShow ? "block" : "none",
+              marginTop: "15px",
             }}
           >
             Stop Slide Show
@@ -470,7 +577,7 @@ export default function ControlLayout({
       <div
         className="form-control"
         style={{
-          height: "calc(100vh - 145px)",
+          height: "calc(100vh - 90px)",
           display: slideShow ? "none" : "grid",
           justifyContent: "left",
           alignItems: "center",
