@@ -16,7 +16,7 @@ const App: React.FC = () => {
   };
   return (
     <div
-      className="min-vw-100"
+      className={showFullScreen ? "min-vw-100" : "min-vw-100"}
       style={{
         maxHeight: "100vh",
         maxWidth: "100vw",

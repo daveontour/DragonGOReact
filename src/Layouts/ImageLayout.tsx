@@ -1,4 +1,5 @@
 import ZoomControl from "../Widgets/ZoomControlWidget";
+import "./ImageLayout.css";
 
 export default function ImageLayout({
   imgUrl,
@@ -7,6 +8,7 @@ export default function ImageLayout({
   statsURL,
   setShowFullScreen,
   stopSlideShowNow,
+  settingsConfig,
 }: {
   imgUrl: string;
   imageSize: any;
@@ -14,6 +16,7 @@ export default function ImageLayout({
   statsURL: any;
   setShowFullScreen: any;
   stopSlideShowNow: any;
+  settingsConfig: any;
 }) {
   return (
     <>
@@ -33,11 +36,12 @@ export default function ImageLayout({
         }}
       >
         <div
+          className={settingsConfig.background}
           style={{
             height: "calc(100% - 25px)",
             width: "100%",
             overflow: "auto",
-            backgroundColor: "aliceblue",
+            // backgroundColor: "aliceblue",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",

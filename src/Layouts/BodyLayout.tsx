@@ -25,16 +25,16 @@ function hslToRgb(h: number, s: number, l: number) {
   return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
 }
 
-function hslaToRgba(h: number, s: number, l: number, a: number): string {
-  var rgb = hslToRgb(h, s, l);
-  return `#${rgb[0].toString(16).padStart(2, "0")}${rgb[1]
-    .toString(16)
-    .padStart(2, "0")}${rgb[2].toString(16).padStart(2, "0")}${Math.round(
-    a * 255
-  )
-    .toString(16)
-    .padStart(2, "0")}`;
-}
+// function hslaToRgba(h: number, s: number, l: number, a: number): string {
+//   var rgb = hslToRgb(h, s, l);
+//   return `#${rgb[0].toString(16).padStart(2, "0")}${rgb[1]
+//     .toString(16)
+//     .padStart(2, "0")}${rgb[2].toString(16).padStart(2, "0")}${Math.round(
+//     a * 255
+//   )
+//     .toString(16)
+//     .padStart(2, "0")}`;
+// }
 
 // a function for taking a hsla color and returning a hsla 137.5 degrees away
 function hslaRotate(
@@ -116,6 +116,11 @@ export default function BodyLayout({
     width: "calc(100vw - 320px)",
     height: "auto",
     zoom: "100",
+  });
+
+  const [settingsConfig, setSettingsConfig] = useState({
+    background: "auroraboreal",
+    slideShowInterval: 5,
   });
 
   const [state, setState] = useState({
@@ -512,6 +517,8 @@ export default function BodyLayout({
           setFSImageSize={setFSImageSize}
           slideShow={slideShow}
           setSlideShow={setSlideShow}
+          settingsConfig={settingsConfig}
+          setSettingsConfig={setSettingsConfig}
         ></ControlLayout>
 
         <ImageLayout
@@ -524,6 +531,7 @@ export default function BodyLayout({
             setSlideShow(false);
             myGlobalObject.stopSlideShow = true;
           }}
+          settingsConfig={settingsConfig}
         ></ImageLayout>
       </div>
     </>
