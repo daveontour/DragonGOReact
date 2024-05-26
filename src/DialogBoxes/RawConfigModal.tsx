@@ -69,6 +69,23 @@ function FoldsModal({
         <Stack direction="vertical" gap={2} style={{ marginTop: "10px" }}>
           <Container>
             <Row>
+              <Col xs={10}>
+                <p>
+                  The turns of a curve are a series of left and right turns in
+                  each tile. The turns can be determined by imagining a strip of
+                  paper and then progressively folding the strip in half. When
+                  you unfold the strip, the peaks and valleys of the folds
+                  represent either a left or right turn.
+                </p>
+                <p>
+                  Of course, there is also an algoritmic way of determingning
+                  the turns, but it is not as much fun. Each folding of the
+                  strip of paper doubles the number of turns in the curve, so
+                  the number of turns is 2^n where n is the number of folds.
+                </p>
+              </Col>
+            </Row>
+            <Row>
               <Col xs={3}>
                 <FormLabel>Number Of Folds</FormLabel>
               </Col>

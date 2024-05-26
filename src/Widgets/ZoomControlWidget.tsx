@@ -8,12 +8,14 @@ export default function ZoomControl({
   statsURL,
   setShowFullScreen,
   stopSlideShowNow,
+  settingsConfig,
 }: {
   imageSize: any;
   setImageSize: any;
   statsURL: any;
   setShowFullScreen: any;
   stopSlideShowNow: any;
+  settingsConfig: any;
 }) {
   const [statsShow, setStatsShow] = useState(false);
   const handleZoomIn = () => {
@@ -57,6 +59,7 @@ export default function ZoomControl({
     if (!document.fullscreenElement) {
       setShowFullScreen(false);
       stopSlideShowNow();
+      document.getElementsByTagName("body")[0].className = "";
       document.getElementsByTagName("body")[0].style.backgroundColor =
         "aliceblue";
 
@@ -74,7 +77,16 @@ export default function ZoomControl({
     // Supports most browsers and their versions.
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
-      document.getElementsByTagName("body")[0].style.backgroundColor = "black";
+      //      document.getElementsByTagName("body")[0].style.backgroundColor = "black";
+      // document.getElementsByTagName("body")[0].className =
+      //   settingsConfig.background;
+      if (settingsConfig.background == "plain") {
+        document.getElementsByTagName("body")[0].style.backgroundColor =
+          "black";
+      } else {
+        document.getElementsByTagName("body")[0].className =
+          settingsConfig.background;
+      }
       document.addEventListener("fullscreenchange", exitHandler);
     } else if (document.exitFullscreen) {
       document.exitFullscreen();

@@ -73,6 +73,7 @@ export default function ImageLayout({
             statsURL={statsURL}
             setShowFullScreen={setShowFullScreen}
             stopSlideShowNow={stopSlideShowNow}
+            settingsConfig={settingsConfig}
           />
         </div>
       </div>

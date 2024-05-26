@@ -54,10 +54,9 @@ export default function Heading({
             delay={{ show: 250, hide: 4000 }}
             overlay={aboutTooltip}
           >
-            <h5>About</h5>
+            {/* <h5>About</h5> */}
+            <h6>Version 1.6</h6>
           </OverlayTrigger>
-
-          <h6>Version 1.1</h6>
         </div>
       </div>
     </>

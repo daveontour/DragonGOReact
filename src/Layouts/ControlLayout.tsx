@@ -25,6 +25,7 @@ import { JSX } from "react/jsx-runtime";
 import GroutingConfig from "../Widgets/GroutingConfigWidget";
 import myGlobalObject from "../globals";
 import SettingsModal from "../DialogBoxes/SettingsModal";
+import RendererHelpModal from "../DialogBoxes/RendererHelpModal";
 
 //var stopSlideShow = false;
 var opened = true;
@@ -143,6 +144,7 @@ export default function ControlLayout({
   const [zipShow, setZipShow] = useState(false);
   const [saveShow, setSaveShow] = useState(false);
   const [loadShow, setLoadShow] = useState(false);
+  const [showRendererHelp, setShowRendererHelp] = useState(false);
   const [configState, setConfigState] = useState({
     outside: outsideCellState,
     inside: insideCellState,
@@ -556,6 +558,27 @@ export default function ControlLayout({
               setState({ ...state, pallette: "highcontrast" });
             }}
           />
+          {/* <Container>
+            <Row className="mb-1">
+              <Col xs={8}>
+                <FormLabel>Slide Show Interval (seconds)</FormLabel>
+              </Col>
+              <Col xs={2}>
+                <input
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={settingsConfig.slideShowInterval}
+                  onChange={(e) => {
+                    setSettingsConfig({
+                      ...settingsConfig,
+                      slideShowInterval: parseInt(e.target.value),
+                    });
+                  }}
+                />
+              </Col>
+            </Row>
+          </Container> */}
 
           <Button
             size="sm"
@@ -573,37 +596,6 @@ export default function ControlLayout({
           >
             Stop Slide Show
           </Button>
-          <div style={{ width: "280px", marginTop: "50px" }}>
-            <p>
-              The turns of a Dragon Curve can be represented as a sequence of
-              Left and Right turns. You can download the sequence of turns for a
-              Dragon Curve of a specified number of folds using the button below
-            </p>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={downloadRawTurns}
-              style={{ width: "280px", marginBottom: "10px" }}
-            >
-              Turn Sequence
-            </Button>
-            <p>
-              The sequnce of turns can be determined by folding a strip of paper
-              repeatedly (folds) and then unfolding it and follow the left and
-              right turn from one end. Of course, there is also an algoritmic
-              way of determining the turns
-            </p>
-            <a href="http://en.wikipedia.org/wiki/Dragon_curve">
-              Wikipedia's article
-            </a>
-
-            <p style={{ marginTop: "20px" }}>
-              This Numberphile video helped inspire this work <br />
-              <a href="https://www.youtube.com/watch?v=v678Em6qyzk">
-                Numberphile's video
-              </a>
-            </p>
-          </div>
         </Stack>
       </div>
 
@@ -758,9 +750,9 @@ export default function ControlLayout({
                       });
                     }}
                   >
-                    {[...Array(15).keys()].map((i) => (
-                      <option key={i + 1} value={i + 1}>
-                        {i + 1}
+                    {[...Array(20).keys()].map((i) => (
+                      <option key={i} value={i}>
+                        {i}
                       </option>
                     ))}
                   </FormControl>
@@ -768,7 +760,28 @@ export default function ControlLayout({
               </Row>
               <Row>
                 <Col xs={7}>
-                  <FormLabel>Tile Renderer</FormLabel>
+                  <FormLabel>
+                    Tile Renderer
+                    <svg
+                      onClick={() => {
+                        setShowRendererHelp(true);
+                      }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-info-circle"
+                      viewBox="0 0 16 16"
+                      style={{
+                        marginLeft: "5px",
+                        marginTop: "-5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                    </svg>
+                  </FormLabel>
                 </Col>
                 <Col xs={5}>
                   <FormControl
@@ -1061,6 +1074,10 @@ export default function ControlLayout({
               setCurveState={setState}
               setDirty={setDirty}
             ></LoadCurveModal>
+            <RendererHelpModal
+              show={showRendererHelp}
+              setState={setShowRendererHelp}
+            ></RendererHelpModal>
           </Stack>
         </div>
         <div

@@ -109,7 +109,7 @@ export default function BodyLayout({
   setFSImageSize: any;
 }) {
   //const urlHead = "http://localhost:8080";
-  const urlHead = "..";
+  const urlHead = "./";
 
   const [slideShow, setSlideShow] = useState(false);
   const [imageSize, setImageSize] = useState({
@@ -119,18 +119,18 @@ export default function BodyLayout({
   });
 
   const [settingsConfig, setSettingsConfig] = useState({
-    background: "auroraboreal",
+    background: "plain",
     slideShowInterval: 5,
   });
 
   const [state, setState] = useState({
-    folds: "7",
-    margin: "12",
+    folds: "9",
+    margin: "1",
     cellType: "knuthcurve",
     triangleAngle: "45",
-    radius: "35",
-    grouting: "4",
-    gridlines: true,
+    radius: "22",
+    grouting: "2",
+    gridlines: false,
     groutingColor: "#ffffffff",
     pallette: "pastel",
   });
@@ -143,7 +143,7 @@ export default function BodyLayout({
     title:
       "Dragon Path Curve Configuration (The path that the dragon curve follows)",
     shortTitle: "Dragon Curve Path Configuration",
-    startDirection: "DOWN",
+    startDirection: "LEFT",
   });
   const [activeCellState, setActiveCellState] = useState({
     borderStyle: "solid",
@@ -476,6 +476,7 @@ export default function BodyLayout({
   const [statsURL, setStatsURL] = useState("");
   const generate = (newImgUrl: string) => {
     newImgUrl = newImgUrl.replace(/#/g, "").replace(/\s/g, "");
+
     setImgUrl(newImgUrl);
     let statsURL = newImgUrl.replace("getTile", "getStats");
     setStatsURL(statsURL);
