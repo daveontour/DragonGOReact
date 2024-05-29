@@ -108,8 +108,8 @@ export default function BodyLayout({
   setFSImageURL: any;
   setFSImageSize: any;
 }) {
-  const urlHead = "http://localhost:8080";
-  // const urlHead = "./";
+  //const urlHead = "http://localhost:8080";
+  const urlHead = "./";
 
   const [slideShow, setSlideShow] = useState(false);
   const [imageSize, setImageSize] = useState({

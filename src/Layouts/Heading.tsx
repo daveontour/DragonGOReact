@@ -34,7 +34,7 @@ export default function Heading({
         }}
       >
         <Stack direction="horizontal" gap={20}>
-          <h1>Dragon Art</h1>
+          <h1>DragonCurves.Art</h1>
           <h4 style={{ marginLeft: "30px", marginTop: "12px" }}>
             Generate variations of Heighway-Hater Dragon
           </h4>

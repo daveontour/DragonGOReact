@@ -139,6 +139,9 @@ export default function ControlLayout({
   const [saveShow, setSaveShow] = useState(false);
   const [loadShow, setLoadShow] = useState(false);
   const [showRendererHelp, setShowRendererHelp] = useState(false);
+  const [showFoldsHelp, setShowFoldsHelp] = useState(false);
+  const [showSlideShowConfig, setSlideShowConfig] = useState(false);
+  const [slideShowRandomise, setSlideShowRandomise] = useState(false);
   const [configState] = useState({
     outside: outsideCellState,
     inside: insideCellState,
@@ -252,6 +255,10 @@ export default function ControlLayout({
     if (slideShow) {
       return;
     }
+    if (slideShowRandomise) {
+      randomDragonCurve();
+      return;
+    }
 
     setSlideShow(true);
     randomDragonCurveLocalCurrentSize();
@@ -302,14 +309,33 @@ export default function ControlLayout({
   };
 
   // Defintion of the tooltip for various buttons
+  const renderCollageSlideShowTooltip = (
+    props: JSX.IntrinsicAttributes &
+      TooltipProps &
+      RefAttributes<HTMLDivElement>
+  ) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Generate a collage of random dragon curves in a slide show format until
+      the "Stop Slide Show" button is clicked.
+    </Tooltip>
+  );
+  const renderCollageSlideShowConfigureTooltip = (
+    props: JSX.IntrinsicAttributes &
+      TooltipProps &
+      RefAttributes<HTMLDivElement>
+  ) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Configure the collage slide show settings.
+    </Tooltip>
+  );
   const renderCurrentSizeTooltip = (
     props: JSX.IntrinsicAttributes &
       TooltipProps &
       RefAttributes<HTMLDivElement>
   ) => (
     <Tooltip id="button-tooltip" {...props}>
-      Generates a random dragon curve with the current size configuration
-      settings until the "Stop Slide Show" button is clicked.
+      Generates a random dragon curve until the "Stop Slide Show" button is
+      clicked.
     </Tooltip>
   );
 
@@ -319,8 +345,7 @@ export default function ControlLayout({
       RefAttributes<HTMLDivElement>
   ) => (
     <Tooltip id="button-tooltip" {...props}>
-      Generates a random dragon curve with random configuration settings until
-      the "Stop Slide Show" button is clicked.
+      Configre the random dragon curve slide show settings.
     </Tooltip>
   );
 
@@ -579,10 +604,31 @@ export default function ControlLayout({
             <Stack direction="vertical" gap={2} style={{ marginTop: "10px" }}>
               <Container>
                 <Row>
-                  <Col xs={7}>
-                    <FormLabel>Number Of Folds</FormLabel>
+                  <Col xs={8}>
+                    <FormLabel>
+                      Number Of Folds
+                      <svg
+                        onClick={() => {
+                          setShowFoldsHelp(true);
+                        }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        className="bi bi-info-circle"
+                        viewBox="0 0 16 16"
+                        style={{
+                          marginLeft: "5px",
+                          marginTop: "-5px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                      </svg>
+                    </FormLabel>
                   </Col>
-                  <Col xs={5}>
+                  <Col xs={4}>
                     <FormControl
                       disabled={slideShow}
                       size="sm"
@@ -605,10 +651,10 @@ export default function ControlLayout({
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={7}>
+                  <Col xs={8}>
                     <FormLabel>Tile Width</FormLabel>
                   </Col>
-                  <Col xs={5}>
+                  <Col xs={4}>
                     <FormControl
                       disabled={slideShow}
                       size="sm"
@@ -632,10 +678,10 @@ export default function ControlLayout({
                 </Row>
 
                 <Row>
-                  <Col xs={7}>
+                  <Col xs={8}>
                     <FormLabel>Outer Margin</FormLabel>
                   </Col>
-                  <Col xs={5}>
+                  <Col xs={4}>
                     <FormControl
                       disabled={slideShow}
                       size="sm"
@@ -658,7 +704,7 @@ export default function ControlLayout({
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={7}>
+                  <Col xs={8}>
                     <FormLabel>
                       Tile Renderer
                       <svg
@@ -682,7 +728,7 @@ export default function ControlLayout({
                       </svg>
                     </FormLabel>
                   </Col>
-                  <Col xs={5}>
+                  <Col xs={4}>
                     <FormControl
                       disabled={slideShow}
                       size="sm"
@@ -709,10 +755,10 @@ export default function ControlLayout({
                 </Row>
 
                 <Row>
-                  <Col xs={7}>
+                  <Col xs={8}>
                     <FormLabel>Triangle Angle</FormLabel>
                   </Col>
-                  <Col xs={5}>
+                  <Col xs={4}>
                     <FormControl
                       size="sm"
                       as="select"
@@ -782,10 +828,10 @@ export default function ControlLayout({
 
             {/* The Slideshow Button  Stack */}
             <Stack direction="vertical" gap={1} style={{ marginTop: "20px" }}>
-              <FormLabel style={{ fontWeight: "bold" }}>
+              {/* <FormLabel style={{ fontWeight: "bold" }}>
                 Slideshow of Random Dragon Curve
-              </FormLabel>
-              <Stack direction="vertical" gap={1}>
+              </FormLabel> */}
+              <Stack direction="horizontal" gap={1}>
                 <OverlayTrigger
                   placement="right"
                   delay={{ show: 250, hide: 400 }}
@@ -796,9 +842,9 @@ export default function ControlLayout({
                     size="sm"
                     variant="primary"
                     onClick={randomDragonCurveCurrentSize}
-                    style={{ width: "280px" }}
+                    style={{ width: "220px" }}
                   >
-                    Radomise Keeping Current Size
+                    Random Curve Slide Show
                   </Button>
                 </OverlayTrigger>
                 <OverlayTrigger
@@ -810,38 +856,91 @@ export default function ControlLayout({
                     disabled={slideShow}
                     size="sm"
                     variant="primary"
-                    onClick={randomDragonCurve}
-                    style={{ width: "280px" }}
+                    onClick={() => {
+                      setSlideShowConfig(true);
+                    }}
+                    style={{ width: "60px" }}
                   >
-                    Randomise
+                    {/* Randomise */}{" "}
+                    <svg
+                      onClick={() => {
+                        setSlideShowConfig(true);
+                      }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-info-circle"
+                      viewBox="0 0 16 16"
+                      style={{
+                        marginLeft: "5px",
+                        marginTop: "-5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
+                      <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
+                    </svg>
                   </Button>
                 </OverlayTrigger>
               </Stack>
             </Stack>
 
             {/* The Collage Button  Stack */}
-            <Stack direction="vertical" gap={1} style={{ marginTop: "20px" }}>
-              <FormLabel style={{ fontWeight: "bold" }}>
+            <Stack direction="vertical" gap={1} style={{ marginTop: "5px" }}>
+              {/* <FormLabel style={{ fontWeight: "bold" }}>
                 Generate A Collage of Curves
-              </FormLabel>
-              <Button
-                disabled={slideShow}
-                size="sm"
-                variant="primary"
-                onClick={createCollage}
-                style={{ width: "280px" }}
-              >
-                Configure and Generate Collage
-              </Button>
-              <Button
-                disabled={slideShow}
-                size="sm"
-                variant="primary"
-                onClick={collageSlideShow}
-                style={{ width: "280px" }}
-              >
-                Collage Slide Show
-              </Button>
+              </FormLabel> */}
+              <Stack direction="horizontal" gap={1}>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={renderCollageSlideShowTooltip}
+                >
+                  <Button
+                    disabled={slideShow}
+                    size="sm"
+                    variant="primary"
+                    onClick={collageSlideShow}
+                    style={{ width: "220px" }}
+                  >
+                    Collage Slide Show
+                  </Button>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  placement="right"
+                  delay={{ show: 250, hide: 400 }}
+                  overlay={renderCollageSlideShowConfigureTooltip}
+                >
+                  <Button
+                    disabled={slideShow}
+                    size="sm"
+                    variant="primary"
+                    onClick={createCollage}
+                    style={{ width: "60px" }}
+                  >
+                    <svg
+                      onClick={() => {
+                        createCollage();
+                      }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      className="bi bi-info-circle"
+                      viewBox="0 0 16 16"
+                      style={{
+                        marginLeft: "5px",
+                        marginTop: "-5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
+                      <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
+                    </svg>
+                  </Button>
+                </OverlayTrigger>
+              </Stack>
             </Stack>
 
             {/* The Miscellaneous Button Stack */}
@@ -880,6 +979,12 @@ export default function ControlLayout({
               showRendererHelp={showRendererHelp}
               setShowRendererHelp={setShowRendererHelp}
               configState={configState}
+              showFoldsHelp={showFoldsHelp}
+              setShowFoldsHelp={setShowFoldsHelp}
+              showSlideShowConfig={showSlideShowConfig}
+              setSlideShowConfig={setSlideShowConfig}
+              slideShowRandomise={slideShowRandomise}
+              setSlideShowRandomise={setSlideShowRandomise}
             />
           </div>
         </div>

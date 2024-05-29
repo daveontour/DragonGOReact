@@ -1,6 +1,8 @@
+import ConfigSlideShowModal from "../DialogBoxes/ConfigSlideShowModal";
 import CollageModal from "../DialogBoxes/CreateCollageModal";
 import DownloadZipModal from "../DialogBoxes/DownloadZipModal";
 import DownloadingModal from "../DialogBoxes/DownloadingModal";
+import FoldsHelpModal from "../DialogBoxes/FoldsHelpModal";
 import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
 import FoldsModal from "../DialogBoxes/RawConfigModal";
 import RendererHelpModal from "../DialogBoxes/RendererHelpModal";
@@ -41,6 +43,12 @@ export default function ModalsContainer({
   showRendererHelp,
   setShowRendererHelp,
   configState,
+  showFoldsHelp,
+  setShowFoldsHelp,
+  showSlideShowConfig,
+  setSlideShowConfig,
+  slideShowRandomise,
+  setSlideShowRandomise,
 }: {
   state: any;
   pathState: any;
@@ -75,6 +83,12 @@ export default function ModalsContainer({
   showRendererHelp: any;
   setShowRendererHelp: any;
   configState: any;
+  showFoldsHelp: any;
+  setShowFoldsHelp: any;
+  showSlideShowConfig: any;
+  setSlideShowConfig: any;
+  slideShowRandomise: any;
+  setSlideShowRandomise: any;
 }) {
   return (
     <>
@@ -127,6 +141,18 @@ export default function ModalsContainer({
         show={showRendererHelp}
         setState={setShowRendererHelp}
       ></RendererHelpModal>
+      <FoldsHelpModal
+        show={showFoldsHelp}
+        setState={setShowFoldsHelp}
+      ></FoldsHelpModal>
+      <ConfigSlideShowModal
+        showSlideShowConfig={showSlideShowConfig}
+        setSlideShowConfig={setSlideShowConfig}
+        slideShowRandomise={slideShowRandomise}
+        setSlideShowRandomise={setSlideShowRandomise}
+        settingsConfig={settingsConfig}
+        setSettingsConfig={setSettingsConfig}
+      ></ConfigSlideShowModal>
     </>
   );
 }
