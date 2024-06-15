@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Alert,
   Button,
@@ -10,29 +10,24 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
+import { CurrentConfigContext } from "../Contexts";
 
-function FoldsModal({
-  show,
-  setState,
-  urlHead,
-}: {
-  show: any;
-  setState: any;
-  urlHead: string;
-}) {
+function FoldsModal() {
   const [showPrepare, setShowPrepare] = useState(false);
   const [folds, setFolds] = useState({
     folds: "5",
   });
 
+  const config = useContext(CurrentConfigContext);
+
   const dismiss = () => {
     setShowPrepare(false);
-    setState(false);
+    config.setFoldsShow(false);
   };
   const handleClose = () => {
     setShowPrepare(true);
     var url =
-      urlHead +
+      config.urlHead +
       `/preCalc?folds=${folds.folds}`.replace(/#/g, "").replace(/\s/g, "");
 
     axios({
@@ -54,14 +49,14 @@ function FoldsModal({
       document.body.removeChild(link);
       URL.revokeObjectURL(href);
       setShowPrepare(false);
-      setState(false);
+      config.setFoldsShow(false);
     });
 
     //    setState(false);
   };
 
   return (
-    <Modal show={show} onHide={dismiss} size="lg">
+    <Modal show={config.foldsShow} onHide={dismiss} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Download Dragon Curve Turns</Modal.Title>
       </Modal.Header>

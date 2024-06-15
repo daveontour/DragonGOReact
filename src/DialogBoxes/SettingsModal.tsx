@@ -8,20 +8,13 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
+import { CurrentConfigContext } from "../Contexts";
+import { useContext } from "react";
 
-export default function SettingsModal({
-  show,
-  setState,
-  settingsConfig,
-  setSettingsConfig,
-}: {
-  show: any;
-  setState: any;
-  settingsConfig: any;
-  setSettingsConfig: any;
-}) {
+export default function SettingsModal() {
+  let config = useContext(CurrentConfigContext);
   const dismiss = () => {
-    setState(false);
+    config.setSettingsShow(false);
   };
 
   return (
@@ -29,7 +22,7 @@ export default function SettingsModal({
       {/* <Alert show={stopSlideShow} variant="info" style={{ width: "80%" }}>
         Stop Recieved
       </Alert> */}
-      <Modal show={show} onHide={dismiss} size="lg">
+      <Modal show={config.settingsShow} onHide={dismiss} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>General Settings</Modal.Title>
         </Modal.Header>
@@ -45,10 +38,10 @@ export default function SettingsModal({
                     type="number"
                     min="1"
                     max="60"
-                    value={settingsConfig.slideShowInterval}
+                    value={config.settingsConfig.slideShowInterval}
                     onChange={(e) => {
-                      setSettingsConfig({
-                        ...settingsConfig,
+                      config.setSettingsConfig({
+                        ...config.settingsConfig,
                         slideShowInterval: parseInt(e.target.value),
                       });
                     }}
@@ -62,10 +55,10 @@ export default function SettingsModal({
                 <Col xs={4}>
                   <FormControl
                     as="select"
-                    value={settingsConfig.background}
+                    value={config.settingsConfig.background}
                     onChange={(e) => {
-                      setSettingsConfig({
-                        ...settingsConfig,
+                      config.setSettingsConfig({
+                        ...config.settingsConfig,
                         background: e.target.value,
                       });
                     }}

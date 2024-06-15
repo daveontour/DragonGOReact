@@ -1,37 +1,33 @@
 import { OverlayTrigger, Stack, Tooltip, TooltipProps } from "react-bootstrap";
 import CurveStatsModal from "../DialogBoxes/CurveStatsModal";
-import { RefAttributes, useState } from "react";
+import { RefAttributes, useContext, useState } from "react";
+import { CurrentConfigContext } from "../Contexts";
 
 export default function ZoomControl({
-  imageSize,
-  setImageSize,
   statsURL,
   setShowFullScreen,
   stopSlideShowNow,
-  settingsConfig,
 }: {
-  imageSize: any;
-  setImageSize: any;
   statsURL: any;
   setShowFullScreen: any;
   stopSlideShowNow: any;
-  settingsConfig: any;
 }) {
+  let config = useContext(CurrentConfigContext);
   const [statsShow, setStatsShow] = useState(false);
   const handleZoomIn = () => {
     let x = "auto";
-    if (imageSize.width != "auto") {
-      x = String(parseInt(imageSize.width) * 1.01) + "px";
+    if (config.imageSize.width != "auto") {
+      x = String(parseInt(config.imageSize.width) * 1.01) + "px";
     }
     let y = "auto";
-    if (imageSize.height != "auto") {
-      y = String(parseInt(imageSize.height) * 1.01) + "px";
+    if (config.imageSize.height != "auto") {
+      y = String(parseInt(config.imageSize.height) * 1.01) + "px";
     }
 
-    let z = parseInt(imageSize.zoom) + 1;
+    let z = parseInt(config.imageSize.zoom) + 1;
 
-    setImageSize({
-      ...imageSize,
+    config.setImageSize({
+      ...config.imageSize,
       zoom: z.toString(),
       width: x.toString(),
       height: y.toString(),
@@ -39,17 +35,17 @@ export default function ZoomControl({
   };
   const handleZoomOut = () => {
     let x = "auto";
-    if (imageSize.width != "auto") {
-      x = String(parseInt(imageSize.width) * 0.99) + "px";
+    if (config.imageSize.width != "auto") {
+      x = String(parseInt(config.imageSize.width) * 0.99) + "px";
     }
     let y = "auto";
-    if (imageSize.height != "auto") {
-      y = String(parseInt(imageSize.height) * 0.99) + "px";
+    if (config.imageSize.height != "auto") {
+      y = String(parseInt(config.imageSize.height) * 0.99) + "px";
     }
-    let z = parseInt(imageSize.zoom) - 1;
+    let z = parseInt(config.imageSize.zoom) - 1;
 
-    setImageSize({
-      ...imageSize,
+    config.setImageSize({
+      ...config.imageSize,
       zoom: z.toString(),
       width: x.toString(),
       height: y.toString(),
@@ -80,12 +76,12 @@ export default function ZoomControl({
       //      document.getElementsByTagName("body")[0].style.backgroundColor = "black";
       // document.getElementsByTagName("body")[0].className =
       //   settingsConfig.background;
-      if (settingsConfig.background == "plain") {
+      if (config.settingsConfig.background == "plain") {
         document.getElementsByTagName("body")[0].style.backgroundColor =
           "black";
       } else {
         document.getElementsByTagName("body")[0].className =
-          settingsConfig.background;
+          config.settingsConfig.background;
       }
       document.addEventListener("fullscreenchange", exitHandler);
     } else if (document.exitFullscreen) {
@@ -138,7 +134,7 @@ export default function ZoomControl({
           <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8" />
         </svg>
       </div>
-      <h6 style={{ userSelect: "none" }}>{imageSize.zoom}%</h6>
+      <h6 style={{ userSelect: "none" }}>{config.imageSize.zoom}%</h6>
 
       <div style={{ cursor: "pointer", marginLeft: "10px", marginTop: "-7px" }}>
         <svg

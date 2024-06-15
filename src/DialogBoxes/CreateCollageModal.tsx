@@ -1,6 +1,6 @@
 import { Sketch } from "@uiw/react-color";
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Alert,
   Button,
@@ -12,33 +12,21 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
+import { CurrentConfigContext } from "../Contexts";
 
-function CollageModal({
-  show,
-  setState,
-  collageConfig,
-  setCollageConfig,
-  updateImage,
-  urlHead,
-}: {
-  show: any;
-  setState: any;
-  collageConfig: any;
-  setCollageConfig: any;
-  updateImage: any;
-  urlHead: string;
-}) {
+function CollageModal() {
   const [showPrepare, setShowPrepare] = useState(false);
+  const config = useContext(CurrentConfigContext);
 
   const dismiss = () => {
     setShowPrepare(false);
-    setState(false);
+    config.setCollageShow(false);
   };
   const handleClose = () => {
     setShowPrepare(true);
     var url =
-      urlHead +
-      `/prepareCollage?width=${collageConfig.width}&height=${collageConfig.height}&elementWidth=${collageConfig.elementWidth}&startDirection=${collageConfig.startDirection}&gap=${collageConfig.elementGap}&backgroundColor=${collageConfig.gapColor}&format=${collageConfig.format}`
+      config.urlHead +
+      `/prepareCollage?width=${config.collageConfig.width}&height=${config.collageConfig.height}&elementWidth=${config.collageConfig.elementWidth}&startDirection=${config.collageConfig.startDirection}&gap=${config.collageConfig.elementGap}&backgroundColor=${config.collageConfig.gapColor}&format=${config.collageConfig.format}`
         .replace(/#/g, "")
         .replace(/\s/g, "");
     axios({
@@ -46,9 +34,9 @@ function CollageModal({
       method: "GET",
       responseType: "json", // important
     }).then((response) => {
-      updateImage(
-        urlHead +
-          `/fetchCollage?key=${response.data.key}&format=${collageConfig.format}`
+      config.updateImage(
+        config.urlHead +
+          `/fetchCollage?key=${response.data.key}&format=${config.collageConfig.format}`
       );
       dismiss();
     });
@@ -59,7 +47,7 @@ function CollageModal({
       {/* <Alert show={stopSlideShow} variant="info" style={{ width: "80%" }}>
         Stop Recieved
       </Alert> */}
-      <Modal show={show} onHide={dismiss} size="lg">
+      <Modal show={config.collageShow} onHide={dismiss} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Create A Dragon Curve Collage</Modal.Title>
         </Modal.Header>
@@ -75,10 +63,10 @@ function CollageModal({
                     type="number"
                     min="1"
                     max="20"
-                    value={collageConfig.width}
+                    value={config.collageConfig.width}
                     onChange={(e) => {
-                      setCollageConfig({
-                        ...collageConfig,
+                      config.setCollageConfig({
+                        ...config.collageConfig,
                         width: e.target.value,
                       });
                     }}
@@ -94,10 +82,10 @@ function CollageModal({
                     type="number"
                     min="1"
                     max="50"
-                    value={collageConfig.height}
+                    value={config.collageConfig.height}
                     onChange={(e) => {
-                      setCollageConfig({
-                        ...collageConfig,
+                      config.setCollageConfig({
+                        ...config.collageConfig,
                         height: e.target.value,
                       });
                     }}
@@ -113,10 +101,10 @@ function CollageModal({
                     type="number"
                     min="50"
                     max="300"
-                    value={collageConfig.elementWidth}
+                    value={config.collageConfig.elementWidth}
                     onChange={(e) => {
-                      setCollageConfig({
-                        ...collageConfig,
+                      config.setCollageConfig({
+                        ...config.collageConfig,
                         elementWidth: e.target.value,
                       });
                     }}
@@ -130,10 +118,10 @@ function CollageModal({
                 <Col xs={4}>
                   <FormControl
                     as="select"
-                    value={collageConfig.startDirection}
+                    value={config.collageConfig.startDirection}
                     onChange={(e) => {
-                      setCollageConfig({
-                        ...collageConfig,
+                      config.setCollageConfig({
+                        ...config.collageConfig,
                         startDirection: e.target.value,
                       });
                     }}
@@ -153,10 +141,10 @@ function CollageModal({
                 <Col xs={4}>
                   <FormControl
                     as="select"
-                    value={collageConfig.format}
+                    value={config.collageConfig.format}
                     onChange={(e) => {
-                      setCollageConfig({
-                        ...collageConfig,
+                      config.setCollageConfig({
+                        ...config.collageConfig,
                         format: e.target.value,
                       });
                     }}
@@ -175,10 +163,10 @@ function CollageModal({
                     type="number"
                     min="0"
                     max="100"
-                    value={collageConfig.elementGap}
+                    value={config.collageConfig.elementGap}
                     onChange={(e) => {
-                      setCollageConfig({
-                        ...collageConfig,
+                      config.setCollageConfig({
+                        ...config.collageConfig,
                         elementGap: e.target.value,
                       });
                     }}
@@ -193,10 +181,10 @@ function CollageModal({
                   <Sketch
                     style={{}}
                     disableAlpha={false}
-                    color={collageConfig.gapColor}
+                    color={config.collageConfig.gapColor}
                     onChange={(color) => {
-                      setCollageConfig({
-                        ...collageConfig,
+                      config.setCollageConfig({
+                        ...config.collageConfig,
                         gapColor: color.hexa,
                       });
                     }}

@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   Button,
   Col,
@@ -8,28 +9,16 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
+import { CurrentConfigContext } from "../Contexts";
 
-function ConfigSlideShowModal({
-  showSlideShowConfig,
-  setSlideShowConfig,
-  slideShowRandomise,
-  setSlideShowRandomise,
-  settingsConfig,
-  setSettingsConfig,
-}: {
-  showSlideShowConfig: any;
-  setSlideShowConfig: any;
-  slideShowRandomise: any;
-  setSlideShowRandomise: any;
-  settingsConfig: any;
-  setSettingsConfig: any;
-}) {
+function ConfigSlideShowModal() {
+  let config = useContext(CurrentConfigContext);
   const dismiss = () => {
-    setSlideShowConfig(false);
+    config.setSlideShowConfig(false);
   };
 
   return (
-    <Modal show={showSlideShowConfig} onHide={dismiss} size="lg">
+    <Modal show={config.showSlideShowConfig} onHide={dismiss} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Slide Show Configuration</Modal.Title>
       </Modal.Header>
@@ -45,10 +34,10 @@ function ConfigSlideShowModal({
                   type="number"
                   min="1"
                   max="60"
-                  value={settingsConfig.slideShowInterval}
+                  value={config.settingsConfig.slideShowInterval}
                   onChange={(e) => {
-                    setSettingsConfig({
-                      ...settingsConfig,
+                    config.setSettingsConfig({
+                      ...config.settingsConfig,
                       slideShowInterval: parseInt(e.target.value),
                     });
                   }}
@@ -62,9 +51,9 @@ function ConfigSlideShowModal({
               <Col xs={4}>
                 <FormControl
                   as="select"
-                  value={slideShowRandomise ? "random" : "fixed"}
+                  value={config.slideShowRandomise ? "random" : "fixed"}
                   onChange={(e) => {
-                    setSlideShowRandomise(
+                    config.setSlideShowRandomise(
                       e.target.value === "random" ? true : false
                     );
                   }}

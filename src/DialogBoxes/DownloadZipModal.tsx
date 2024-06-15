@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Alert,
   Button,
@@ -11,29 +11,24 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
+import { CurrentConfigContext } from "../Contexts";
 
-function DownloadZipModal({
-  show,
-  setState,
-  urlHead,
-}: {
-  show: any;
-  setState: any;
-  urlHead: string;
-}) {
+function DownloadZipModal() {
   const [showPrepare, setShowPrepare] = useState(false);
   const [numDragon, setNumDragon] = useState({
     dragons: "50",
     format: "SVG",
   });
+
+  const config = useContext(CurrentConfigContext);
   const dismiss = () => {
     setShowPrepare(false);
-    setState(false);
+    config.setZipShow(false);
   };
   const handleClose = () => {
     setShowPrepare(true);
     var url =
-      urlHead +
+      config.urlHead +
       `/createZip?num=${numDragon.dragons}&format=${numDragon.format}`
         .replace(/#/g, "")
         .replace(/\s/g, "");
@@ -57,14 +52,14 @@ function DownloadZipModal({
       document.body.removeChild(link);
       URL.revokeObjectURL(href);
       setShowPrepare(false);
-      setState(false);
+      config.setZipShow(false);
     });
 
     //    setState(false);
   };
 
   return (
-    <Modal show={show} onHide={dismiss} size="lg">
+    <Modal show={config.zipShow} onHide={dismiss} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Download Dragon Curve Turns</Modal.Title>
       </Modal.Header>

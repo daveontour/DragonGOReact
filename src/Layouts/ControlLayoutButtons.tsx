@@ -1,72 +1,54 @@
-import { RefAttributes, useState } from "react";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import axios from "axios";
 import { JSX } from "react/jsx-runtime";
+import { RefAttributes, useContext, useState } from "react";
+import { CurrentConfigContext } from "../Contexts";
 
-export default function ControlLayoutButtons({
-  state,
-  pathState,
-  activeCellState,
-  outsideCellState,
-  insideCellState,
-  urlHead,
-  setDownloadingShow,
-  setSettingsShow,
-  setFoldsShow,
-  setSaveShow,
-  setLoadShow,
-}: {
-  state: any;
-  pathState: any;
-  activeCellState: any;
-  outsideCellState: any;
-  insideCellState: any;
-  urlHead: any;
-  setDownloadingShow: any;
-  setSettingsShow: any;
-  setFoldsShow: any;
-  setSaveShow: any;
-  setLoadShow: any;
-}) {
+//import { CurrentConfigContext } from "./BodyLayout"; // Import the correct type from the 'BodyLayout' file
+
+export default function ControlLayoutButtons() {
+  let config = useContext(CurrentConfigContext);
+
+  //const { currentConfigRTX } = react.useContext(CurrentConfigContext); // Specify the type for the 'useContext' hook
   const [configState, setConfigState] = useState({
-    outside: outsideCellState,
-    inside: insideCellState,
-    active: activeCellState,
-    path: pathState,
-    state: state,
+    outside: config.outsideCellState,
+    inside: config.insideCellState,
+    active: config.activeCellState,
+    path: config.pathState,
+    state: config.state,
   });
 
   const getSingleURL = () => {
     var newURL =
-      urlHead +
+      config.urlHead +
       `/getTile?
-  &folds=${state.folds}
-  &margin=${state.margin}
-  &cellType=${state.cellType}
-  &triangleAngle=${state.triangleAngle}
-  &radius=${state.radius}
-  &grouting=${state.grouting}
-  &groutingColor=${state.groutingColor}
-  &gridlines=${state.gridlines}
-  &startDirection=${pathState.startDirection}
-  &pathStroke=${pathState.borderEnabled}
-  &pathWidth=${pathState.borderWidth}
-  &pathStrokeColor=${pathState.borderColor}
-  &outsideFill=${outsideCellState.fillEnabled}
-  &outsideFillColor=${outsideCellState.backgroundColor}
-  &outsideStroke=${outsideCellState.borderEnabled}
-  &outsideStrokeWidth=${outsideCellState.borderWidth}
-  &outsideStrokeColor=${outsideCellState.borderColor}
-  &insideFill=${insideCellState.fillEnabled}
-  &insideFillColor=${insideCellState.backgroundColor}
-  &insideStroke=${insideCellState.borderEnabled}
-  &insideStrokeWidth=${insideCellState.borderWidth}
-  &insideStrokeColor=${insideCellState.borderColor}
-  &activeFill=${activeCellState.fillEnabled}
-  &activeFillColor=${activeCellState.backgroundColor}
-  &activeStroke=${activeCellState.borderEnabled}
-  &activeStrokeWidth=${activeCellState.borderWidth}
-  &activeStrokeColor=${activeCellState.borderColor}
+  &folds=${config.state.folds}
+  &margin=${config.state.margin}
+  &cellType=${config.state.cellType}
+  &triangleAngle=${config.state.triangleAngle}
+  &radius=${config.state.radius}
+  &grouting=${config.state.grouting}
+  &groutingColor=${config.state.groutingColor}
+  &gridlines=${config.state.gridlines}
+  &startDirection=${config.pathState.startDirection}
+  &pathStroke=${config.pathState.borderEnabled}
+  &pathWidth=${config.pathState.borderWidth}
+  &pathStrokeColor=${config.pathState.borderColor}
+  &outsideFill=${config.outsideCellState.fillEnabled}
+  &outsideFillColor=${config.outsideCellState.backgroundColor}
+  &outsideStroke=${config.outsideCellState.borderEnabled}
+  &outsideStrokeWidth=${config.outsideCellState.borderWidth}
+  &outsideStrokeColor=${config.outsideCellState.borderColor}
+  &insideFill=${config.insideCellState.fillEnabled}
+  &insideFillColor=${config.insideCellState.backgroundColor}
+  &insideStroke=${config.insideCellState.borderEnabled}
+  &insideStrokeWidth=${config.insideCellState.borderWidth}
+  &insideStrokeColor=${config.insideCellState.borderColor}
+  &activeFill=${config.activeCellState.fillEnabled}
+  &activeFillColor=${config.activeCellState.backgroundColor}
+  &activeStroke=${config.activeCellState.borderEnabled}
+  &activeStrokeWidth=${config.activeCellState.borderWidth}
+  &activeStrokeColor=${config.activeCellState.borderColor}
   &random=${Math.random()}`
         .replace(/#/g, "")
         .replace(/\s/g, "");
@@ -75,11 +57,12 @@ export default function ControlLayoutButtons({
   };
 
   const downloadRawTurns = () => {
-    setFoldsShow(true);
+    // console.log(currentConfigRTX.activeCellState);
+    config.setFoldsShow(true);
   };
 
   const downloadDragonCurveSVG = () => {
-    setDownloadingShow(true);
+    config.setDownloadShow(true);
     var url = getSingleURL();
 
     axios({
@@ -100,24 +83,24 @@ export default function ControlLayoutButtons({
       // clean up "a" element & remove ObjectURL
       document.body.removeChild(link);
       URL.revokeObjectURL(href);
-      setDownloadingShow(false);
+      config.setDownloadShow(false);
     });
   };
 
   const loadCurve = () => {
-    setLoadShow(true);
+    config.setLoadShow(true);
   };
 
   const saveCurve = () => {
     setConfigState({
       ...configState,
-      state: state,
-      inside: insideCellState,
-      outside: outsideCellState,
-      active: activeCellState,
-      path: pathState,
+      state: config.state,
+      inside: config.insideCellState,
+      outside: config.outsideCellState,
+      active: config.activeCellState,
+      path: config.pathState,
     });
-    setSaveShow(true);
+    config.setSaveShow(true);
   };
 
   // Defintion of the tooltip for various buttons
@@ -179,6 +162,7 @@ export default function ControlLayoutButtons({
       Opens the help dialog box. (not implemented yet)
     </Tooltip>
   );
+
   return (
     <>
       <div
@@ -199,7 +183,7 @@ export default function ControlLayoutButtons({
           overlay={renderSettingsTooltip}
         >
           <svg
-            onClick={() => setSettingsShow(true)}
+            onClick={() => config.setSettingsShow(true)}
             xmlns="http://www.w3.org/2000/svg"
             width="30px"
             height="30px"
@@ -275,7 +259,10 @@ export default function ControlLayoutButtons({
           overlay={renderTurnsTooltip}
         >
           <svg
-            onClick={downloadRawTurns}
+            onClick={() => {
+              console.log(config.state.folds);
+              downloadRawTurns;
+            }}
             xmlns="http://www.w3.org/2000/svg"
             width="30px"
             height="30px"
@@ -285,7 +272,7 @@ export default function ControlLayoutButtons({
           >
             <path d="m7.665 6.982-.8 1.386a.25.25 0 0 1-.451-.039l-1.06-2.882a.25.25 0 0 1 .192-.333l3.026-.523a.25.25 0 0 1 .26.371l-.667 1.154.621.373A2.5 2.5 0 0 1 10 8.632V11H9V8.632a1.5 1.5 0 0 0-.728-1.286z" />
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134Z"
             />
           </svg>

@@ -1,23 +1,21 @@
+import { useContext } from "react";
+import { CurrentConfigContext } from "../Contexts";
 import ZoomControl from "../Widgets/ZoomControlWidget";
 import "./ImageLayout.css";
 
 export default function ImageLayout({
   imgUrl,
-  imageSize,
-  setImageSize,
   statsURL,
   setShowFullScreen,
   stopSlideShowNow,
-  settingsConfig,
 }: {
   imgUrl: string;
-  imageSize: any;
-  setImageSize: any;
   statsURL: any;
   setShowFullScreen: any;
   stopSlideShowNow: any;
-  settingsConfig: any;
 }) {
+  let config = useContext(CurrentConfigContext);
+
   return (
     <>
       <div
@@ -36,7 +34,7 @@ export default function ImageLayout({
         }}
       >
         <div
-          className={settingsConfig.background}
+          className={config.settingsConfig.background}
           style={{
             height: "calc(100% - 25px)",
             width: "100%",
@@ -54,7 +52,10 @@ export default function ImageLayout({
           <img
             src={imgUrl}
             alt="Connecting to server..."
-            style={{ width: imageSize.width, height: imageSize.height }}
+            style={{
+              width: config.imageSize.width,
+              height: config.imageSize.height,
+            }}
             id="imageHTMLElement"
           />
         </div>
@@ -68,12 +69,9 @@ export default function ImageLayout({
           }}
         >
           <ZoomControl
-            imageSize={imageSize}
-            setImageSize={setImageSize}
             statsURL={statsURL}
             setShowFullScreen={setShowFullScreen}
             stopSlideShowNow={stopSlideShowNow}
-            settingsConfig={settingsConfig}
           />
         </div>
       </div>

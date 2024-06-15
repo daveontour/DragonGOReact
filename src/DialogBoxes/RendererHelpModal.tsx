@@ -1,12 +1,15 @@
 import { Button, Col, Container, Modal, Row, Stack } from "react-bootstrap";
+import { CurrentConfigContext } from "../Contexts";
+import { useContext } from "react";
 
-function RendererHelpModal({ show, setState }: { show: any; setState: any }) {
+function RendererHelpModal() {
+  let config = useContext(CurrentConfigContext);
   const dismiss = () => {
-    setState(false);
+    config.setShowRendererHelp(false);
   };
 
   return (
-    <Modal show={show} onHide={dismiss} size="lg">
+    <Modal show={config.showRendererHelp} onHide={dismiss} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Tile Renderers</Modal.Title>
       </Modal.Header>

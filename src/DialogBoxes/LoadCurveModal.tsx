@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   Button,
   Col,
@@ -8,40 +9,14 @@ import {
 } from "react-bootstrap";
 
 import { FileUploader } from "react-drag-drop-files";
+import { CurrentConfigContext } from "../Contexts";
 
 const fileTypes = ["json"];
 
-function LoadCurveModal({
-  show,
-  setState,
-  activeCellState,
-  setActiveCellState,
-  outsideCellState,
-  setOutsideCellState,
-  insideCellState,
-  setInsideCellState,
-  pathState,
-  setPathState,
-  curveState,
-  setCurveState,
-  setDirty,
-}: {
-  show: any;
-  setState: any;
-  activeCellState: any;
-  setActiveCellState: any;
-  outsideCellState: any;
-  setOutsideCellState: any;
-  insideCellState: any;
-  setInsideCellState: any;
-  pathState: any;
-  setPathState: any;
-  curveState: any;
-  setCurveState: any;
-  setDirty: any;
-}) {
+function LoadCurveModal() {
+  let config = useContext(CurrentConfigContext);
   const dismiss = () => {
-    setState(false);
+    config.setLoadShow(false);
   };
 
   const handleChange = (file: any) => {
@@ -60,8 +35,8 @@ function LoadCurveModal({
     const newConfig = JSON.parse(text.value);
 
     try {
-      setActiveCellState({
-        ...activeCellState,
+      config.setActiveCellState({
+        ...config.activeCellState,
         backgroundColor: newConfig.active.backgroundColor,
         borderColor: newConfig.active.borderColor,
         borderWidth: newConfig.active.borderWidth,
@@ -76,8 +51,8 @@ function LoadCurveModal({
       );
     }
     try {
-      setOutsideCellState({
-        ...outsideCellState,
+      config.setOutsideCellState({
+        ...config.outsideCellState,
         backgroundColor: newConfig.outside.backgroundColor,
         borderColor: newConfig.outside.borderColor,
         borderWidth: newConfig.outside.borderWidth,
@@ -92,8 +67,8 @@ function LoadCurveModal({
       );
     }
     try {
-      setInsideCellState({
-        ...insideCellState,
+      config.setInsideCellState({
+        ...config.insideCellState,
         backgroundColor: newConfig.inside.backgroundColor,
         borderColor: newConfig.inside.borderColor,
         borderWidth: newConfig.inside.borderWidth,
@@ -108,8 +83,8 @@ function LoadCurveModal({
       );
     }
     try {
-      setPathState({
-        ...pathState,
+      config.setPathState({
+        ...config.pathState,
         borderColor: newConfig.path.borderColor,
         borderWidth: newConfig.path.borderWidth,
         borderStyle: newConfig.path.borderStyle,
@@ -120,8 +95,8 @@ function LoadCurveModal({
       console.error("An error occurred while setting path state:", error);
     }
     try {
-      setCurveState({
-        ...curveState,
+      config.setState({
+        ...config.state,
         folds: newConfig.state.folds,
         margin: newConfig.state.margin,
         cellType: newConfig.state.cellType,
@@ -134,7 +109,7 @@ function LoadCurveModal({
       console.error("An error occurred while setting curve state:", error);
     }
 
-    setState(false);
+    config.setLoadShow(false);
 
     //This is a bit hacky, but it works
     setTimeout(() => {
@@ -144,12 +119,12 @@ function LoadCurveModal({
       btn.click();
     }, 1000);
 
-    setDirty(true);
+    config.setDirty(true);
   };
 
   return (
     <>
-      <Modal show={show} onHide={dismiss} size="lg">
+      <Modal show={config.loadShow} onHide={dismiss} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Load Curve</Modal.Title>
         </Modal.Header>

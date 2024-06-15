@@ -1,8 +1,12 @@
 import { Modal } from "react-bootstrap";
+import { CurrentConfigContext } from "../Contexts";
+import { useContext } from "react";
 
-function DownloadingModal({ show }: { show: any }) {
+function DownloadingModal() {
+  let config = useContext(CurrentConfigContext);
+
   return (
-    <Modal show={show} size="sm">
+    <Modal show={config.downloadShow} size="sm">
       <Modal.Body>
         <div
           style={{ width: "100%", display: "flex", justifyContent: "center" }}

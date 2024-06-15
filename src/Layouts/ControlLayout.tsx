@@ -1,4 +1,4 @@
-import { RefAttributes, useEffect, useState } from "react";
+import { RefAttributes, useContext, useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -18,8 +18,19 @@ import axios from "axios";
 import { JSX } from "react/jsx-runtime";
 import GroutingConfig from "../Widgets/GroutingConfigWidget";
 import myGlobalObject from "../globals";
-import ModalsContainer from "./ModalsContainer";
 import ControlLayoutButtons from "./ControlLayoutButtons";
+import { calculateTurns } from "../servertsx/common";
+import { CurrentConfigContext } from "../Contexts";
+import CollageModal from "../DialogBoxes/CreateCollageModal";
+import SettingsModal from "../DialogBoxes/SettingsModal";
+import DownloadingModal from "../DialogBoxes/DownloadingModal";
+import FoldsModal from "../DialogBoxes/RawConfigModal";
+import ConfigSlideShowModal from "../DialogBoxes/ConfigSlideShowModal";
+import FoldsHelpModal from "../DialogBoxes/FoldsHelpModal";
+import RendererHelpModal from "../DialogBoxes/RendererHelpModal";
+import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
+import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
+import DownloadZipModal from "../DialogBoxes/DownloadZipModal";
 
 //var stopSlideShow = false;
 var opened = true;
@@ -73,117 +84,62 @@ function calculateImageSize(
 }
 
 export default function ControlLayout({
-  state,
-  setState,
-  pathState,
-  setPathState,
-  activeCellState,
-  setActiveCellState,
-  outsideCellState,
-  setOutsideCellState,
-  insideCellState,
-  setInsideCellState,
-  updateImage,
+  // updateImage,
   randomDragonCurveLocal,
   randomDragonCurveLocalCurrentSize,
-  urlHead,
-  imageSize,
-  setImageSize,
   setFSImageSize,
-  slideShow,
-  setSlideShow,
-  settingsConfig,
-  setSettingsConfig,
 }: {
-  state: any;
-  setState: any;
-  pathState: any;
-  setPathState: any;
-  activeCellState: any;
-  setActiveCellState: any;
-  outsideCellState: any;
-  setOutsideCellState: any;
-  insideCellState: any;
-  setInsideCellState: any;
-  updateImage: any;
+  // updateImage: any;
   randomDragonCurveLocal: any;
   randomDragonCurveLocalCurrentSize: any;
-  urlHead: string;
-  imageSize: any;
-  setImageSize: any;
   setFSImageSize: any;
-  slideShow: boolean;
-  setSlideShow: any;
-  settingsConfig: any;
-  setSettingsConfig: any;
 }) {
   // Generate the initial image on load
   useEffect(() => {
     generate();
   }, [opened]);
 
-  const [collageConfig, setCollageConfig] = useState({
-    width: 7,
-    height: 7,
-    elementWidth: 100,
-    elementGap: 5,
-    gapColor: "#dddddd",
-    startDirection: 0,
-    format: "png",
-  });
-  const [downloadingShow, setDownloadingShow] = useState(false);
-  const [collageShow, setCollageShow] = useState(false);
-  const [settingsShow, setSettingsShow] = useState(false);
-  const [foldsShow, setFoldsShow] = useState(false);
-  const [zipShow, setZipShow] = useState(false);
-  const [saveShow, setSaveShow] = useState(false);
-  const [loadShow, setLoadShow] = useState(false);
-  const [showRendererHelp, setShowRendererHelp] = useState(false);
-  const [showFoldsHelp, setShowFoldsHelp] = useState(false);
-  const [showSlideShowConfig, setSlideShowConfig] = useState(false);
-  const [slideShowRandomise, setSlideShowRandomise] = useState(false);
-  const [configState] = useState({
-    outside: outsideCellState,
-    inside: insideCellState,
-    active: activeCellState,
-    path: pathState,
-    state: state,
-  });
-  //  const [slideShow, setSlideShow] = useState(false);
+  let config = useContext(CurrentConfigContext);
 
-  const [dirty, setDirty] = useState(false);
+  const [configState] = useState({
+    outside: config.outsideCellState,
+    inside: config.insideCellState,
+    active: config.activeCellState,
+    path: config.pathState,
+    state: config.state,
+  });
 
   const getSingleURL = () => {
     var newURL =
-      urlHead +
+      config.urlHead +
       `/getTile?
-  &folds=${state.folds}
-  &margin=${state.margin}
-  &cellType=${state.cellType}
-  &triangleAngle=${state.triangleAngle}
-  &radius=${state.radius}
-  &grouting=${state.grouting}
-  &groutingColor=${state.groutingColor}
-  &gridlines=${state.gridlines}
-  &startDirection=${pathState.startDirection}
-  &pathStroke=${pathState.borderEnabled}
-  &pathWidth=${pathState.borderWidth}
-  &pathStrokeColor=${pathState.borderColor}
-  &outsideFill=${outsideCellState.fillEnabled}
-  &outsideFillColor=${outsideCellState.backgroundColor}
-  &outsideStroke=${outsideCellState.borderEnabled}
-  &outsideStrokeWidth=${outsideCellState.borderWidth}
-  &outsideStrokeColor=${outsideCellState.borderColor}
-  &insideFill=${insideCellState.fillEnabled}
-  &insideFillColor=${insideCellState.backgroundColor}
-  &insideStroke=${insideCellState.borderEnabled}
-  &insideStrokeWidth=${insideCellState.borderWidth}
-  &insideStrokeColor=${insideCellState.borderColor}
-  &activeFill=${activeCellState.fillEnabled}
-  &activeFillColor=${activeCellState.backgroundColor}
-  &activeStroke=${activeCellState.borderEnabled}
-  &activeStrokeWidth=${activeCellState.borderWidth}
-  &activeStrokeColor=${activeCellState.borderColor}
+  &folds=${config.state.folds}
+  &margin=${config.state.margin}
+  &cellType=${config.state.cellType}
+  &triangleAngle=${config.state.triangleAngle}
+  &radius=${config.state.radius}
+  &grouting=${config.state.grouting}
+  &groutingColor=${config.state.groutingColor}
+  &gridlines=${config.state.gridlines}
+  &startDirection=${config.pathState.startDirection}
+  &pathStroke=${config.pathState.borderEnabled}
+  &pathWidth=${config.pathState.borderWidth}
+  &pathStrokeColor=${config.pathState.borderColor}
+  &outsideFill=${config.outsideCellState.fillEnabled}
+  &outsideFillColor=${config.outsideCellState.backgroundColor}
+  &outsideStroke=${config.outsideCellState.borderEnabled}
+  &outsideStrokeWidth=${config.outsideCellState.borderWidth}
+  &outsideStrokeColor=${config.outsideCellState.borderColor}
+  &insideFill=${config.insideCellState.fillEnabled}
+  &insideFillColor=${config.insideCellState.backgroundColor}
+  &insideStroke=${config.insideCellState.borderEnabled}
+  &insideStrokeWidth=${config.insideCellState.borderWidth}
+  &insideStrokeColor=${config.insideCellState.borderColor}
+  &activeFill=${config.activeCellState.fillEnabled}
+  &activeFillColor=${config.activeCellState.backgroundColor}
+  &activeStroke=${config.activeCellState.borderEnabled}
+  &activeStrokeWidth=${config.activeCellState.borderWidth}
+  &activeStrokeColor=${config.activeCellState.borderColor}
   &random=${Math.random()}`
         .replace(/#/g, "")
         .replace(/\s/g, "");
@@ -194,18 +150,20 @@ export default function ControlLayout({
   const generate = () => {
     var newURL = getSingleURL();
     var sizeURL = newURL.replace("getTile", "getSize");
+
     axios({
       url: sizeURL, //your url
-      method: "GET",
+      method: "POST",
       responseType: "json", // important
+      data: JSON.stringify(calculateTurns(9)),
     }).then((response) => {
       let [imgSX, imgSY, zoom] = calculateImageSize(
         response.data.width,
         response.data.height,
         false
       );
-      setImageSize({
-        ...imageSize,
+      config.setImageSize({
+        ...config.imageSize,
         width: imgSX,
         height: imgSY,
         zoom: zoom,
@@ -223,64 +181,64 @@ export default function ControlLayout({
         zoom: zoomFS,
       });
 
-      setDirty(false);
-      updateImage(newURL);
+      config.setDirty(false);
+      config.updateImage(newURL);
     });
   };
 
   const randomDragonCurve = () => {
-    if (slideShow) {
+    if (config.slideShow) {
       return;
     }
-    setSlideShow(true);
+    config.setSlideShow(true);
     randomDragonCurveLocal();
     generate();
     myGlobalObject.stopSlideShow = false;
     const interval = setInterval(() => {
       if (myGlobalObject.stopSlideShow) {
         clearInterval(interval);
-        setSlideShow(false);
+        config.setSlideShow(false);
       } else {
         randomDragonCurveLocal();
         generate();
       }
-    }, settingsConfig.slideShowInterval * 1000);
+    }, config.settingsConfig.slideShowInterval * 1000);
   };
 
   const stopSlideShowNow = () => {
-    setSlideShow(false);
+    config.setSlideShow(false);
   };
 
   const randomDragonCurveCurrentSize = () => {
-    if (slideShow) {
+    if (config.slideShow) {
       return;
     }
-    if (slideShowRandomise) {
+    if (config.slideShowRandomise) {
       randomDragonCurve();
       return;
     }
 
-    setSlideShow(true);
+    config.setSlideShow(true);
     randomDragonCurveLocalCurrentSize();
     generate();
     myGlobalObject.stopSlideShow = false;
     const interval = setInterval(() => {
       if (myGlobalObject.stopSlideShow) {
         clearInterval(interval);
-        setSlideShow(false);
+        config.setSlideShow(false);
       } else {
         randomDragonCurveLocalCurrentSize();
         generate();
       }
-    }, settingsConfig.slideShowInterval * 1000);
+    }, config.settingsConfig.slideShowInterval * 1000);
   };
 
   const collageSlideShow = () => {
-    setSlideShow(true);
+    config.setSlideShow(true);
     myGlobalObject.stopSlideShow = false;
     var url =
-      urlHead +
-      `/prepareCollage?width=${collageConfig.width}&height=${collageConfig.height}&elementWidth=${collageConfig.elementWidth}&startDirection=${collageConfig.startDirection}&gap=${collageConfig.elementGap}&backgroundColor=${collageConfig.gapColor}&format=${collageConfig.format}`
+      config.urlHead +
+      `/prepareCollage?width=${config.collageConfig.width}&height=${config.collageConfig.height}&elementWidth=${config.collageConfig.elementWidth}&startDirection=${config.collageConfig.startDirection}&gap=${config.collageConfig.elementGap}&backgroundColor=${config.collageConfig.gapColor}&format=${config.collageConfig.format}`
         .replace(/#/g, "")
         .replace(/\s/g, "");
     axios({
@@ -288,9 +246,9 @@ export default function ControlLayout({
       method: "GET",
       responseType: "json", // important
     }).then((response) => {
-      updateImage(
-        urlHead +
-          `/fetchCollage?key=${response.data.key}&format=${collageConfig.format}`
+      config.updateImage(
+        config.urlHead +
+          `/fetchCollage?key=${response.data.key}&format=${config.collageConfig.format}`
       );
 
       //wait 2 seconds and then call collageSlideShow again
@@ -298,14 +256,14 @@ export default function ControlLayout({
         if (!myGlobalObject.stopSlideShow) {
           collageSlideShow();
         } else {
-          setSlideShow(false);
+          config.setSlideShow(false);
         }
-      }, settingsConfig.slideShowInterval * 1000);
+      }, config.settingsConfig.slideShowInterval * 1000);
     });
   };
 
   const createCollage = () => {
-    setCollageShow(true);
+    config.setCollageShow(true);
   };
 
   // Defintion of the tooltip for various buttons
@@ -356,7 +314,7 @@ export default function ControlLayout({
         className="form-control"
         style={{
           height: "calc(100vh - 90px)",
-          display: slideShow ? "block" : "none",
+          display: config.slideShow ? "block" : "none",
           justifyContent: "left",
           alignItems: "center",
           width: "320px",
@@ -379,7 +337,7 @@ export default function ControlLayout({
             onChange={() => {
               myGlobalObject.randomHue = false;
               myGlobalObject.colorPallete = "pastel";
-              setState({ ...state, pallette: "pastel" });
+              config.setState({ ...config.state, pallette: "pastel" });
             }}
           />
           <Form.Check
@@ -393,7 +351,7 @@ export default function ControlLayout({
             onChange={() => {
               myGlobalObject.randomHue = false;
               myGlobalObject.colorPallete = "vibrant";
-              setState({ ...state, pallette: "vibrant" });
+              config.setState({ ...config.state, pallette: "vibrant" });
             }}
           />
           <Form.Check
@@ -407,7 +365,7 @@ export default function ControlLayout({
             onChange={() => {
               myGlobalObject.randomHue = false;
               myGlobalObject.colorPallete = "redhue";
-              setState({ ...state, pallette: "redhue" });
+              config.setState({ ...config.state, pallette: "redhue" });
             }}
           />
           <Form.Check
@@ -421,7 +379,7 @@ export default function ControlLayout({
             onChange={() => {
               myGlobalObject.randomHue = false;
               myGlobalObject.colorPallete = "greenhue";
-              setState({ ...state, pallette: "greenhue" });
+              config.setState({ ...config.state, pallette: "greenhue" });
             }}
           />
           <Form.Check
@@ -435,7 +393,7 @@ export default function ControlLayout({
             onChange={() => {
               myGlobalObject.randomHue = false;
               myGlobalObject.colorPallete = "bluehue";
-              setState({ ...state, pallette: "bluehue" });
+              config.setState({ ...config.state, pallette: "bluehue" });
             }}
           />
           <Form.Check
@@ -446,7 +404,7 @@ export default function ControlLayout({
             onChange={() => {
               myGlobalObject.randomHue = true;
               myGlobalObject.colorPallete = "randomhue";
-              setState({ ...state, pallette: "randomhue" });
+              config.setState({ ...config.state, pallette: "randomhue" });
             }}
           />
           <Form.Check
@@ -457,7 +415,7 @@ export default function ControlLayout({
             onChange={() => {
               myGlobalObject.randomHue = false;
               myGlobalObject.colorPallete = "random";
-              setState({ ...state, pallette: "random" });
+              config.setState({ ...config.state, pallette: "random" });
             }}
           />
           <Form.Check
@@ -468,7 +426,7 @@ export default function ControlLayout({
             onChange={() => {
               myGlobalObject.randomHue = false;
               myGlobalObject.colorPallete = "highcontrast";
-              setState({ ...state, pallette: "highcontrast" });
+              config.setState({ ...config.state, pallette: "highcontrast" });
             }}
           />
           {/* <Container>
@@ -503,7 +461,7 @@ export default function ControlLayout({
             }}
             style={{
               width: "280px",
-              display: slideShow ? "block" : "none",
+              display: config.slideShow ? "block" : "none",
               marginTop: "15px",
             }}
           >
@@ -517,7 +475,7 @@ export default function ControlLayout({
         //className="form-control"
         style={{
           height: "calc(100vh - 90px)",
-          display: slideShow ? "none" : "grid",
+          display: config.slideShow ? "none" : "grid",
           gridTemplateRows: "1fr auto",
           justifyContent: "left",
           alignItems: "center",
@@ -563,40 +521,40 @@ export default function ControlLayout({
                 Dragon Path and Tile Configuration
               </FormLabel>
               <PathConfig
-                state={pathState}
-                setState={setPathState}
-                slideShow={slideShow}
-                setDirty={setDirty}
+                state={config.pathState}
+                setState={config.setPathState}
+                slideShow={config.slideShow}
+                setDirty={config.setDirty}
               ></PathConfig>
               <CellConfig
-                state={activeCellState}
-                setState={setActiveCellState}
-                slideShow={slideShow}
-                setDirty={setDirty}
+                state={config.activeCellState}
+                setState={config.setActiveCellState}
+                slideShow={config.slideShow}
+                setDirty={config.setDirty}
                 isActive={true}
-                activeState={activeCellState}
+                activeState={config.activeCellState}
               ></CellConfig>
               <CellConfig
-                state={insideCellState}
-                setState={setInsideCellState}
-                slideShow={slideShow}
-                setDirty={setDirty}
+                state={config.insideCellState}
+                setState={config.setInsideCellState}
+                slideShow={config.slideShow}
+                setDirty={config.setDirty}
                 isActive={false}
-                activeState={activeCellState}
+                activeState={config.activeCellState}
               ></CellConfig>
               <CellConfig
-                state={outsideCellState}
-                setState={setOutsideCellState}
-                slideShow={slideShow}
-                setDirty={setDirty}
+                state={config.outsideCellState}
+                setState={config.setOutsideCellState}
+                slideShow={config.slideShow}
+                setDirty={config.setDirty}
                 isActive={false}
-                activeState={activeCellState}
+                activeState={config.activeCellState}
               ></CellConfig>
               <GroutingConfig
-                state={state}
-                setState={setState}
-                slideShow={slideShow}
-                setDirty={setDirty}
+                state={config.state}
+                setState={config.setState}
+                slideShow={config.slideShow}
+                setDirty={config.setDirty}
               ></GroutingConfig>
             </Stack>
 
@@ -609,7 +567,7 @@ export default function ControlLayout({
                       Number Of Folds
                       <svg
                         onClick={() => {
-                          setShowFoldsHelp(true);
+                          config.setShowFoldsHelp(true);
                         }}
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -630,14 +588,14 @@ export default function ControlLayout({
                   </Col>
                   <Col xs={4}>
                     <FormControl
-                      disabled={slideShow}
+                      disabled={config.slideShow}
                       size="sm"
                       as="select"
-                      value={state.folds}
+                      value={config.state.folds}
                       onChange={(e) => {
-                        setDirty(true);
-                        setState({
-                          ...state,
+                        config.setDirty(true);
+                        config.setState({
+                          ...config.state,
                           folds: e.target.value,
                         });
                       }}
@@ -656,14 +614,14 @@ export default function ControlLayout({
                   </Col>
                   <Col xs={4}>
                     <FormControl
-                      disabled={slideShow}
+                      disabled={config.slideShow}
                       size="sm"
                       as="select"
-                      value={state.radius}
+                      value={config.state.radius}
                       onChange={(e) => {
-                        setDirty(true);
-                        setState({
-                          ...state,
+                        config.setDirty(true);
+                        config.setState({
+                          ...config.state,
                           radius: e.target.value,
                         });
                       }}
@@ -683,14 +641,14 @@ export default function ControlLayout({
                   </Col>
                   <Col xs={4}>
                     <FormControl
-                      disabled={slideShow}
+                      disabled={config.slideShow}
                       size="sm"
                       as="select"
-                      value={state.margin}
+                      value={config.state.margin}
                       onChange={(e) => {
-                        setDirty(true);
-                        setState({
-                          ...state,
+                        config.setDirty(true);
+                        config.setState({
+                          ...config.state,
                           margin: e.target.value,
                         });
                       }}
@@ -709,7 +667,7 @@ export default function ControlLayout({
                       Tile Renderer
                       <svg
                         onClick={() => {
-                          setShowRendererHelp(true);
+                          config.setShowRendererHelp(true);
                         }}
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -730,14 +688,14 @@ export default function ControlLayout({
                   </Col>
                   <Col xs={4}>
                     <FormControl
-                      disabled={slideShow}
+                      disabled={config.slideShow}
                       size="sm"
                       as="select"
-                      value={state.cellType}
+                      value={config.state.cellType}
                       onChange={(e) => {
-                        setDirty(true);
-                        setState({
-                          ...state,
+                        config.setDirty(true);
+                        config.setState({
+                          ...config.state,
                           cellType: e.target.value,
                           generateEnabled: true,
                         });
@@ -763,15 +721,15 @@ export default function ControlLayout({
                       size="sm"
                       as="select"
                       disabled={
-                        slideShow ||
-                        (state.cellType !== "triangle" &&
-                          state.cellType !== "knuthtri")
+                        config.slideShow ||
+                        (config.state.cellType !== "triangle" &&
+                          config.state.cellType !== "knuthtri")
                       }
-                      value={state.triangleAngle}
+                      value={config.state.triangleAngle}
                       onChange={(e) => {
-                        setDirty(true);
-                        setState({
-                          ...state,
+                        config.setDirty(true);
+                        config.setState({
+                          ...config.state,
                           triangleAngle: e.target.value,
                           generateEnabled: true,
                         });
@@ -796,10 +754,10 @@ export default function ControlLayout({
                 size="sm"
                 variant="primary"
                 onClick={generate}
-                disabled={slideShow}
+                disabled={config.slideShow}
                 style={{
                   width: "280px",
-                  display: dirty ? "none" : "block",
+                  display: config.dirty ? "none" : "block",
                 }}
               >
                 Regenerate Current Dragon Curve
@@ -809,10 +767,10 @@ export default function ControlLayout({
                 size="sm"
                 variant="success"
                 onClick={generate}
-                disabled={slideShow}
+                disabled={config.slideShow}
                 style={{
                   width: "280px",
-                  display: dirty ? "block" : "none",
+                  display: config.dirty ? "block" : "none",
                 }}
               >
                 Generate Dragon Curve
@@ -838,7 +796,7 @@ export default function ControlLayout({
                   overlay={renderCurrentSizeTooltip}
                 >
                   <Button
-                    disabled={slideShow}
+                    disabled={config.slideShow}
                     size="sm"
                     variant="primary"
                     onClick={randomDragonCurveCurrentSize}
@@ -853,18 +811,18 @@ export default function ControlLayout({
                   overlay={renderRandomTooltip}
                 >
                   <Button
-                    disabled={slideShow}
+                    disabled={config.slideShow}
                     size="sm"
                     variant="primary"
                     onClick={() => {
-                      setSlideShowConfig(true);
+                      config.setSlideShowConfig(true);
                     }}
                     style={{ width: "60px" }}
                   >
                     {/* Randomise */}{" "}
                     <svg
                       onClick={() => {
-                        setSlideShowConfig(true);
+                        config.setSlideShowConfig(true);
                       }}
                       xmlns="http://www.w3.org/2000/svg"
                       width="16"
@@ -898,7 +856,7 @@ export default function ControlLayout({
                   overlay={renderCollageSlideShowTooltip}
                 >
                   <Button
-                    disabled={slideShow}
+                    disabled={config.slideShow}
                     size="sm"
                     variant="primary"
                     onClick={collageSlideShow}
@@ -913,7 +871,7 @@ export default function ControlLayout({
                   overlay={renderCollageSlideShowConfigureTooltip}
                 >
                   <Button
-                    disabled={slideShow}
+                    disabled={config.slideShow}
                     size="sm"
                     variant="primary"
                     onClick={createCollage}
@@ -942,65 +900,20 @@ export default function ControlLayout({
                 </OverlayTrigger>
               </Stack>
             </Stack>
-
-            {/* The Miscellaneous Button Stack */}
-
-            <ModalsContainer
-              collageConfig={collageConfig}
-              setCollageConfig={setCollageConfig}
-              collageShow={collageShow}
-              setCollageShow={setCollageShow}
-              downloadingShow={downloadingShow}
-              setSettingsShow={setSettingsShow}
-              setFoldsShow={setFoldsShow}
-              setSaveShow={setSaveShow}
-              setLoadShow={setLoadShow}
-              state={state}
-              pathState={pathState}
-              activeCellState={activeCellState}
-              outsideCellState={outsideCellState}
-              insideCellState={insideCellState}
-              setActiveCellState={setActiveCellState}
-              setOutsideCellState={setOutsideCellState}
-              setInsideCellState={setInsideCellState}
-              setPathState={setPathState}
-              setState={setState}
-              urlHead={urlHead}
-              settingsShow={settingsShow}
-              settingsConfig={settingsConfig}
-              setSettingsConfig={setSettingsConfig}
-              zipShow={zipShow}
-              setZipShow={setZipShow}
-              updateImage={updateImage}
-              foldsShow={foldsShow}
-              saveShow={saveShow}
-              loadShow={loadShow}
-              setDirty={setDirty}
-              showRendererHelp={showRendererHelp}
-              setShowRendererHelp={setShowRendererHelp}
-              configState={configState}
-              showFoldsHelp={showFoldsHelp}
-              setShowFoldsHelp={setShowFoldsHelp}
-              showSlideShowConfig={showSlideShowConfig}
-              setSlideShowConfig={setSlideShowConfig}
-              slideShowRandomise={slideShowRandomise}
-              setSlideShowRandomise={setSlideShowRandomise}
-            />
+            <CollageModal />
+            <SettingsModal />
+            <DownloadingModal />
+            <FoldsModal />
+            <DownloadZipModal />
+            <SaveCurveModal config={configState} />
+            <LoadCurveModal />
+            <RendererHelpModal />
+            <FoldsHelpModal />
+            <ConfigSlideShowModal />
           </div>
         </div>
-        <ControlLayoutButtons
-          state={state}
-          pathState={pathState}
-          activeCellState={activeCellState}
-          outsideCellState={outsideCellState}
-          insideCellState={insideCellState}
-          urlHead={urlHead}
-          setDownloadingShow={setDownloadingShow}
-          setSettingsShow={setSettingsShow}
-          setFoldsShow={setFoldsShow}
-          setSaveShow={setSaveShow}
-          setLoadShow={setLoadShow}
-        />
+        {/* The Miscellaneous Button Stack */}
+        <ControlLayoutButtons />
       </div>
     </>
   );

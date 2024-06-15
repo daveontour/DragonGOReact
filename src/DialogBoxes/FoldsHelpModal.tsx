@@ -1,12 +1,15 @@
 import { Button, Col, Container, Modal, Row, Stack } from "react-bootstrap";
+import { CurrentConfigContext } from "../Contexts";
+import { useContext } from "react";
 
-function FoldsHelpModal({ show, setState }: { show: any; setState: any }) {
+function FoldsHelpModal() {
+  let config = useContext(CurrentConfigContext);
   const dismiss = () => {
-    setState(false);
+    config.setShowFoldsHelp(false);
   };
 
   return (
-    <Modal show={show} onHide={dismiss} size="lg">
+    <Modal show={config.showFoldsHelp} onHide={dismiss} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Number of Folds</Modal.Title>
       </Modal.Header>

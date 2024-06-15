@@ -1,7 +1,8 @@
-import { useState } from "react";
+import react, { useState } from "react";
 import ControlLayout from "./ControlLayout";
 import ImageLayout from "./ImageLayout";
 import myGlobalObject from "../globals";
+import { CurrentConfigContext } from "../Contexts";
 
 function hslToRgb(h: number, s: number, l: number) {
   var r, g, b;
@@ -108,8 +109,8 @@ export default function BodyLayout({
   setFSImageURL: any;
   setFSImageSize: any;
 }) {
-  //const urlHead = "http://localhost:8080";
-  const urlHead = "./";
+  const urlHead = "http://localhost:8080";
+  // const urlHead = "./";
 
   const [slideShow, setSlideShow] = useState(false);
   const [imageSize, setImageSize] = useState({
@@ -155,6 +156,7 @@ export default function BodyLayout({
     title: "Active Tile Configuration (Tiles that the path passes through)",
     shortTitle: "Active Tile Configuration",
   });
+
   const [insideCellState, setInsideCellState] = useState({
     borderStyle: "solid",
     borderWidth: "2px",
@@ -176,6 +178,27 @@ export default function BodyLayout({
       "Outside Tile Configuration (Empty tiles not encompassed by the path)",
     shortTitle: "Outside Tile Configuration",
   });
+  const [collageConfig, setCollageConfig] = useState({
+    width: 7,
+    height: 7,
+    elementWidth: 100,
+    elementGap: 5,
+    gapColor: "#dddddd",
+    startDirection: 0,
+    format: "png",
+  });
+  const [downloadShow, setDownloadShow] = useState(false);
+  const [collageShow, setCollageShow] = useState(false);
+  const [settingsShow, setSettingsShow] = useState(false);
+  const [foldsShow, setFoldsShow] = useState(false);
+  const [zipShow, setZipShow] = useState(false);
+  const [saveShow, setSaveShow] = useState(false);
+  const [loadShow, setLoadShow] = useState(false);
+  const [showRendererHelp, setShowRendererHelp] = useState(false);
+  const [showFoldsHelp, setShowFoldsHelp] = useState(false);
+  const [showSlideShowConfig, setSlideShowConfig] = useState(false);
+  const [slideShowRandomise, setSlideShowRandomise] = useState(false);
+  const [dirty, setDirty] = useState(false);
 
   const generateColor = () => {
     if (myGlobalObject.colorPallete === "pastel") {
@@ -476,7 +499,6 @@ export default function BodyLayout({
   const [statsURL, setStatsURL] = useState("");
   const generate = (newImgUrl: string) => {
     newImgUrl = newImgUrl.replace(/#/g, "").replace(/\s/g, "");
-
     setImgUrl(newImgUrl);
     let statsURL = newImgUrl.replace("getTile", "getStats");
     setStatsURL(statsURL);
@@ -487,54 +509,82 @@ export default function BodyLayout({
 
   return (
     <>
-      <div
-        className="mw-100"
-        style={{
-          display: showFullScreen ? "none" : "flex",
-          height: "calc(100vh - 85px)",
-          rowGap: "10px",
-          justifyContent: "left",
-          alignItems: "center",
-          marginLeft: "5px",
+      <CurrentConfigContext.Provider
+        value={{
+          state,
+          setState,
+          pathState,
+          setPathState,
+          insideCellState,
+          setInsideCellState,
+          activeCellState,
+          setActiveCellState,
+          outsideCellState,
+          setOutsideCellState,
+          collageConfig,
+          setCollageConfig,
+          settingsConfig,
+          setSettingsConfig,
+          downloadShow,
+          setDownloadShow,
+          collageShow,
+          setCollageShow,
+          settingsShow,
+          setSettingsShow,
+          foldsShow,
+          setFoldsShow,
+          zipShow,
+          setZipShow,
+          saveShow,
+          setSaveShow,
+          loadShow,
+          setLoadShow,
+          showRendererHelp,
+          setShowRendererHelp,
+          showFoldsHelp,
+          setShowFoldsHelp,
+          showSlideShowConfig,
+          setSlideShowConfig,
+          slideShowRandomise,
+          setSlideShowRandomise,
+          dirty,
+          setDirty,
+          urlHead,
+          updateImage: generate,
+          slideShow,
+          setSlideShow,
+          imageSize,
+          setImageSize,
         }}
       >
-        <ControlLayout
-          state={state}
-          setState={setState}
-          updateImage={generate}
-          pathState={pathState}
-          setPathState={setPathState}
-          activeCellState={activeCellState}
-          setActiveCellState={setActiveCellState}
-          insideCellState={insideCellState}
-          setInsideCellState={setInsideCellState}
-          outsideCellState={outsideCellState}
-          setOutsideCellState={setOutsideCellState}
-          randomDragonCurveLocal={setRandomState}
-          randomDragonCurveLocalCurrentSize={setRandomCurrentSizeState}
-          urlHead={urlHead}
-          imageSize={imageSize}
-          setImageSize={setImageSize}
-          setFSImageSize={setFSImageSize}
-          slideShow={slideShow}
-          setSlideShow={setSlideShow}
-          settingsConfig={settingsConfig}
-          setSettingsConfig={setSettingsConfig}
-        ></ControlLayout>
-
-        <ImageLayout
-          imgUrl={imgUrl}
-          imageSize={imageSize}
-          setImageSize={setImageSize}
-          statsURL={statsURL}
-          setShowFullScreen={setShowFullScreen}
-          stopSlideShowNow={() => {
-            setSlideShow(false);
-            myGlobalObject.stopSlideShow = true;
+        <div
+          className="mw-100"
+          style={{
+            display: showFullScreen ? "none" : "flex",
+            height: "calc(100vh - 85px)",
+            rowGap: "10px",
+            justifyContent: "left",
+            alignItems: "center",
+            marginLeft: "5px",
           }}
-          settingsConfig={settingsConfig}
-        ></ImageLayout>
-      </div>
+        >
+          <ControlLayout
+            randomDragonCurveLocal={setRandomState}
+            randomDragonCurveLocalCurrentSize={setRandomCurrentSizeState}
+            setFSImageSize={setFSImageSize}
+          ></ControlLayout>
+
+          <ImageLayout
+            imgUrl={imgUrl}
+            statsURL={statsURL}
+            setShowFullScreen={setShowFullScreen}
+            stopSlideShowNow={() => {
+              setSlideShow(false);
+              myGlobalObject.stopSlideShow = true;
+            }}
+          ></ImageLayout>
+        </div>
+      </CurrentConfigContext.Provider>
     </>
   );
 }

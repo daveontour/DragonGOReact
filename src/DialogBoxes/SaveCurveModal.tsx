@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import {
   Button,
   Col,
@@ -6,21 +7,15 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
+import { CurrentConfigContext } from "../Contexts";
 
-function SaveCurveModal({
-  show,
-  setState,
-  config,
-}: {
-  show: any;
-  setState: any;
-  config: any;
-}) {
+function SaveCurveModal({ config }: { config: any }) {
+  let c = useContext(CurrentConfigContext);
   const dismiss = () => {
-    setState(false);
+    c.setSaveShow(false);
   };
   const handleClose = () => {
-    setState(false);
+    c.setSaveShow(false);
     const blob = new Blob([JSON.stringify(config, null, 2)], {
       type: "application/json",
     });
@@ -37,12 +32,12 @@ function SaveCurveModal({
     // clean up "a" element & remove ObjectURL
     document.body.removeChild(link);
     URL.revokeObjectURL(href);
-    setState(false);
+    c.setSaveShow(false);
   };
 
   return (
     <>
-      <Modal show={show} onHide={dismiss} size="lg">
+      <Modal show={c.saveShow} onHide={dismiss} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>
             Save Curve. - Copy and save or Download the configuration below
