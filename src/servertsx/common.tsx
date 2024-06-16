@@ -20,6 +20,47 @@ export const OUTSIDE = 2;
 
 export const RadiusDefault = 10.0;
 
+export interface RequestConfig {
+  OutSideFill: boolean;
+  OutSideStroke: boolean;
+  InsideFill: boolean;
+  InsideStroke: boolean;
+  ActiveFill: boolean;
+  ActiveStroke: boolean;
+  PathStroke: boolean;
+  GridLines: boolean;
+  NumberFolds: number;
+  Radius: number;
+  StartDirection: number;
+  CellType: string;
+  OriginX: number;
+  OrignY: number;
+  Margin: number;
+  // InsideStrokeColor:     color.RGBA
+  // InsideFillColor:       color.RGBA
+  // OutsideStrokeColor:    color.RGBA
+  // OutsideFillColor:      color.RGBA
+  // ActiveStrokeColor:     color.RGBA
+  // ActiveFillColor:       color.RGBA
+  // PathStrokeColor:       color.RGBA
+  // GroutingColor:         color.RGBA
+  InsideStrokeColorRaw: string;
+  InsideFillColorRaw: string;
+  OutsideStrokeColorRaw: string;
+  OutsideFillColorRaw: string;
+  ActiveStrokeColorRaw: string;
+  ActiveFillColorRaw: string;
+  PathStrokeColorRaw: string;
+  GroutingColorRaw: string;
+  InsideStrokeWidth: number;
+  OutsideStrokeWidth: number;
+  ActiveStrokeWidth: number;
+  PathWidth: number;
+  Grouting: number;
+  TriangleAngle: number;
+  Format: string;
+}
+
 let CacheMap: { [key: string]: Uint8Array } = {};
 
 const Pallette: [number, number, number, number][] = [
@@ -43,12 +84,12 @@ class Point2 {
   constructor(public x: number, public y: number) {}
 }
 
-class Cell {
+export class Cell {
   Row!: number;
   Col!: number;
   P1: Point;
   P2: Point;
-  FillState!: number;
+  FillState!: any;
   Turn!: number;
   Direction!: number;
   StartCorner!: number;
@@ -142,7 +183,7 @@ function getRandomColor(): [number, number, number, number] {
   return [r, g, b, a];
 }
 
-function getRandomBool(): boolean {
+function getRandomboolean(): boolean {
   return Math.random() >= 0.5;
 }
 
@@ -411,6 +452,7 @@ export function calcCellsKnuth(
   startDir: number
 ): [Cell[], number, number, number, number] {
   const cells: Cell[] = [];
+
   let currentCell = new Cell();
   currentCell.Row = 0;
   currentCell.Col = 0;
@@ -521,54 +563,106 @@ export function calcCellsKnuth(
   return [cells, minRow, minCol, maxRow, maxCol];
 }
 
-// function prepareCells(rc: RequestConfig, prepareCells: boolean): [Cell[][], number, number, number, number, number, number] | [null, number, number, number, number, number, number] {
-//   if (rc.NumberFolds <= 0) {
-//       return [null, 0, 0, 0, 0, 0, 0];
-//   }
+export function prepareCells(
+  rc: RequestConfig,
+  prepareCells: boolean
+):
+  | [Cell[][], number, number, number, number, number, number]
+  | [null, number, number, number, number, number, number] {
+  if (rc.NumberFolds <= 0) {
+    return [null, 0, 0, 0, 0, 0, 0];
+  }
 
-//   let turns = calculateTurns(rc.NumberFolds);
-//   let cells: Cell[];
-//   let minRow: number, minCol: number, maxRow: number, maxCol: number;
+  let turns = calculateTurns(rc.NumberFolds);
+  let cells: Cell[];
+  let minRow: number, minCol: number, maxRow: number, maxCol: number;
 
-//   if (rc.CellType.includes("knuth")) {
-//       // Assume CalcCellsKnuth is a function that exists in your TypeScript code
-//       [cells, minRow, minCol, maxRow, maxCol] = calcCellsKnuth(turns, rc.StartDirection);
-//   } else {
-//       // Assume CalcCells is a function that exists in your TypeScript code
-//       [cells, minRow, minCol, maxRow, maxCol] = calcCells(turns, rc.StartDirection);
-//   }
+  if (rc.CellType.includes("knuth")) {
+    // Assume CalcCellsKnuth is a function that exists in your TypeScript code
 
-//   let width = maxCol - minCol;
-//   let height = maxRow - minRow;
+    let ck = calcCellsKnuth(turns, rc.StartDirection);
+    cells = ck[0];
+    minRow = ck[1];
+    minCol = ck[2];
+    maxRow = ck[3];
+    maxCol = ck[4];
+  } else {
+    // Assume CalcCells is a function that exists in your TypeScript code
+    let cc = calcCells(turns, rc.StartDirection);
+    cells = cc[0];
+    minRow = cc[1];
+    minCol = cc[2];
+    maxRow = cc[3];
+    maxCol = cc[4];
+  }
 
-//   if (prepareCells) {
-//       let arr: Cell[][] = [];
+  let width = maxCol - minCol;
+  let height = maxRow - minRow;
 
-//       for (let i = 0; i <= height + 2; i++) {
-//           let row: Cell[] = [];
-//           for (let j = 0; j <= width + 2; j++) {
-//               let cell: Cell = { FillState: 'INSIDE', Row: i, Col: j };
-//               row.push(cell);
-//           }
-//           arr.push(row);
-//       }
+  if (prepareCells) {
+    let arr: Cell[][] = [];
 
-//       let colOffset = -minCol + 1;
-//       let rowOffset = -minRow + 1;
+    for (let i = 0; i <= height + 2; i++) {
+      let row: Cell[] = [];
+      for (let j = 0; j <= width + 2; j++) {
+        let cell: Cell = {
+          FillState: "INSIDE",
+          Row: i,
+          Col: j,
+          P1: new Point(0, 0),
+          P2: new Point(0, 0),
+          Turn: 0,
+          Direction: 0,
+          StartCorner: 0,
+          EndCorner: 0,
+          StartEdge: 0,
+          EndEdge: 0,
+          KnuthType: 0,
+          KStart: 0,
+          KEnd: 0,
+          Color: [0, 0, 0, 0],
+          Rotate90: function (): void {
+            throw new Error("Function not implemented.");
+          },
+          Rotate180: function (): void {
+            throw new Error("Function not implemented.");
+          },
+          Rotate270: function (): void {
+            throw new Error("Function not implemented.");
+          },
+          SetAbsoluteCornersWithGrouting: function (
+            radius: number,
+            rowOffset: number,
+            colOffset: number,
+            originX: number,
+            originY: number,
+            grouting: number
+          ): void {
+            throw new Error("Function not implemented.");
+          },
+        };
 
-//       cells.forEach((cell, idx) => {
-//           cell.Color = AltPalette[idx % AltPalette.length];
-//           cell.Row += rowOffset;
-//           cell.Col += colOffset;
-//           arr[cell.Row][cell.Col] = cell;
-//       });
+        row.push(cell);
+      }
+      arr.push(row);
+    }
 
-//       // Assume FillConnected is a function that exists in your TypeScript code
-//       fillConnected(arr);
-//       return [arr, width, height, minRow, minCol, maxRow, maxCol];
-//   }
+    let colOffset = -minCol + 1;
+    let rowOffset = -minRow + 1;
 
-//   return [null, width, height, minRow, minCol, maxRow, maxCol];
-// }
+    cells.forEach((cell, idx) => {
+      cell.Color = AltPalette[idx % AltPalette.length];
+      cell.Row += rowOffset;
+      cell.Col += colOffset;
+      arr[cell.Row][cell.Col] = cell;
+    });
+
+    // Assume FillConnected is a function that exists in your TypeScript code
+    fillConnected(arr);
+    return [arr, width, height, minRow, minCol, maxRow, maxCol];
+  }
+
+  return [null, width, height, minRow, minCol, maxRow, maxCol];
+}
 
 // Helper functions like calculateTurns, calcCells, calcCellsKnuth, and fillConnected need to be defined in TypeScript.

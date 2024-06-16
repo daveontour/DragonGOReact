@@ -34,6 +34,7 @@ export default function ImageLayout({
         }}
       >
         <div
+          id="imageHTMLElement"
           className={config.settingsConfig.background}
           style={{
             height: "calc(100% - 25px)",
@@ -49,15 +50,14 @@ export default function ImageLayout({
             userSelect: "none",
           }}
         >
-          <img
-            src={imgUrl}
+          {/* <img
             alt="Connecting to server..."
             style={{
               width: config.imageSize.width,
               height: config.imageSize.height,
             }}
             id="imageHTMLElement"
-          />
+          /> */}
         </div>
         <div
           style={{

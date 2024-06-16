@@ -19,7 +19,14 @@ import { JSX } from "react/jsx-runtime";
 import GroutingConfig from "../Widgets/GroutingConfigWidget";
 import myGlobalObject from "../globals";
 import ControlLayoutButtons from "./ControlLayoutButtons";
-import { calculateTurns } from "../servertsx/common";
+import {
+  DOWN,
+  LEFT,
+  RIGHT,
+  RequestConfig,
+  UP,
+  calculateTurns,
+} from "../servertsx/common";
 import { CurrentConfigContext } from "../Contexts";
 import CollageModal from "../DialogBoxes/CreateCollageModal";
 import SettingsModal from "../DialogBoxes/SettingsModal";
@@ -31,6 +38,7 @@ import RendererHelpModal from "../DialogBoxes/RendererHelpModal";
 import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
 import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
 import DownloadZipModal from "../DialogBoxes/DownloadZipModal";
+import { getDragonSVG, getDragonSizeSVG } from "../servertsx/svg";
 
 //var stopSlideShow = false;
 var opened = true;
@@ -84,12 +92,10 @@ function calculateImageSize(
 }
 
 export default function ControlLayout({
-  // updateImage,
   randomDragonCurveLocal,
   randomDragonCurveLocalCurrentSize,
   setFSImageSize,
 }: {
-  // updateImage: any;
   randomDragonCurveLocal: any;
   randomDragonCurveLocalCurrentSize: any;
   setFSImageSize: any;
@@ -148,42 +154,132 @@ export default function ControlLayout({
   };
 
   const generate = () => {
-    var newURL = getSingleURL();
-    var sizeURL = newURL.replace("getTile", "getSize");
+    let sd = LEFT;
+    if (config.pathState.startDirection === "random") {
+      let directions = [UP, DOWN, LEFT, RIGHT];
+      let index = Math.floor(Math.random() * 4);
+      sd = directions[index];
+    }
 
-    axios({
-      url: sizeURL, //your url
-      method: "POST",
-      responseType: "json", // important
-      data: JSON.stringify(calculateTurns(9)),
-    }).then((response) => {
-      let [imgSX, imgSY, zoom] = calculateImageSize(
-        response.data.width,
-        response.data.height,
-        false
-      );
-      config.setImageSize({
-        ...config.imageSize,
-        width: imgSX,
-        height: imgSY,
-        zoom: zoom,
-      });
+    if (config.pathState.startDirection === "LEFT") {
+      sd = LEFT;
+    }
+    if (config.pathState.startDirection === "RIGHT") {
+      sd = RIGHT;
+    }
+    if (config.pathState.startDirection === "UP") {
+      sd = UP;
+    }
+    if (config.pathState.startDirection === "DOWN") {
+      sd = DOWN;
+    }
 
-      // Now get the full screen image size
-      let [imgSXFS, imgSYFS, zoomFS] = calculateImageSize(
-        response.data.width,
-        response.data.height,
-        true
-      );
-      setFSImageSize({
-        width: imgSXFS,
-        height: imgSYFS,
-        zoom: zoomFS,
-      });
+    let rc: RequestConfig = {
+      OutSideFill: config.outsideCellState.fillEnabled,
+      OutSideStroke: config.outsideCellState.borderEnabled,
+      InsideFill: config.insideCellState.fillEnabled,
+      InsideStroke: config.insideCellState.borderEnabled,
+      ActiveFill: config.activeCellState.fillEnabled,
+      ActiveStroke: config.activeCellState.borderEnabled,
+      PathStroke: config.pathState.borderEnabled,
+      GridLines: config.state.gridlines,
+      NumberFolds: Number(config.state.folds),
+      Radius: Number(config.state.radius),
+      StartDirection: sd,
+      CellType: "knuthcurve",
+      OriginX: 0,
+      OrignY: 0,
+      Margin: Number(config.state.margin.replace(/px/g, "")),
+      InsideStrokeColorRaw: config.insideCellState.borderColor,
+      InsideFillColorRaw: config.insideCellState.backgroundColor,
+      OutsideStrokeColorRaw: config.outsideCellState.borderColor,
+      OutsideFillColorRaw: config.outsideCellState.backgroundColor,
+      ActiveStrokeColorRaw: config.activeCellState.borderColor,
+      ActiveFillColorRaw: config.activeCellState.backgroundColor,
+      PathStrokeColorRaw: config.pathState.borderColor,
+      GroutingColorRaw: config.state.groutingColor,
+      InsideStrokeWidth: Number(
+        config.insideCellState.borderWidth.replace(/px/g, "")
+      ),
+      OutsideStrokeWidth: Number(
+        config.outsideCellState.borderWidth.replace(/px/g, "")
+      ),
+      ActiveStrokeWidth: Number(
+        config.activeCellState.borderWidth.replace(/px/g, "")
+      ),
+      PathWidth: Number(config.pathState.borderWidth.replace(/px/g, "")),
+      Grouting: Number(config.state.grouting.replace(/px/g, "")),
+      TriangleAngle: 30,
+      Format: "",
+    };
 
-      config.setDirty(false);
-      config.updateImage(newURL);
+    let size = getDragonSizeSVG(rc);
+    let w = size[0];
+    let h = size[1];
+
+    let [imgSX, imgSY, zoom] = calculateImageSize(w, h, false);
+    config.setImageSize({
+      ...config.imageSize,
+      width: imgSX,
+      height: imgSY,
+      zoom: zoom,
     });
+
+    // Now get the full screen image size
+    let [imgSXFS, imgSYFS, zoomFS] = calculateImageSize(w, h, true);
+    setFSImageSize({
+      width: imgSXFS,
+      height: imgSYFS,
+      zoom: zoomFS,
+    });
+
+    let svgContent = getDragonSVG(rc);
+    const imgElement = document.getElementById(
+      "imageHTMLElement"
+    ) as HTMLImageElement;
+    if (imgElement) {
+      imgElement.innerHTML = svgContent;
+      config.setDirty(false);
+    }
+
+    //console.log(s);
+
+    // var newURL = getSingleURL();
+
+    //    var sizeURL = newURL.replace("getTile", "getSize");
+    // axios({
+    //   url: sizeURL, //your url
+    //   method: "POST",
+    //   responseType: "json", // important
+    //   data: JSON.stringify(calculateTurns(9)),
+    // }).then((response) => {
+    //   let [imgSX, imgSY, zoom] = calculateImageSize(
+    //     response.data.width,
+    //     response.data.height,
+    //     false
+    //   );
+    //   config.setImageSize({
+    //     ...config.imageSize,
+    //     width: imgSX,
+    //     height: imgSY,
+    //     zoom: zoom,
+    //   });
+
+    //   // Now get the full screen image size
+    //   let [imgSXFS, imgSYFS, zoomFS] = calculateImageSize(
+    //     response.data.width,
+    //     response.data.height,
+    //     true
+    //   );
+    //   setFSImageSize({
+    //     width: imgSXFS,
+    //     height: imgSYFS,
+    //     zoom: zoomFS,
+    //   });
+
+    //   config.setDirty(false);
+    //   config.updateImage(newURL);
+    // });
   };
 
   const randomDragonCurve = () => {

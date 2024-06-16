@@ -582,7 +582,7 @@ export default function BodyLayout({
               setSlideShow(false);
               myGlobalObject.stopSlideShow = true;
             }}
-          ></ImageLayout>
+          />
         </div>
       </CurrentConfigContext.Provider>
     </>
