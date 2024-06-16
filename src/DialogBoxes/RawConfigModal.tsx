@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useContext, useState } from "react";
 import {
   Alert,
@@ -11,6 +10,7 @@ import {
   Stack,
 } from "react-bootstrap";
 import { CurrentConfigContext } from "../Contexts";
+import { calculateTurns } from "../servertsx/common";
 
 function FoldsModal() {
   const [showPrepare, setShowPrepare] = useState(false);
@@ -26,33 +26,27 @@ function FoldsModal() {
   };
   const handleClose = () => {
     setShowPrepare(true);
-    var url =
-      config.urlHead +
-      `/preCalc?folds=${folds.folds}`.replace(/#/g, "").replace(/\s/g, "");
 
-    axios({
-      url: url, //your url
-      method: "GET",
-      responseType: "blob", // important
-    }).then((response) => {
-      const href = URL.createObjectURL(response.data);
+    let turns = calculateTurns(Number(folds.folds));
 
-      // create "a" HTML element with href to file & click
-      const link = document.createElement("a");
-      link.href = href;
-      var fname = `DragonCurveTurns${folds.folds}.json`;
-      link.setAttribute("download", fname); //or any other extension
-      document.body.appendChild(link);
-      link.click();
-
-      // clean up "a" element & remove ObjectURL
-      document.body.removeChild(link);
-      URL.revokeObjectURL(href);
-      setShowPrepare(false);
-      config.setFoldsShow(false);
+    const blob = new Blob([JSON.stringify(turns)], {
+      type: "application/json",
     });
+    const href = URL.createObjectURL(blob);
 
-    //    setState(false);
+    // create "a" HTML element with href to file & click
+    const link = document.createElement("a");
+    link.href = href;
+    var fname = `DragonCurveTurns${folds.folds}.json`;
+    link.setAttribute("download", fname); //or any other extension
+    document.body.appendChild(link);
+    link.click();
+
+    // clean up "a" element & remove ObjectURL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+
+    config.setFoldsShow(false);
   };
 
   return (

@@ -1,8 +1,8 @@
-import react, { useState } from "react";
 import ControlLayout from "./ControlLayout";
 import ImageLayout from "./ImageLayout";
 import myGlobalObject from "../globals";
 import { CurrentConfigContext } from "../Contexts";
+import { useState } from "react";
 
 function hslToRgb(h: number, s: number, l: number) {
   var r, g, b;
@@ -101,13 +101,9 @@ function stringToRGBA(str: string): number[] {
 export default function BodyLayout({
   showFullScreen,
   setShowFullScreen,
-  setFSImageURL,
-  setFSImageSize,
 }: {
   showFullScreen: boolean;
   setShowFullScreen: any;
-  setFSImageURL: any;
-  setFSImageSize: any;
 }) {
   const urlHead = "http://localhost:8080";
   // const urlHead = "./";
@@ -188,10 +184,8 @@ export default function BodyLayout({
     format: "png",
   });
   const [downloadShow, setDownloadShow] = useState(false);
-  const [collageShow, setCollageShow] = useState(false);
   const [settingsShow, setSettingsShow] = useState(false);
   const [foldsShow, setFoldsShow] = useState(false);
-  const [zipShow, setZipShow] = useState(false);
   const [saveShow, setSaveShow] = useState(false);
   const [loadShow, setLoadShow] = useState(false);
   const [showRendererHelp, setShowRendererHelp] = useState(false);
@@ -461,51 +455,51 @@ export default function BodyLayout({
     activeCellState.fillEnabled = Math.random() > 0.5;
   };
 
-  const [imgUrl, setImgUrl] = useState(
-    urlHead +
-      `/getTile?
-    &folds=${state.folds}
-    &margin=${state.margin}
-    &cellType=${state.cellType}
-    &triangleAngle=${state.triangleAngle}
-    &radius=${state.radius}
-    &grouting=${state.grouting}
-    &groutingColor=${state.groutingColor}
-    &gridlines=${state.gridlines}
-    &startDirection=${pathState.startDirection}
-    &pathStroke=${pathState.borderEnabled}
-    &pathWidth=${pathState.borderWidth}
-    &pathStrokeColor=${pathState.borderColor}
-    &outsideFill=${outsideCellState.fillEnabled}
-    &outsideFillColor=${outsideCellState.backgroundColor}
-    &outsideStroke=${outsideCellState.borderEnabled}
-    &outsideStrokeWidth=${outsideCellState.borderWidth}
-    &outsideStrokeColor=${outsideCellState.borderColor}
-    &insideFill=${insideCellState.fillEnabled}
-    &insideFillColor=${insideCellState.backgroundColor}
-    &insideStroke=${insideCellState.borderEnabled}
-    &insideStrokeWidth=${insideCellState.borderWidth}
-    &insideStrokeColor=${insideCellState.borderColor}
-    &activeFill=${activeCellState.fillEnabled}
-    &activeFillColor=${activeCellState.backgroundColor}
-    &activeStroke=${activeCellState.borderEnabled}
-    &activeStrokeWidth=${activeCellState.borderWidth}
-    &activeStrokeColor=${activeCellState.borderColor}
-    &random=${Math.random()}`
-        .replace(/#/g, "")
-        .replace(/\s/g, "")
-  );
+  // const [imgUrl, setImgUrl] = useState(
+  //   urlHead +
+  //     `/getTile?
+  //   &folds=${state.folds}
+  //   &margin=${state.margin}
+  //   &cellType=${state.cellType}
+  //   &triangleAngle=${state.triangleAngle}
+  //   &radius=${state.radius}
+  //   &grouting=${state.grouting}
+  //   &groutingColor=${state.groutingColor}
+  //   &gridlines=${state.gridlines}
+  //   &startDirection=${pathState.startDirection}
+  //   &pathStroke=${pathState.borderEnabled}
+  //   &pathWidth=${pathState.borderWidth}
+  //   &pathStrokeColor=${pathState.borderColor}
+  //   &outsideFill=${outsideCellState.fillEnabled}
+  //   &outsideFillColor=${outsideCellState.backgroundColor}
+  //   &outsideStroke=${outsideCellState.borderEnabled}
+  //   &outsideStrokeWidth=${outsideCellState.borderWidth}
+  //   &outsideStrokeColor=${outsideCellState.borderColor}
+  //   &insideFill=${insideCellState.fillEnabled}
+  //   &insideFillColor=${insideCellState.backgroundColor}
+  //   &insideStroke=${insideCellState.borderEnabled}
+  //   &insideStrokeWidth=${insideCellState.borderWidth}
+  //   &insideStrokeColor=${insideCellState.borderColor}
+  //   &activeFill=${activeCellState.fillEnabled}
+  //   &activeFillColor=${activeCellState.backgroundColor}
+  //   &activeStroke=${activeCellState.borderEnabled}
+  //   &activeStrokeWidth=${activeCellState.borderWidth}
+  //   &activeStrokeColor=${activeCellState.borderColor}
+  //   &random=${Math.random()}`
+  //       .replace(/#/g, "")
+  //       .replace(/\s/g, "")
+  // );
 
   const [statsURL, setStatsURL] = useState("");
-  const generate = (newImgUrl: string) => {
-    newImgUrl = newImgUrl.replace(/#/g, "").replace(/\s/g, "");
-    setImgUrl(newImgUrl);
-    let statsURL = newImgUrl.replace("getTile", "getStats");
-    setStatsURL(statsURL);
-    //  if (showFullScreen) {
-    setFSImageURL(newImgUrl);
-    //    }
-  };
+  // const generate = (newImgUrl: string) => {
+  //   newImgUrl = newImgUrl.replace(/#/g, "").replace(/\s/g, "");
+  //   setImgUrl(newImgUrl);
+  //   let statsURL = newImgUrl.replace("getTile", "getStats");
+  //   setStatsURL(statsURL);
+  //   //  if (showFullScreen) {
+  //   setFSImageURL(newImgUrl);
+  //   //    }
+  // };
 
   return (
     <>
@@ -527,14 +521,10 @@ export default function BodyLayout({
           setSettingsConfig,
           downloadShow,
           setDownloadShow,
-          collageShow,
-          setCollageShow,
           settingsShow,
           setSettingsShow,
           foldsShow,
           setFoldsShow,
-          zipShow,
-          setZipShow,
           saveShow,
           setSaveShow,
           loadShow,
@@ -550,7 +540,7 @@ export default function BodyLayout({
           dirty,
           setDirty,
           urlHead,
-          updateImage: generate,
+          updateImage: () => {},
           slideShow,
           setSlideShow,
           imageSize,
@@ -571,11 +561,9 @@ export default function BodyLayout({
           <ControlLayout
             randomDragonCurveLocal={setRandomState}
             randomDragonCurveLocalCurrentSize={setRandomCurrentSizeState}
-            setFSImageSize={setFSImageSize}
           ></ControlLayout>
 
           <ImageLayout
-            imgUrl={imgUrl}
             statsURL={statsURL}
             setShowFullScreen={setShowFullScreen}
             stopSlideShowNow={() => {

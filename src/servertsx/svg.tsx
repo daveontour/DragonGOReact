@@ -124,10 +124,15 @@ function createSVG(
   var pathStrokeColor = toSVGColor(rc.PathStrokeColorRaw)[0];
   var pathStrokeOpacity = toSVGColor(rc.PathStrokeColorRaw)[1];
 
-  let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth.toFixed(
-    2
-  )}" height="${svgHeight.toFixed(2)}">
+  // let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth.toFixed(
+  //   2
+  // )}" height="${svgHeight.toFixed(2)}" preserveAspectRatio="xMidYMid meet" viewBox="0 0 ${svgWidth.toFixed(
+  //   2
+  // )} ${svgHeight.toFixed(2)}">
 
+  let svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 ${svgWidth.toFixed(
+    2
+  )} ${svgHeight.toFixed(2)}">
     
     <style>    
         .inside {

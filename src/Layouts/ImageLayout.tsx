@@ -4,12 +4,10 @@ import ZoomControl from "../Widgets/ZoomControlWidget";
 import "./ImageLayout.css";
 
 export default function ImageLayout({
-  imgUrl,
   statsURL,
   setShowFullScreen,
   stopSlideShowNow,
 }: {
-  imgUrl: string;
   statsURL: any;
   setShowFullScreen: any;
   stopSlideShowNow: any;
@@ -40,7 +38,6 @@ export default function ImageLayout({
             height: "calc(100% - 25px)",
             width: "100%",
             overflow: "auto",
-            // backgroundColor: "aliceblue",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -49,16 +46,7 @@ export default function ImageLayout({
             borderRadius: "5px",
             userSelect: "none",
           }}
-        >
-          {/* <img
-            alt="Connecting to server..."
-            style={{
-              width: config.imageSize.width,
-              height: config.imageSize.height,
-            }}
-            id="imageHTMLElement"
-          /> */}
-        </div>
+        ></div>
         <div
           style={{
             width: "100%",

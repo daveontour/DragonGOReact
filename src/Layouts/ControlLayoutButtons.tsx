@@ -1,5 +1,4 @@
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
-import axios from "axios";
 import { JSX } from "react/jsx-runtime";
 import { RefAttributes, useContext, useState } from "react";
 import { CurrentConfigContext } from "../Contexts";
@@ -18,73 +17,66 @@ export default function ControlLayoutButtons() {
     state: config.state,
   });
 
-  const getSingleURL = () => {
-    var newURL =
-      config.urlHead +
-      `/getTile?
-  &folds=${config.state.folds}
-  &margin=${config.state.margin}
-  &cellType=${config.state.cellType}
-  &triangleAngle=${config.state.triangleAngle}
-  &radius=${config.state.radius}
-  &grouting=${config.state.grouting}
-  &groutingColor=${config.state.groutingColor}
-  &gridlines=${config.state.gridlines}
-  &startDirection=${config.pathState.startDirection}
-  &pathStroke=${config.pathState.borderEnabled}
-  &pathWidth=${config.pathState.borderWidth}
-  &pathStrokeColor=${config.pathState.borderColor}
-  &outsideFill=${config.outsideCellState.fillEnabled}
-  &outsideFillColor=${config.outsideCellState.backgroundColor}
-  &outsideStroke=${config.outsideCellState.borderEnabled}
-  &outsideStrokeWidth=${config.outsideCellState.borderWidth}
-  &outsideStrokeColor=${config.outsideCellState.borderColor}
-  &insideFill=${config.insideCellState.fillEnabled}
-  &insideFillColor=${config.insideCellState.backgroundColor}
-  &insideStroke=${config.insideCellState.borderEnabled}
-  &insideStrokeWidth=${config.insideCellState.borderWidth}
-  &insideStrokeColor=${config.insideCellState.borderColor}
-  &activeFill=${config.activeCellState.fillEnabled}
-  &activeFillColor=${config.activeCellState.backgroundColor}
-  &activeStroke=${config.activeCellState.borderEnabled}
-  &activeStrokeWidth=${config.activeCellState.borderWidth}
-  &activeStrokeColor=${config.activeCellState.borderColor}
-  &random=${Math.random()}`
-        .replace(/#/g, "")
-        .replace(/\s/g, "");
+  // const getSingleURL = () => {
+  //   var newURL =
+  //     config.urlHead +
+  //     `/getTile?
+  // &folds=${config.state.folds}
+  // &margin=${config.state.margin}
+  // &cellType=${config.state.cellType}
+  // &triangleAngle=${config.state.triangleAngle}
+  // &radius=${config.state.radius}
+  // &grouting=${config.state.grouting}
+  // &groutingColor=${config.state.groutingColor}
+  // &gridlines=${config.state.gridlines}
+  // &startDirection=${config.pathState.startDirection}
+  // &pathStroke=${config.pathState.borderEnabled}
+  // &pathWidth=${config.pathState.borderWidth}
+  // &pathStrokeColor=${config.pathState.borderColor}
+  // &outsideFill=${config.outsideCellState.fillEnabled}
+  // &outsideFillColor=${config.outsideCellState.backgroundColor}
+  // &outsideStroke=${config.outsideCellState.borderEnabled}
+  // &outsideStrokeWidth=${config.outsideCellState.borderWidth}
+  // &outsideStrokeColor=${config.outsideCellState.borderColor}
+  // &insideFill=${config.insideCellState.fillEnabled}
+  // &insideFillColor=${config.insideCellState.backgroundColor}
+  // &insideStroke=${config.insideCellState.borderEnabled}
+  // &insideStrokeWidth=${config.insideCellState.borderWidth}
+  // &insideStrokeColor=${config.insideCellState.borderColor}
+  // &activeFill=${config.activeCellState.fillEnabled}
+  // &activeFillColor=${config.activeCellState.backgroundColor}
+  // &activeStroke=${config.activeCellState.borderEnabled}
+  // &activeStrokeWidth=${config.activeCellState.borderWidth}
+  // &activeStrokeColor=${config.activeCellState.borderColor}
+  // &random=${Math.random()}`
+  //       .replace(/#/g, "")
+  //       .replace(/\s/g, "");
 
-    return newURL;
-  };
-
-  const downloadRawTurns = () => {
-    // console.log(currentConfigRTX.activeCellState);
-    config.setFoldsShow(true);
-  };
+  //   return newURL;
+  // };
 
   const downloadDragonCurveSVG = () => {
     config.setDownloadShow(true);
-    var url = getSingleURL();
 
-    axios({
-      url: url, //your url
-      method: "GET",
-      responseType: "blob", // important
-    }).then((response) => {
-      // create file link in browser's memory
-      const href = URL.createObjectURL(response.data);
+    let svg = document.getElementById("imageHTMLElement") as HTMLElement;
 
-      // create "a" HTML element with href to file & click
-      const link = document.createElement("a");
-      link.href = href;
-      link.setAttribute("download", "Dragon.svg"); //or any other extension
-      document.body.appendChild(link);
-      link.click();
-
-      // clean up "a" element & remove ObjectURL
-      document.body.removeChild(link);
-      URL.revokeObjectURL(href);
-      config.setDownloadShow(false);
+    const blob = new Blob([svg.innerHTML], {
+      type: "application/svg+xml",
     });
+    const href = URL.createObjectURL(blob);
+
+    // create "a" HTML element with href to file & click
+    const link = document.createElement("a");
+    link.href = href;
+    var fname = `DragonCurve.svg`;
+    link.setAttribute("download", fname); //or any other extension
+    document.body.appendChild(link);
+    link.click();
+
+    // clean up "a" element & remove ObjectURL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+    config.setDownloadShow(false);
   };
 
   const loadCurve = () => {
@@ -260,8 +252,7 @@ export default function ControlLayoutButtons() {
         >
           <svg
             onClick={() => {
-              console.log(config.state.folds);
-              downloadRawTurns;
+              config.setFoldsShow(true);
             }}
             xmlns="http://www.w3.org/2000/svg"
             width="30px"

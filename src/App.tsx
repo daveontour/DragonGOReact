@@ -6,8 +6,6 @@ import { useState } from "react";
 
 const App: React.FC = () => {
   const [showFullScreen, setShowFullScreen] = useState(false);
-  const [fsImageURL, setFSImageURL] = useState("");
-  const [fsImageSize, setFSImageSize] = useState({ width: 100, height: 100 });
 
   const handleFullScreenExit = () => {
     if (document.exitFullscreen) {
@@ -27,13 +25,8 @@ const App: React.FC = () => {
       <BodyLayout
         showFullScreen={showFullScreen}
         setShowFullScreen={setShowFullScreen}
-        setFSImageURL={setFSImageURL}
-        setFSImageSize={setFSImageSize}
       />
       <FullScreenLayout
-        imgUrl={fsImageURL}
-        imageSize={fsImageSize}
-        setImageSize={setFSImageSize}
         showFullScreen={showFullScreen}
         setShowFullScreen={setShowFullScreen}
       />

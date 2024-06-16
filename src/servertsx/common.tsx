@@ -36,14 +36,6 @@ export interface RequestConfig {
   OriginX: number;
   OrignY: number;
   Margin: number;
-  // InsideStrokeColor:     color.RGBA
-  // InsideFillColor:       color.RGBA
-  // OutsideStrokeColor:    color.RGBA
-  // OutsideFillColor:      color.RGBA
-  // ActiveStrokeColor:     color.RGBA
-  // ActiveFillColor:       color.RGBA
-  // PathStrokeColor:       color.RGBA
-  // GroutingColor:         color.RGBA
   InsideStrokeColorRaw: string;
   InsideFillColorRaw: string;
   OutsideStrokeColorRaw: string;

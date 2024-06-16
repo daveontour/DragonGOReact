@@ -90,14 +90,10 @@ export interface Config {
   >;
   downloadShow: boolean;
   setDownloadShow: react.Dispatch<react.SetStateAction<boolean>>;
-  collageShow: boolean;
-  setCollageShow: react.Dispatch<react.SetStateAction<boolean>>;
   settingsShow: boolean;
   setSettingsShow: react.Dispatch<react.SetStateAction<boolean>>;
   foldsShow: boolean;
   setFoldsShow: react.Dispatch<react.SetStateAction<boolean>>;
-  zipShow: boolean;
-  setZipShow: react.Dispatch<react.SetStateAction<boolean>>;
   saveShow: boolean;
   setSaveShow: react.Dispatch<react.SetStateAction<boolean>>;
   loadShow: boolean;

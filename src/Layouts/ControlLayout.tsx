@@ -14,30 +14,20 @@ import FormControl from "react-bootstrap/esm/FormControl";
 import FormLabel from "react-bootstrap/esm/FormLabel";
 import CellConfig from "../Widgets/CellConfigWidget";
 import PathConfig from "../Widgets/PathConfigWidget";
-import axios from "axios";
+
 import { JSX } from "react/jsx-runtime";
 import GroutingConfig from "../Widgets/GroutingConfigWidget";
 import myGlobalObject from "../globals";
 import ControlLayoutButtons from "./ControlLayoutButtons";
-import {
-  DOWN,
-  LEFT,
-  RIGHT,
-  RequestConfig,
-  UP,
-  calculateTurns,
-} from "../servertsx/common";
+import { DOWN, LEFT, RIGHT, RequestConfig, UP } from "../servertsx/common";
 import { CurrentConfigContext } from "../Contexts";
-import CollageModal from "../DialogBoxes/CreateCollageModal";
 import SettingsModal from "../DialogBoxes/SettingsModal";
-import DownloadingModal from "../DialogBoxes/DownloadingModal";
 import FoldsModal from "../DialogBoxes/RawConfigModal";
 import ConfigSlideShowModal from "../DialogBoxes/ConfigSlideShowModal";
 import FoldsHelpModal from "../DialogBoxes/FoldsHelpModal";
 import RendererHelpModal from "../DialogBoxes/RendererHelpModal";
 import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
 import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
-import DownloadZipModal from "../DialogBoxes/DownloadZipModal";
 import { getDragonSVG, getDragonSizeSVG } from "../servertsx/svg";
 
 //var stopSlideShow = false;
@@ -94,11 +84,9 @@ function calculateImageSize(
 export default function ControlLayout({
   randomDragonCurveLocal,
   randomDragonCurveLocalCurrentSize,
-  setFSImageSize,
 }: {
   randomDragonCurveLocal: any;
   randomDragonCurveLocalCurrentSize: any;
-  setFSImageSize: any;
 }) {
   // Generate the initial image on load
   useEffect(() => {
@@ -114,44 +102,6 @@ export default function ControlLayout({
     path: config.pathState,
     state: config.state,
   });
-
-  const getSingleURL = () => {
-    var newURL =
-      config.urlHead +
-      `/getTile?
-  &folds=${config.state.folds}
-  &margin=${config.state.margin}
-  &cellType=${config.state.cellType}
-  &triangleAngle=${config.state.triangleAngle}
-  &radius=${config.state.radius}
-  &grouting=${config.state.grouting}
-  &groutingColor=${config.state.groutingColor}
-  &gridlines=${config.state.gridlines}
-  &startDirection=${config.pathState.startDirection}
-  &pathStroke=${config.pathState.borderEnabled}
-  &pathWidth=${config.pathState.borderWidth}
-  &pathStrokeColor=${config.pathState.borderColor}
-  &outsideFill=${config.outsideCellState.fillEnabled}
-  &outsideFillColor=${config.outsideCellState.backgroundColor}
-  &outsideStroke=${config.outsideCellState.borderEnabled}
-  &outsideStrokeWidth=${config.outsideCellState.borderWidth}
-  &outsideStrokeColor=${config.outsideCellState.borderColor}
-  &insideFill=${config.insideCellState.fillEnabled}
-  &insideFillColor=${config.insideCellState.backgroundColor}
-  &insideStroke=${config.insideCellState.borderEnabled}
-  &insideStrokeWidth=${config.insideCellState.borderWidth}
-  &insideStrokeColor=${config.insideCellState.borderColor}
-  &activeFill=${config.activeCellState.fillEnabled}
-  &activeFillColor=${config.activeCellState.backgroundColor}
-  &activeStroke=${config.activeCellState.borderEnabled}
-  &activeStrokeWidth=${config.activeCellState.borderWidth}
-  &activeStrokeColor=${config.activeCellState.borderColor}
-  &random=${Math.random()}`
-        .replace(/#/g, "")
-        .replace(/\s/g, "");
-
-    return newURL;
-  };
 
   const generate = () => {
     let sd = LEFT;
@@ -186,7 +136,7 @@ export default function ControlLayout({
       NumberFolds: Number(config.state.folds),
       Radius: Number(config.state.radius),
       StartDirection: sd,
-      CellType: "knuthcurve",
+      CellType: config.state.cellType,
       OriginX: 0,
       OrignY: 0,
       Margin: Number(config.state.margin.replace(/px/g, "")),
@@ -209,7 +159,7 @@ export default function ControlLayout({
       ),
       PathWidth: Number(config.pathState.borderWidth.replace(/px/g, "")),
       Grouting: Number(config.state.grouting.replace(/px/g, "")),
-      TriangleAngle: 30,
+      TriangleAngle: Number(config.state.triangleAngle),
       Format: "",
     };
 
@@ -225,14 +175,6 @@ export default function ControlLayout({
       zoom: zoom,
     });
 
-    // Now get the full screen image size
-    let [imgSXFS, imgSYFS, zoomFS] = calculateImageSize(w, h, true);
-    setFSImageSize({
-      width: imgSXFS,
-      height: imgSYFS,
-      zoom: zoomFS,
-    });
-
     let svgContent = getDragonSVG(rc);
     const imgElement = document.getElementById(
       "imageHTMLElement"
@@ -242,44 +184,20 @@ export default function ControlLayout({
       config.setDirty(false);
     }
 
-    //console.log(s);
-
-    // var newURL = getSingleURL();
-
-    //    var sizeURL = newURL.replace("getTile", "getSize");
-    // axios({
-    //   url: sizeURL, //your url
-    //   method: "POST",
-    //   responseType: "json", // important
-    //   data: JSON.stringify(calculateTurns(9)),
-    // }).then((response) => {
-    //   let [imgSX, imgSY, zoom] = calculateImageSize(
-    //     response.data.width,
-    //     response.data.height,
-    //     false
-    //   );
-    //   config.setImageSize({
-    //     ...config.imageSize,
-    //     width: imgSX,
-    //     height: imgSY,
-    //     zoom: zoom,
-    //   });
-
-    //   // Now get the full screen image size
-    //   let [imgSXFS, imgSYFS, zoomFS] = calculateImageSize(
-    //     response.data.width,
-    //     response.data.height,
-    //     true
-    //   );
-    //   setFSImageSize({
-    //     width: imgSXFS,
-    //     height: imgSYFS,
-    //     zoom: zoomFS,
-    //   });
-
-    //   config.setDirty(false);
-    //   config.updateImage(newURL);
+    // Now get the full screen image size
+    // let [imgSXFS, imgSYFS, zoomFS] = calculateImageSize(w, h, true);
+    // setFSImageSize({
+    //   width: imgSXFS,
+    //   height: imgSYFS,
+    //   zoom: zoomFS,
     // });
+    const imgElementFS = document.getElementById(
+      "imageHTMLElementFullScreen"
+    ) as HTMLImageElement;
+    if (imgElementFS) {
+      imgElementFS.innerHTML = svgContent;
+      config.setDirty(false);
+    }
   };
 
   const randomDragonCurve = () => {
@@ -329,59 +247,26 @@ export default function ControlLayout({
     }, config.settingsConfig.slideShowInterval * 1000);
   };
 
-  const collageSlideShow = () => {
-    config.setSlideShow(true);
-    myGlobalObject.stopSlideShow = false;
-    var url =
-      config.urlHead +
-      `/prepareCollage?width=${config.collageConfig.width}&height=${config.collageConfig.height}&elementWidth=${config.collageConfig.elementWidth}&startDirection=${config.collageConfig.startDirection}&gap=${config.collageConfig.elementGap}&backgroundColor=${config.collageConfig.gapColor}&format=${config.collageConfig.format}`
-        .replace(/#/g, "")
-        .replace(/\s/g, "");
-    axios({
-      url: url, //your url
-      method: "GET",
-      responseType: "json", // important
-    }).then((response) => {
-      config.updateImage(
-        config.urlHead +
-          `/fetchCollage?key=${response.data.key}&format=${config.collageConfig.format}`
-      );
-
-      //wait 2 seconds and then call collageSlideShow again
-      setTimeout(() => {
-        if (!myGlobalObject.stopSlideShow) {
-          collageSlideShow();
-        } else {
-          config.setSlideShow(false);
-        }
-      }, config.settingsConfig.slideShowInterval * 1000);
-    });
-  };
-
-  const createCollage = () => {
-    config.setCollageShow(true);
-  };
-
   // Defintion of the tooltip for various buttons
-  const renderCollageSlideShowTooltip = (
-    props: JSX.IntrinsicAttributes &
-      TooltipProps &
-      RefAttributes<HTMLDivElement>
-  ) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Generate a collage of random dragon curves in a slide show format until
-      the "Stop Slide Show" button is clicked.
-    </Tooltip>
-  );
-  const renderCollageSlideShowConfigureTooltip = (
-    props: JSX.IntrinsicAttributes &
-      TooltipProps &
-      RefAttributes<HTMLDivElement>
-  ) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Configure the collage slide show settings.
-    </Tooltip>
-  );
+  // const renderCollageSlideShowTooltip = (
+  //   props: JSX.IntrinsicAttributes &
+  //     TooltipProps &
+  //     RefAttributes<HTMLDivElement>
+  // ) => (
+  //   <Tooltip id="button-tooltip" {...props}>
+  //     Generate a collage of random dragon curves in a slide show format until
+  //     the "Stop Slide Show" button is clicked.
+  //   </Tooltip>
+  // );
+  // const renderCollageSlideShowConfigureTooltip = (
+  //   props: JSX.IntrinsicAttributes &
+  //     TooltipProps &
+  //     RefAttributes<HTMLDivElement>
+  // ) => (
+  //   <Tooltip id="button-tooltip" {...props}>
+  //     Configure the collage slide show settings.
+  //   </Tooltip>
+  // );
   const renderCurrentSizeTooltip = (
     props: JSX.IntrinsicAttributes &
       TooltipProps &
@@ -525,27 +410,6 @@ export default function ControlLayout({
               config.setState({ ...config.state, pallette: "highcontrast" });
             }}
           />
-          {/* <Container>
-            <Row className="mb-1">
-              <Col xs={8}>
-                <FormLabel>Slide Show Interval (seconds)</FormLabel>
-              </Col>
-              <Col xs={2}>
-                <input
-                  type="number"
-                  min="1"
-                  max="60"
-                  value={settingsConfig.slideShowInterval}
-                  onChange={(e) => {
-                    setSettingsConfig({
-                      ...settingsConfig,
-                      slideShowInterval: parseInt(e.target.value),
-                    });
-                  }}
-                />
-              </Col>
-            </Row>
-          </Container> */}
 
           <Button
             size="sm"
@@ -940,67 +804,8 @@ export default function ControlLayout({
               </Stack>
             </Stack>
 
-            {/* The Collage Button  Stack */}
-            <Stack direction="vertical" gap={1} style={{ marginTop: "5px" }}>
-              {/* <FormLabel style={{ fontWeight: "bold" }}>
-                Generate A Collage of Curves
-              </FormLabel> */}
-              <Stack direction="horizontal" gap={1}>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={renderCollageSlideShowTooltip}
-                >
-                  <Button
-                    disabled={config.slideShow}
-                    size="sm"
-                    variant="primary"
-                    onClick={collageSlideShow}
-                    style={{ width: "220px" }}
-                  >
-                    Collage Slide Show
-                  </Button>
-                </OverlayTrigger>
-                <OverlayTrigger
-                  placement="right"
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={renderCollageSlideShowConfigureTooltip}
-                >
-                  <Button
-                    disabled={config.slideShow}
-                    size="sm"
-                    variant="primary"
-                    onClick={createCollage}
-                    style={{ width: "60px" }}
-                  >
-                    <svg
-                      onClick={() => {
-                        createCollage();
-                      }}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      className="bi bi-info-circle"
-                      viewBox="0 0 16 16"
-                      style={{
-                        marginLeft: "5px",
-                        marginTop: "-5px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
-                      <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
-                    </svg>
-                  </Button>
-                </OverlayTrigger>
-              </Stack>
-            </Stack>
-            <CollageModal />
             <SettingsModal />
-            <DownloadingModal />
             <FoldsModal />
-            <DownloadZipModal />
             <SaveCurveModal config={configState} />
             <LoadCurveModal />
             <RendererHelpModal />
