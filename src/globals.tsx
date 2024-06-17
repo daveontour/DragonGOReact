@@ -4,5 +4,6 @@ const myGlobalObject = {
   randomHue: false,
   lastConstrastValue: "",
   contrastCount: 0,
+  configJSON: "",
 };
 export default myGlobalObject;

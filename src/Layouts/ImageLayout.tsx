@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { CurrentConfigContext } from "../Contexts";
 import ZoomControl from "../Widgets/ZoomControlWidget";
 import "./ImageLayout.css";
+import myGlobalObject from "../globals";
 
 export default function ImageLayout({
   statsURL,
@@ -14,9 +15,34 @@ export default function ImageLayout({
 }) {
   let config = useContext(CurrentConfigContext);
 
+  function handleKeyPress(event: React.KeyboardEvent<HTMLDivElement>): void {
+    if (event.type === "keydown" && event.key.toLowerCase() === "s") {
+      console.log(myGlobalObject.configJSON);
+      const blob = new Blob([myGlobalObject.configJSON], {
+        type: "application/json",
+      });
+      const href = URL.createObjectURL(blob);
+
+      // create "a" HTML element with href to file & click
+      const link = document.createElement("a");
+      link.href = href;
+      var fname = `SaveDragonCurveConfig.json`;
+      link.setAttribute("download", fname); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+
+      // clean up "a" element & remove ObjectURL
+      document.body.removeChild(link);
+      URL.revokeObjectURL(href);
+    }
+
+    document.getElementById("imageHTMLElement")?.focus();
+  }
+
   return (
     <>
       <div
+        onKeyDown={handleKeyPress}
         style={{
           height: "calc(100vh - 90px)",
           width: "calc(100vw - 335px)",
@@ -32,9 +58,12 @@ export default function ImageLayout({
         }}
       >
         <div
+          tabIndex={0}
+          onKeyDown={handleKeyPress}
           id="imageHTMLElement"
           className={config.settingsConfig.background}
           style={{
+            outline: "none",
             height: "calc(100% - 25px)",
             width: "100%",
             overflow: "auto",

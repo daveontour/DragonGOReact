@@ -259,7 +259,7 @@ export default function BodyLayout({
     let B = Math.floor(Math.random() * 63);
 
     let rgb = (R << 16) + (G << 8) + B;
-    return `#${rgb.toString(16)}`;
+    return `#${rgb.toString(16)}${generateRandomOpacity()}`;
   };
 
   const generateBlueHueColor = () => {
@@ -268,7 +268,7 @@ export default function BodyLayout({
     let B = Math.floor(Math.random() * 127 + 127);
 
     let rgb = (R << 16) + (G << 8) + B;
-    return `#${rgb.toString(16)}`;
+    return `#${rgb.toString(16)}${generateRandomOpacity()}`;
   };
   const generateGreenHueColor = () => {
     let R = Math.floor(Math.random() * 63);
@@ -283,10 +283,11 @@ export default function BodyLayout({
     let R = Math.floor(Math.random() * 255);
     let G = Math.floor(Math.random() * 255);
     let B = Math.floor(Math.random() * 255);
-    let A = Math.floor(Math.random() * 127 + 127);
+    //  let A = Math.floor(Math.random() * 127 + 127);
 
-    let rgb = (R << 24) + (G << 16) + (B << 8) + A;
-    return `#${rgb.toString(16)}`;
+    let rgb = (R << 16) + (G << 8) + B;
+    console.log(`#${rgb.toString(16)}${generateRandomOpacity()}`);
+    return `#${rgb.toString(16)}${generateRandomOpacity()}`;
   };
   const generatePastelColor = () => {
     let R = Math.floor(Math.random() * 127 + 127);
@@ -294,7 +295,7 @@ export default function BodyLayout({
     let B = Math.floor(Math.random() * 127 + 127);
 
     let rgb = (R << 16) + (G << 8) + B;
-    return `#${rgb.toString(16)}`;
+    return `#${rgb.toString(16)}${generateRandomOpacity()}`;
   };
 
   const generateVibrantColor = () => {
@@ -314,22 +315,35 @@ export default function BodyLayout({
     return `#${rgb.toString(16).padStart(6, "0")}`;
   };
 
+  const generateRandomOpacity = () => {
+    let randomHex = Math.floor(Math.random() * 256)
+      .toString(16)
+      .padStart(2, "0");
+    if (Math.random() > 0.5) {
+      randomHex = "ff";
+    }
+    return `${randomHex}`;
+  };
+
   const generateBorderWidth = (seed: number) => {
     return Math.floor(Math.random() * seed).toString() + "px";
   };
 
   const setRandomState = () => {
-    state.folds = ["9", "10", "11"][Math.floor(Math.random() * 3)];
+    state.folds = ["7", "8", "9", "10", "11"][Math.floor(Math.random() * 5)];
     state.grouting = ["0", "0", "0", "0", "0", "1", "2", "3", "4", "5"][
       Math.floor(Math.random() * 9)
     ];
     state.margin = "5";
-    state.cellType = ["quadrant", "line", "corner", "knuth", "knuthcurve"][
-      Math.floor(Math.random() * 5)
-    ];
-    state.triangleAngle = ["0", "10", "20", "30", "45", "50", "60", "65"][
-      Math.floor(Math.random() * 8)
-    ];
+    state.cellType = [
+      "quadrant",
+      "line",
+      "corner",
+      "knuth",
+      "knuthcurve",
+      "knuthtri",
+    ][Math.floor(Math.random() * 6)];
+
     state.radius = ["5", "8", "10", "12"][Math.floor(Math.random() * 4)];
     state.gridlines = Math.random() > 0.75;
     //state.pallette = ["pastel", "vibrant", "random"][Math.floor(Math.random() * 3)];
@@ -341,50 +355,14 @@ export default function BodyLayout({
     ) {
       state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
     }
-    if (myGlobalObject.randomHue) {
-      myGlobalObject.colorPallete = ["redhue", "bluehue", "greenhue"][
-        Math.floor(Math.random() * 3)
-      ];
-      state.pallette = myGlobalObject.colorPallete;
-    }
-
-    state.groutingColor = generateColor();
-
-    if (Math.random() > 0.5) {
-      state.groutingColor = "#ffffffff";
-    }
-
-    pathState.borderStyle = "solid";
-    pathState.borderWidth = generateBorderWidth(4);
-    pathState.borderColor = generateColor();
-    pathState.borderEnabled = Math.random() > 0.66;
 
     // set pathState.startDirection to a random value from the set of "UP", "DOWN", "LEFT", "RIGHT"
 
     pathState.startDirection = ["UP", "DOWN", "LEFT", "RIGHT"][
-      Math.floor(Math.random() * 4)
+      Math.floor(Math.random() * 1)
     ];
 
-    insideCellState.borderStyle = "solid";
-    insideCellState.borderWidth = generateBorderWidth(4);
-    insideCellState.borderColor = generateColor();
-    insideCellState.backgroundColor = generateColor();
-    insideCellState.borderEnabled = Math.random() > 0.5;
-    insideCellState.fillEnabled = Math.random() > 0.5;
-
-    outsideCellState.borderStyle = "solid";
-    outsideCellState.borderWidth = generateBorderWidth(4);
-    outsideCellState.borderColor = generateColor();
-    outsideCellState.backgroundColor = generateColor();
-    outsideCellState.borderEnabled = Math.random() > 0.6;
-    outsideCellState.fillEnabled = Math.random() > 0.4;
-
-    activeCellState.borderStyle = "solid";
-    activeCellState.borderWidth = generateBorderWidth(4);
-    activeCellState.borderColor = generateColor();
-    activeCellState.backgroundColor = generateColor();
-    activeCellState.borderEnabled = Math.random() > 0.6;
-    activeCellState.fillEnabled = Math.random() > 0.4;
+    setRandomCellScheme();
   };
 
   const setRandomCurrentSizeState = () => {
@@ -402,36 +380,39 @@ export default function BodyLayout({
       ];
     }
 
-    state.triangleAngle = ["0", "10", "20", "30", "45", "50", "60", "65", "75"][
+    if (
+      state.cellType === "knuthcurve" ||
+      state.cellType === "knuth" ||
+      state.cellType === "knuthtri"
+    ) {
+      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
+    }
+
+    // set pathState.startDirection to a random value from the set of "UP", "DOWN", "LEFT", "RIGHT"
+    setRandomCellScheme();
+  };
+
+  const setRandomCellScheme = () => {
+    state.triangleAngle = ["0", "10", "20", "30", "45", "50", "60", "65"][
       Math.floor(Math.random() * 8)
     ];
 
-    if (state.cellType === "knuthcurve" || state.cellType === "knuth") {
-      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
-    } else {
-      state.grouting = "0";
+    state.groutingColor = generateColor();
+    if (Math.random() > 0.5) {
+      state.groutingColor = "#ffffffff";
     }
-
+    state.gridlines = Math.random() > 0.75;
     if (myGlobalObject.randomHue) {
       myGlobalObject.colorPallete = ["redhue", "bluehue", "greenhue"][
         Math.floor(Math.random() * 3)
       ];
       state.pallette = myGlobalObject.colorPallete;
     }
-    state.groutingColor = generateColor();
-
-    if (Math.random() > 0.5) {
-      state.groutingColor = "#ffffffff";
-    }
-    state.gridlines = Math.random() > 0.75;
 
     pathState.borderStyle = "solid";
-    pathState.borderWidth =
-      (3 + Math.floor(Math.random() * 3)).toString() + "px";
+    pathState.borderWidth = generateBorderWidth(4);
     pathState.borderColor = generateColor();
     pathState.borderEnabled = Math.random() > 0.3;
-
-    // set pathState.startDirection to a random value from the set of "UP", "DOWN", "LEFT", "RIGHT"
 
     insideCellState.borderStyle = "solid";
     insideCellState.borderWidth = generateBorderWidth(4);
@@ -444,7 +425,7 @@ export default function BodyLayout({
     outsideCellState.borderWidth = generateBorderWidth(4);
     outsideCellState.borderColor = generateColor();
     outsideCellState.backgroundColor = generateColor();
-    outsideCellState.borderEnabled = Math.random() > 0.5;
+    outsideCellState.borderEnabled = Math.random() > 0.6;
     outsideCellState.fillEnabled = Math.random() > 0.5;
 
     activeCellState.borderStyle = "solid";
@@ -454,52 +435,6 @@ export default function BodyLayout({
     activeCellState.borderEnabled = Math.random() > 0.5;
     activeCellState.fillEnabled = Math.random() > 0.5;
   };
-
-  // const [imgUrl, setImgUrl] = useState(
-  //   urlHead +
-  //     `/getTile?
-  //   &folds=${state.folds}
-  //   &margin=${state.margin}
-  //   &cellType=${state.cellType}
-  //   &triangleAngle=${state.triangleAngle}
-  //   &radius=${state.radius}
-  //   &grouting=${state.grouting}
-  //   &groutingColor=${state.groutingColor}
-  //   &gridlines=${state.gridlines}
-  //   &startDirection=${pathState.startDirection}
-  //   &pathStroke=${pathState.borderEnabled}
-  //   &pathWidth=${pathState.borderWidth}
-  //   &pathStrokeColor=${pathState.borderColor}
-  //   &outsideFill=${outsideCellState.fillEnabled}
-  //   &outsideFillColor=${outsideCellState.backgroundColor}
-  //   &outsideStroke=${outsideCellState.borderEnabled}
-  //   &outsideStrokeWidth=${outsideCellState.borderWidth}
-  //   &outsideStrokeColor=${outsideCellState.borderColor}
-  //   &insideFill=${insideCellState.fillEnabled}
-  //   &insideFillColor=${insideCellState.backgroundColor}
-  //   &insideStroke=${insideCellState.borderEnabled}
-  //   &insideStrokeWidth=${insideCellState.borderWidth}
-  //   &insideStrokeColor=${insideCellState.borderColor}
-  //   &activeFill=${activeCellState.fillEnabled}
-  //   &activeFillColor=${activeCellState.backgroundColor}
-  //   &activeStroke=${activeCellState.borderEnabled}
-  //   &activeStrokeWidth=${activeCellState.borderWidth}
-  //   &activeStrokeColor=${activeCellState.borderColor}
-  //   &random=${Math.random()}`
-  //       .replace(/#/g, "")
-  //       .replace(/\s/g, "")
-  // );
-
-  const [statsURL, setStatsURL] = useState("");
-  // const generate = (newImgUrl: string) => {
-  //   newImgUrl = newImgUrl.replace(/#/g, "").replace(/\s/g, "");
-  //   setImgUrl(newImgUrl);
-  //   let statsURL = newImgUrl.replace("getTile", "getStats");
-  //   setStatsURL(statsURL);
-  //   //  if (showFullScreen) {
-  //   setFSImageURL(newImgUrl);
-  //   //    }
-  // };
 
   return (
     <>
@@ -564,7 +499,7 @@ export default function BodyLayout({
           ></ControlLayout>
 
           <ImageLayout
-            statsURL={statsURL}
+            statsURL={""}
             setShowFullScreen={setShowFullScreen}
             stopSlideShowNow={() => {
               setSlideShow(false);

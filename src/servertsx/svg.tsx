@@ -79,18 +79,30 @@ function createSVG(
   const svgHeight =
     2 * rc.Margin + (height + 3) * rc.Radius + (height + 3) * rc.Grouting;
 
-  let insideFillColor = "#000000";
-  let insideOpacity = 1;
+  let insideFillColor = "#ffffff";
+  let insideOpacity = 0.0;
   if (rc.InsideFill) {
     insideFillColor = toSVGColor(rc.InsideFillColorRaw)[0];
     insideOpacity = toSVGColor(rc.InsideFillColorRaw)[1];
   }
+  let insideStrokeColor = "#ffffff";
+  let insideStrokeOpacity = 0.0;
+  if (rc.InsideStroke) {
+    insideStrokeColor = toSVGColor(rc.InsideStrokeColorRaw)[0];
+    insideStrokeOpacity = toSVGColor(rc.InsideStrokeColorRaw)[1];
+  }
 
-  let outsideFillColor = "#000000";
-  let outsideOpacity = 1;
+  let outsideFillColor = "#ffffff";
+  let outsideOpacity = 0.0;
   if (rc.OutSideFill) {
     outsideFillColor = toSVGColor(rc.OutsideFillColorRaw)[0];
     outsideOpacity = toSVGColor(rc.OutsideFillColorRaw)[1];
+  }
+  let outsideStrokeColor = "#000000";
+  let outsideStrokeOpacity = 0.0;
+  if (rc.OutSideStroke) {
+    outsideStrokeColor = toSVGColor(rc.OutsideStrokeColorRaw)[0];
+    outsideStrokeOpacity = toSVGColor(rc.OutsideStrokeColorRaw)[1];
   }
 
   let activeFillColor = "#000000";
@@ -100,26 +112,15 @@ function createSVG(
     activeOpacity = toSVGColor(rc.ActiveFillColorRaw)[1];
   }
 
-  let insideStrokeColor = "#000000";
-  let insideStrokeOpacity = 1;
-  if (rc.InsideStroke) {
-    insideStrokeColor = toSVGColor(rc.InsideStrokeColorRaw)[0];
-    insideStrokeOpacity = toSVGColor(rc.InsideStrokeColorRaw)[1];
-  }
-
-  let outsideStrokeColor = "#000000";
-  let outsideStrokeOpacity = 1;
-  if (rc.OutSideStroke) {
-    outsideStrokeColor = toSVGColor(rc.OutsideStrokeColorRaw)[0];
-    outsideStrokeOpacity = toSVGColor(rc.OutsideStrokeColorRaw)[1];
-  }
-
   let activeStrokeColor = "#000000";
   let activeStrokeOpacity = 1;
   if (rc.ActiveStroke) {
     activeStrokeColor = toSVGColor(rc.ActiveStrokeColorRaw)[0];
     activeStrokeOpacity = toSVGColor(rc.ActiveStrokeColorRaw)[1];
   }
+
+  let bgFillColor = toSVGColor(rc.GroutingColorRaw)[0];
+  let bgOpacity = toSVGColor(rc.GroutingColorRaw)[1];
 
   var pathStrokeColor = toSVGColor(rc.PathStrokeColorRaw)[0];
   var pathStrokeOpacity = toSVGColor(rc.PathStrokeColorRaw)[1];
@@ -164,12 +165,17 @@ function createSVG(
             stroke-linejoin: round;
             fill: none;
         }
+        .bgrect {
+            fill: ${bgFillColor};
+            stroke: none;
+            fill-opacity: ${bgOpacity};
+        }    
     </style>`;
 
   let buf = svgContent.concat(``);
 
   buf = buf.concat(
-    `<rect class="bgrect" x="0" y="0" height="${svgHeight}" width="${svgWidth}" fill="${rc.GroutingColorRaw}" stroke="none" />`
+    `<rect class="bgrect" x="0" y="0" height="${svgHeight}" width="${svgWidth}" />`
   );
 
   const ox = rc.Grouting + rc.Margin;
@@ -352,8 +358,8 @@ function getSVGCellDrawer(
 function getDragonPathKnuthTemplate(
   rc: common.RequestConfig,
   knuthType: number,
-  start: number,
-  end: number
+  _start: number,
+  _end: number
 ): string {
   let buf = `<path class="dragon" `;
 
@@ -558,7 +564,7 @@ function getDragonPathQuadarantTemplate(
 
 function getDragonPathLineTemplate(
   rc: common.RequestConfig,
-  turn: number,
+  _turn: number,
   start: number,
   end: number
 ): string {

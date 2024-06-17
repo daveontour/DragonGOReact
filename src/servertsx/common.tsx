@@ -53,20 +53,7 @@ export interface RequestConfig {
   Format: string;
 }
 
-let CacheMap: { [key: string]: Uint8Array } = {};
-
-const Pallette: [number, number, number, number][] = [
-  [0, 0, 0, 255],
-  [255, 0, 0, 255],
-  [0, 255, 0, 255],
-  [0, 0, 255, 255],
-  [255, 255, 0, 255],
-  [255, 0, 255, 255],
-  [0, 255, 255, 255],
-  [255, 255, 255, 255],
-];
 const AltPalette: [number, number, number, number][] = [[0, 0, 0, 255]];
-let ColorIndex = 0;
 
 class Point {
   constructor(public X: number, public Y: number) {}
@@ -167,74 +154,74 @@ export class Cell {
   }
 }
 
-function getRandomColor(): [number, number, number, number] {
-  const r = Math.floor(Math.random() * 256);
-  const g = Math.floor(Math.random() * 256);
-  const b = Math.floor(Math.random() * 256);
-  const a = Math.floor(Math.random() * 256);
-  return [r, g, b, a];
-}
+// function getRandomColor(): [number, number, number, number] {
+//   const r = Math.floor(Math.random() * 256);
+//   const g = Math.floor(Math.random() * 256);
+//   const b = Math.floor(Math.random() * 256);
+//   const a = Math.floor(Math.random() * 256);
+//   return [r, g, b, a];
+// }
 
-function getRandomboolean(): boolean {
-  return Math.random() >= 0.5;
-}
+// function getRandomboolean(): boolean {
+//   return Math.random() >= 0.5;
+// }
 
-function parseColor(
-  colorString: string
-): [number, number, number, number] | Error {
-  colorString = "#" + colorString;
+// function parseColor(
+//   colorString: string
+// ): [number, number, number, number] | Error {
+//   colorString = "#" + colorString;
 
-  if (colorString.length !== 9 || colorString[0] !== "#") {
-    if (colorString.length === 7) {
-      colorString = colorString + "ff";
-    } else {
-      return new Error("invalid color string");
-    }
-  }
+//   if (colorString.length !== 9 || colorString[0] !== "#") {
+//     if (colorString.length === 7) {
+//       colorString = colorString + "ff";
+//     } else {
+//       return new Error("invalid color string");
+//     }
+//   }
 
-  try {
-    const r = parseInt(colorString.substring(1, 3), 16);
-    const g = parseInt(colorString.substring(3, 5), 16);
-    const b = parseInt(colorString.substring(5, 7), 16);
-    const a = parseInt(colorString.substring(7, 9), 16);
-    return [r, g, b, a];
-  } catch (error) {
-    return new Error("error parsing color");
-  }
-}
+//   try {
+//     const r = parseInt(colorString.substring(1, 3), 16);
+//     const g = parseInt(colorString.substring(3, 5), 16);
+//     const b = parseInt(colorString.substring(5, 7), 16);
+//     const a = parseInt(colorString.substring(7, 9), 16);
+//     return [r, g, b, a];
+//   } catch (error) {
+//     return new Error("error parsing color");
+//   }
+// }
 
-function getNextPoint(
-  p: Point,
-  radius: number,
-  turn: number,
-  dir: number
-): [Point, number] {
-  if (turn === LEFT && dir === UP) {
-    return [new Point(p.X - radius, p.Y - radius), LEFT];
-  }
-  if (turn === RIGHT && dir === UP) {
-    return [new Point(p.X + radius, p.Y - radius), RIGHT];
-  }
-  if (turn === LEFT && dir === DOWN) {
-    return [new Point(p.X + radius, p.Y + radius), RIGHT];
-  }
-  if (turn === RIGHT && dir === DOWN) {
-    return [new Point(p.X - radius, p.Y + radius), LEFT];
-  }
-  if (turn === LEFT && dir === LEFT) {
-    return [new Point(p.X - radius, p.Y + radius), DOWN];
-  }
-  if (turn === RIGHT && dir === LEFT) {
-    return [new Point(p.X - radius, p.Y - radius), UP];
-  }
-  if (turn === LEFT && dir === RIGHT) {
-    return [new Point(p.X + radius, p.Y - radius), UP];
-  }
-  if (turn === RIGHT && dir === RIGHT) {
-    return [new Point(p.X + radius, p.Y + radius), DOWN];
-  }
-  return [new Point(0, 0), 0];
-}
+// function getNextPoint(
+//   p: Point,
+//   radius: number,
+//   turn: number,
+//   dir: number
+// ): [Point, number] {
+//   if (turn === LEFT && dir === UP) {
+//     return [new Point(p.X - radius, p.Y - radius), LEFT];
+//   }
+//   if (turn === RIGHT && dir === UP) {
+//     return [new Point(p.X + radius, p.Y - radius), RIGHT];
+//   }
+//   if (turn === LEFT && dir === DOWN) {
+//     return [new Point(p.X + radius, p.Y + radius), RIGHT];
+//   }
+//   if (turn === RIGHT && dir === DOWN) {
+//     return [new Point(p.X - radius, p.Y + radius), LEFT];
+//   }
+//   if (turn === LEFT && dir === LEFT) {
+//     return [new Point(p.X - radius, p.Y + radius), DOWN];
+//   }
+//   if (turn === RIGHT && dir === LEFT) {
+//     return [new Point(p.X - radius, p.Y - radius), UP];
+//   }
+//   if (turn === LEFT && dir === RIGHT) {
+//     return [new Point(p.X + radius, p.Y - radius), UP];
+//   }
+//   if (turn === RIGHT && dir === RIGHT) {
+//     return [new Point(p.X + radius, p.Y + radius), DOWN];
+//   }
+//   return [new Point(0, 0), 0];
+// }
 
 export function fillConnected(grid: Cell[][]) {
   const rows = grid.length;
@@ -434,6 +421,13 @@ export function calcCells(
     cells.push(newCell);
 
     currentCell = newCell;
+
+    if (isNaN(newCell.Row)) {
+      debugger;
+    }
+  }
+
+  if (isNaN(cells[1].Row)) {
   }
 
   return [cells, minRow, minCol, maxRow, maxCol];
@@ -557,7 +551,7 @@ export function calcCellsKnuth(
 
 export function prepareCells(
   rc: RequestConfig,
-  prepareCells: boolean
+  prepareCellBool: boolean
 ):
   | [Cell[][], number, number, number, number, number, number]
   | [null, number, number, number, number, number, number] {
@@ -591,7 +585,7 @@ export function prepareCells(
   let width = maxCol - minCol;
   let height = maxRow - minRow;
 
-  if (prepareCells) {
+  if (prepareCellBool) {
     let arr: Cell[][] = [];
 
     for (let i = 0; i <= height + 2; i++) {
@@ -623,12 +617,12 @@ export function prepareCells(
             throw new Error("Function not implemented.");
           },
           SetAbsoluteCornersWithGrouting: function (
-            radius: number,
-            rowOffset: number,
-            colOffset: number,
-            originX: number,
-            originY: number,
-            grouting: number
+            _radius: number,
+            _rowOffset: number,
+            _colOffset: number,
+            _originX: number,
+            _originY: number,
+            _grouting: number
           ): void {
             throw new Error("Function not implemented.");
           },
@@ -642,12 +636,25 @@ export function prepareCells(
     let colOffset = -minCol + 1;
     let rowOffset = -minRow + 1;
 
+    if (isNaN(cells[1].Row)) {
+      return [null, width, height, minRow, minCol, maxRow, maxCol];
+    }
+
+    let err = false;
     cells.forEach((cell, idx) => {
       cell.Color = AltPalette[idx % AltPalette.length];
       cell.Row += rowOffset;
       cell.Col += colOffset;
-      arr[cell.Row][cell.Col] = cell;
+      try {
+        arr[cell.Row][cell.Col] = cell;
+      } catch (error) {
+        console.log("error", error);
+        err = true;
+      }
     });
+
+    if (err) {
+    }
 
     // Assume FillConnected is a function that exists in your TypeScript code
     fillConnected(arr);

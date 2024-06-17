@@ -198,6 +198,10 @@ export default function ControlLayout({
       imgElementFS.innerHTML = svgContent;
       config.setDirty(false);
     }
+
+    let json = JSON.stringify(configState, null, 2);
+
+    myGlobalObject.configJSON = json;
   };
 
   const randomDragonCurve = () => {
