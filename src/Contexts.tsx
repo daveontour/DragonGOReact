@@ -44,8 +44,6 @@ export interface Config {
   setShowFoldsHelp: react.Dispatch<react.SetStateAction<boolean>>;
   showSlideShowConfig: boolean;
   setSlideShowConfig: react.Dispatch<react.SetStateAction<boolean>>;
-  slideShowRandomise: boolean;
-  setSlideShowRandomise: react.Dispatch<react.SetStateAction<boolean>>;
   slideShowAutoDownload: boolean;
   setSlideShowAutoDownload: react.Dispatch<react.SetStateAction<boolean>>;
   dirty: boolean;

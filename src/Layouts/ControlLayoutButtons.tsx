@@ -3,13 +3,11 @@ import { JSX } from "react/jsx-runtime";
 import { RefAttributes, useContext, useState } from "react";
 import { CurrentConfigContext } from "../Contexts";
 import { openPrintDialog, downloadPrintOptimizedSVG } from "../utils/printUtils";
-
-//import { CurrentConfigContext } from "./BodyLayout"; // Import the correct type from the 'BodyLayout' file
+import { downloadSVG } from "../utils/downloadUtils";
 
 export default function ControlLayoutButtons() {
   let config = useContext(CurrentConfigContext);
 
-  //const { currentConfigRTX } = react.useContext(CurrentConfigContext); // Specify the type for the 'useContext' hook
   const [configState, setConfigState] = useState({
     outside: config.outsideCellState,
     inside: config.insideCellState,
@@ -18,65 +16,13 @@ export default function ControlLayoutButtons() {
     state: config.state,
   });
 
-  // const getSingleURL = () => {
-  //   var newURL =
-  //     config.urlHead +
-  //     `/getTile?
-  // &folds=${config.state.folds}
-  // &margin=${config.state.margin}
-  // &cellType=${config.state.cellType}
-  // &triangleAngle=${config.state.triangleAngle}
-  // &radius=${config.state.radius}
-  // &grouting=${config.state.grouting}
-  // &groutingColor=${config.state.groutingColor}
-  // &gridlines=${config.state.gridlines}
-  // &startDirection=${config.pathState.startDirection}
-  // &pathStroke=${config.pathState.borderEnabled}
-  // &pathWidth=${config.pathState.borderWidth}
-  // &pathStrokeColor=${config.pathState.borderColor}
-  // &outsideFill=${config.outsideCellState.fillEnabled}
-  // &outsideFillColor=${config.outsideCellState.backgroundColor}
-  // &outsideStroke=${config.outsideCellState.borderEnabled}
-  // &outsideStrokeWidth=${config.outsideCellState.borderWidth}
-  // &outsideStrokeColor=${config.outsideCellState.borderColor}
-  // &insideFill=${config.insideCellState.fillEnabled}
-  // &insideFillColor=${config.insideCellState.backgroundColor}
-  // &insideStroke=${config.insideCellState.borderEnabled}
-  // &insideStrokeWidth=${config.insideCellState.borderWidth}
-  // &insideStrokeColor=${config.insideCellState.borderColor}
-  // &activeFill=${config.activeCellState.fillEnabled}
-  // &activeFillColor=${config.activeCellState.backgroundColor}
-  // &activeStroke=${config.activeCellState.borderEnabled}
-  // &activeStrokeWidth=${config.activeCellState.borderWidth}
-  // &activeStrokeColor=${config.activeCellState.borderColor}
-  // &random=${Math.random()}`
-  //       .replace(/#/g, "")
-  //       .replace(/\s/g, "");
-
-  //   return newURL;
-  // };
-
   const downloadDragonCurveSVG = () => {
     config.setDownloadShow(true);
 
     let svg = document.getElementById("imageHTMLElement") as HTMLElement;
-
-    const blob = new Blob([svg.innerHTML], {
-      type: "application/svg+xml",
-    });
-    const href = URL.createObjectURL(blob);
-
-    // create "a" HTML element with href to file & click
-    const link = document.createElement("a");
-    link.href = href;
-    var fname = `DragonCurve.svg`;
-    link.setAttribute("download", fname); //or any other extension
-    document.body.appendChild(link);
-    link.click();
-
-    // clean up "a" element & remove ObjectURL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
+    if (svg && svg.innerHTML) {
+      downloadSVG(svg.innerHTML, "DragonCurve.svg");
+    }
     config.setDownloadShow(false);
   };
 

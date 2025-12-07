@@ -3,6 +3,7 @@ import Heading from "./Layouts/Heading";
 import BodyLayout from "./Layouts/BodyLayout";
 import FullScreenLayout from "./Layouts/FullScreenLayout";
 import { useState, useRef } from "react";
+import { downloadJSON } from "./utils/downloadUtils";
 
 const App: React.FC = () => {
   const [showFullScreen, setShowFullScreen] = useState(false);
@@ -24,23 +25,7 @@ const App: React.FC = () => {
 
   function handleSave(): void {
     const configJSON = handlersRef.current?.getConfigJSON() || "";
-    const blob = new Blob([configJSON], {
-      type: "application/json",
-    });
-    const href = URL.createObjectURL(blob);
-
-    // create "a" HTML element with href to file & click
-    const link = document.createElement("a");
-    link.href = href;
-    var fname = `SaveDragonCurveConfig.json`;
-    link.setAttribute("download", fname); //or any other extension
-    document.body.appendChild(link);
-    link.click();
-
-    // clean up "a" element & remove ObjectURL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
-
+    downloadJSON(configJSON, "SaveDragonCurveConfig.json");
     document.getElementById("imageHTMLElementFullScreen")?.focus();
   }
 

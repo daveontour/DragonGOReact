@@ -18,7 +18,6 @@ export default function BodyLayout({
   } | null>;
 }) {
   const urlHead = "http://localhost:8080";
-  // const urlHead = "./";
 
   const [slideShow, setSlideShow] = useState(false);
   const [slideShowPause, setSlideShowPause] = useState(false);
@@ -59,6 +58,7 @@ export default function BodyLayout({
     borderStyle: "solid",
     borderWidth: "1px",
     borderColor: "#000000ff",
+    borderRadius: "0px",
     backgroundColor: "#7090B7FF",
     borderEnabled: true,
     fillEnabled: true,
@@ -70,6 +70,7 @@ export default function BodyLayout({
     borderStyle: "solid",
     borderWidth: "2px",
     borderColor: "#00ffff",
+    borderRadius: "0px",
     backgroundColor: "#ff0000",
     borderEnabled: false,
     fillEnabled: false,
@@ -80,6 +81,7 @@ export default function BodyLayout({
     borderStyle: "solid",
     borderWidth: "1px",
     borderColor: "#000000ff",
+    borderRadius: "0px",
     backgroundColor: "#7090b7cc",
     borderEnabled: true,
     fillEnabled: true,
@@ -104,7 +106,6 @@ export default function BodyLayout({
   const [showRendererHelp, setShowRendererHelp] = useState(false);
   const [showFoldsHelp, setShowFoldsHelp] = useState(false);
   const [showSlideShowConfig, setSlideShowConfig] = useState(false);
-  const [slideShowRandomise, setSlideShowRandomise] = useState(false);
   const [slideShowAutoDownload, setSlideShowAutoDownload] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [randomiserScheme, setRandomiserScheme] = useState("standard");
@@ -124,65 +125,71 @@ export default function BodyLayout({
   }
 
   const setSlideShowRandom = () => {
-    let s = executeRandomiser(
-      state,
-      pathState,
-      activeCellState,
-      insideCellState,
-      outsideCellState,
-      slideShowRandomise,
-      randomiserScheme,
-      state.pallette,
-      lastConstrastValue,
-      contrastCount,
-      setLastConstrastValue,
-      setContrastCount
-    );
-    setState({
-      ...state,
-      margin: s[0].margin,
-      cellType: s[0].cellType,
-      radius: s[0].radius,
-      gridlines: s[0].gridlines,
-      grouting: s[0].grouting,
-      triangleAngle: s[0].triangleAngle,
-      folds: s[0].folds,
-    });
-    setPathState({
-      ...pathState,
-      borderStyle: s[1].borderStyle,
-      borderWidth: s[1].borderWidth,
-      borderColor: s[1].borderColor,
-      borderEnabled: s[1].borderEnabled,
-      startDirection: s[1].startDirection,
-    });
-    setInsideCellState({
-      ...insideCellState,
-      borderStyle: s[2].borderStyle,
-      borderWidth: s[2].borderWidth,
-      borderColor: s[2].borderColor,
-      borderEnabled: s[2].borderEnabled,
-      backgroundColor: s[2].backgroundColor,
-      fillEnabled: s[2].fillEnabled,
-    });
-    setOutsideCellState({
-      ...outsideCellState,
-      borderStyle: s[3].borderStyle,
-      borderWidth: s[3].borderWidth,
-      borderColor: s[3].borderColor,
-      borderEnabled: s[3].borderEnabled,
-      backgroundColor: s[3].backgroundColor,
-      fillEnabled: s[3].fillEnabled,
-    });
+    setState((currentState) => {
+      let s = executeRandomiser(
+        { ...currentState },
+        pathState,
+        activeCellState,
+        insideCellState,
+        outsideCellState,
+        randomiserScheme,
+        currentState.pallette,
+        lastConstrastValue,
+        contrastCount,
+        setLastConstrastValue,
+        setContrastCount
+      );
+      
+      // Update other states using current values
+      setPathState((currentPathState) => ({
+        ...currentPathState,
+        borderStyle: s[1].borderStyle,
+        borderWidth: s[1].borderWidth,
+        borderColor: s[1].borderColor,
+        borderEnabled: s[1].borderEnabled,
+        startDirection: s[1].startDirection,
+      }));
+      setInsideCellState((currentInsideState) => ({
+        ...currentInsideState,
+        borderStyle: s[2].borderStyle,
+        borderWidth: s[2].borderWidth,
+        borderColor: s[2].borderColor,
+        borderEnabled: s[2].borderEnabled,
+        backgroundColor: s[2].backgroundColor,
+        fillEnabled: s[2].fillEnabled,
+      }));
+      setOutsideCellState((currentOutsideState) => ({
+        ...currentOutsideState,
+        borderStyle: s[3].borderStyle,
+        borderWidth: s[3].borderWidth,
+        borderColor: s[3].borderColor,
+        borderEnabled: s[3].borderEnabled,
+        backgroundColor: s[3].backgroundColor,
+        fillEnabled: s[3].fillEnabled,
+      }));
 
-    setActiveCellState({
-      ...activeCellState,
-      borderStyle: s[4].borderStyle,
-      borderWidth: s[4].borderWidth,
-      borderColor: s[4].borderColor,
-      borderEnabled: s[4].borderEnabled,
-      backgroundColor: s[4].backgroundColor,
-      fillEnabled: s[4].fillEnabled,
+      setActiveCellState((currentActiveState) => ({
+        ...currentActiveState,
+        borderStyle: s[4].borderStyle,
+        borderWidth: s[4].borderWidth,
+        borderColor: s[4].borderColor,
+        borderEnabled: s[4].borderEnabled,
+        backgroundColor: s[4].backgroundColor,
+        fillEnabled: s[4].fillEnabled,
+      }));
+      
+      return {
+        ...currentState,
+        margin: s[0].margin,
+        cellType: s[0].cellType,
+        radius: s[0].radius,
+        gridlines: s[0].gridlines,
+        grouting: s[0].grouting,
+        triangleAngle: s[0].triangleAngle,
+        folds: s[0].folds,
+        pallette: currentState.pallette,
+        groutingColor: currentState.groutingColor,
+      };
     });
   };
 
@@ -220,8 +227,6 @@ export default function BodyLayout({
           setShowFoldsHelp,
           showSlideShowConfig,
           setSlideShowConfig,
-          slideShowRandomise,
-          setSlideShowRandomise,
           slideShowAutoDownload,
           setSlideShowAutoDownload,
           dirty,

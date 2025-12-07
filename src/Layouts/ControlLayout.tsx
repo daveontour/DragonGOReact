@@ -1,4 +1,4 @@
-import { RefAttributes, useContext, useEffect, useState } from "react";
+import { RefAttributes, useContext, useEffect, useState, useRef } from "react";
 import {
   Button,
   ButtonGroup,
@@ -31,7 +31,6 @@ import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
 import axios from "axios";
 import { getDragonSVG, getDragonSizeSVG } from "../servertsx/svg";
 
-//var stopSlideShow = false;
 var opened = true;
 
 function calculateImageSize(
@@ -82,7 +81,8 @@ function calculateImageSize(
   return ["auto", "auto", "100"];
 }
 
-import { SetSlideShowRandomFunction } from "../types";
+import { SetSlideShowRandomFunction, SavedConfig } from "../types";
+import { downloadSVG, downloadJSON } from "../utils/downloadUtils";
 
 export default function ControlLayout({
   setSlideShowRandomFunction,
@@ -95,8 +95,25 @@ export default function ControlLayout({
   }, [opened]);
 
   let config = useContext(CurrentConfigContext);
+  const intervalIdRef = useRef<number | null>(null);
+  const autoDownloadRef = useRef<boolean>(config.slideShowAutoDownload || false);
+  const slideShowPauseRef = useRef<boolean>(config.slideShowPause);
+  const paletteRef = useRef<string>(config.state.pallette || "unknown");
+  
+  // Keep refs in sync with Context state
+  useEffect(() => {
+    autoDownloadRef.current = config.slideShowAutoDownload || false;
+  }, [config.slideShowAutoDownload]);
+  
+  useEffect(() => {
+    slideShowPauseRef.current = config.slideShowPause;
+  }, [config.slideShowPause]);
 
-  const [configState] = useState({
+  useEffect(() => {
+    paletteRef.current = config.state.pallette || "unknown";
+  }, [config.state.pallette]);
+
+  const [configState] = useState<SavedConfig>({
     outside: config.outsideCellState,
     inside: config.insideCellState,
     active: config.activeCellState,
@@ -194,23 +211,12 @@ export default function ControlLayout({
     }
 
     // Auto-download if slideshow is running and auto-download is enabled
-    // Check if interval is running (intervalID will be a number when setInterval is active)
-    const isSlideShowRunning = typeof config.intervalID === 'number' && !config.slideShowPause;
-    if (isSlideShowRunning && config.slideShowAutoDownload) {
-      const blob = new Blob([svgContent], {
-        type: "application/svg+xml",
-      });
-      const href = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = href;
+    // Use refs to check state (more reliable than Context state due to async updates)
+    if (intervalIdRef.current !== null && !slideShowPauseRef.current && autoDownloadRef.current) {
       const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-      const paletteName = config.state.pallette || "unknown";
+      const paletteName = paletteRef.current;
       const fname = `${paletteName}_DragonCurve_${timestamp}.svg`;
-      link.setAttribute("download", fname);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(href);
+      downloadSVG(svgContent, fname);
     }
 
     let json = JSON.stringify(configState, null, 2);
@@ -221,17 +227,20 @@ export default function ControlLayout({
   function startInterval() {
     config.setSlideShow(true);
     const intervalId = setInterval(() => {
-      if (!config.slideShowPause) {
+      if (!slideShowPauseRef.current) {
         setSlideShowRandomFunction();
         generate();
       }
     }, config.settingsConfig.slideShowInterval * 1000);
-    config.setIntervalID(intervalId as unknown as number);
+    const intervalIdNumber = intervalId as unknown as number;
+    intervalIdRef.current = intervalIdNumber;
+    config.setIntervalID(intervalIdNumber);
   }
 
   function changeSlideShowInterval() {
-    if (config.intervalID !== null) {
-      clearInterval(config.intervalID);
+    if (intervalIdRef.current !== null) {
+      clearInterval(intervalIdRef.current);
+      intervalIdRef.current = null;
     }
     startInterval();
   }
@@ -241,38 +250,27 @@ export default function ControlLayout({
   };
 
   const stopSlideShowNow = () => {
-    if (config.intervalID !== null) {
-      clearInterval(config.intervalID);
+    if (intervalIdRef.current !== null) {
+      clearInterval(intervalIdRef.current);
+      intervalIdRef.current = null;
       config.setIntervalID(null);
     }
+    slideShowPauseRef.current = false;
     config.setSlideShow(false);
     config.setSlideShowPause(false);
   };
 
   const pauseSlideShowNow = () => {
+    slideShowPauseRef.current = true;
     config.setSlideShowPause(true);
   };
   const resumeSlideShowNow = () => {
+    slideShowPauseRef.current = false;
     config.setSlideShowPause(false);
   };
 
   function saveCurrentSlide(): void {
-    const blob = new Blob([config.configJSON], {
-      type: "application/json",
-    });
-    const href = URL.createObjectURL(blob);
-
-    // create "a" HTML element with href to file & click
-    const link = document.createElement("a");
-    link.href = href;
-    var fname = `SaveDragonCurveConfig.json`;
-    link.setAttribute("download", fname); //or any other extension
-    document.body.appendChild(link);
-    link.click();
-
-    // clean up "a" element & remove ObjectURL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
+    downloadJSON(config.configJSON, "SaveDragonCurveConfig.json");
   }
 
   // Defintion of the tooltip for various buttons
@@ -340,7 +338,6 @@ export default function ControlLayout({
             onChange={(e) => {
               let t = e.target.value;
               config.setState({ ...config.state, pallette: t });
-              config.setSlideShowRandomise(t === "random" ? true : false);
 
               if (t === "randomhue") {
                 config.setRandomHue(true);
@@ -364,33 +361,15 @@ export default function ControlLayout({
         </Stack>
 
         <Stack direction="vertical" gap={1} style={{ marginTop: "15px" }}>
-          <FormLabel style={{ fontWeight: "bold" }}>Size</FormLabel>
-          <Form.Check
-            type="radio"
-            label="Maintain Current Size"
-            name="radioSizeOptions"
-            checked={config.slideShowRandomise === false}
-            onChange={() => {
-              config.setSlideShowRandomise(false);
-            }}
-          />
-          <Form.Check
-            type="radio"
-            label="Random Size"
-            name="radioSizeOptions"
-            checked={config.slideShowRandomise === true}
-            onChange={() => {
-              config.setSlideShowRandomise(true);
-            }}
-          />
           <Form.Check
             type="checkbox"
             label="Auto-download each image"
             checked={config.slideShowAutoDownload || false}
             onChange={(e) => {
-              config.setSlideShowAutoDownload(e.target.checked);
+              const checked = e.target.checked;
+              autoDownloadRef.current = checked;
+              config.setSlideShowAutoDownload(checked);
             }}
-            style={{ marginTop: "10px" }}
           />
 
           <Container style={{ marginTop: "15px" }}>
@@ -525,7 +504,6 @@ export default function ControlLayout({
 
       {/* This div is the main control div */}
       <div
-        //className="form-control"
         style={{
           height: "calc(100vh - 90px)",
           display: config.slideShow ? "none" : "grid",
@@ -750,7 +728,6 @@ export default function ControlLayout({
                         config.setState({
                           ...config.state,
                           cellType: e.target.value,
-                          generateEnabled: true,
                         });
                       }}
                     >
@@ -784,7 +761,6 @@ export default function ControlLayout({
                         config.setState({
                           ...config.state,
                           triangleAngle: e.target.value,
-                          generateEnabled: true,
                         });
                       }}
                     >

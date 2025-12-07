@@ -7,31 +7,18 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
-import { CurrentConfigContext, Config } from "../Contexts";
+import { CurrentConfigContext } from "../Contexts";
+import { downloadJSON } from "../utils/downloadUtils";
+import { SavedConfig } from "../types";
 
-function SaveCurveModal({ config }: { config: Config }) {
+function SaveCurveModal({ config }: { config: SavedConfig }) {
   let c = useContext(CurrentConfigContext);
   const dismiss = () => {
     c.setSaveShow(false);
   };
   const handleClose = () => {
     c.setSaveShow(false);
-    const blob = new Blob([JSON.stringify(config, null, 2)], {
-      type: "application/json",
-    });
-    const href = URL.createObjectURL(blob);
-
-    // create "a" HTML element with href to file & click
-    const link = document.createElement("a");
-    link.href = href;
-    var fname = `DragonCurveConfig.json`;
-    link.setAttribute("download", fname); //or any other extension
-    document.body.appendChild(link);
-    link.click();
-
-    // clean up "a" element & remove ObjectURL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
+    downloadJSON(config, "DragonCurveConfig.json");
     c.setSaveShow(false);
   };
 

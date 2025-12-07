@@ -1,5 +1,3 @@
-import React from "react";
-
 // Color and styling types
 export type ColorValue = string; // Hex color string (e.g., "#000000ff")
 export type BorderWidth = string; // CSS border width (e.g., "3px")
@@ -36,12 +34,16 @@ export interface BaseCellState {
   borderStyle: string;
   borderWidth: BorderWidth;
   borderColor: ColorValue;
+  borderRadius: string;
   backgroundColor: ColorValue;
   borderEnabled: boolean;
   fillEnabled: boolean;
   title: string;
   shortTitle: string;
 }
+
+// Union type for all cell states
+export type CellState = ActiveCellState | InsideCellState | OutsideCellState;
 
 // Active cell state
 export interface ActiveCellState extends BaseCellState {}
@@ -80,6 +82,15 @@ export interface ImageSize {
 export type SetShowFullScreen = (show: boolean) => void;
 export type StopSlideShowNow = () => void;
 export type SetSlideShowRandomFunction = () => void;
+
+// Saved config structure (what gets saved/loaded)
+export interface SavedConfig {
+  outside: OutsideCellState;
+  inside: InsideCellState;
+  active: ActiveCellState;
+  path: PathState;
+  state: DragonCurveState;
+}
 
 // Randomiser return type tuple
 export type RandomiserReturnType = [

@@ -93,7 +93,6 @@ function LoadCurveModal() {
         cellType: newConfig.state.cellType,
         triangleAngle: newConfig.state.triangleAngle,
         radius: newConfig.state.radius,
-        generateEnabled: newConfig.state.generateEnabled,
         grouting: newConfig.state.grouting,
       });
     } catch (error) {

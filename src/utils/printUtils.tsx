@@ -182,25 +182,13 @@ export function openPrintDialog(svgContent: string): void {
   }, 100);
 }
 
+import { downloadSVG } from "./downloadUtils";
+
 /**
  * Download print-optimized SVG file
  */
 export function downloadPrintOptimizedSVG(svgContent: string, filename: string = "DragonCurve_A4_Print.svg"): void {
   const printSVG = generatePrintOptimizedSVG(svgContent);
-  const blob = new Blob([printSVG], {
-    type: "application/svg+xml",
-  });
-  const href = URL.createObjectURL(blob);
-
-  // Create download link
-  const link = document.createElement("a");
-  link.href = href;
-  link.setAttribute("download", filename);
-  document.body.appendChild(link);
-  link.click();
-
-  // Clean up
-  document.body.removeChild(link);
-  URL.revokeObjectURL(href);
+  downloadSVG(printSVG, filename);
 }
 

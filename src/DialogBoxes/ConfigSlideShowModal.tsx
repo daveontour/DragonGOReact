@@ -44,25 +44,6 @@ function ConfigSlideShowModal() {
                 />
               </Col>
             </Row>
-            <Row>
-              <Col xs={4}>
-                <FormLabel>Type of Slide Show</FormLabel>
-              </Col>
-              <Col xs={4}>
-                <FormControl
-                  as="select"
-                  value={config.slideShowRandomise ? "random" : "fixed"}
-                  onChange={(e) => {
-                    config.setSlideShowRandomise(
-                      e.target.value === "random" ? true : false
-                    );
-                  }}
-                >
-                  <option value="random">Completely Random Size</option>
-                  <option value="fixed">Maintain Current Size</option>
-                </FormControl>
-              </Col>
-            </Row>
           </Container>
         </Stack>
       </Modal.Body>

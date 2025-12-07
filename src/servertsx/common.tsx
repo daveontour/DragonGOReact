@@ -156,75 +156,6 @@ export class Cell {
   }
 }
 
-// function getRandomColor(): [number, number, number, number] {
-//   const r = Math.floor(Math.random() * 256);
-//   const g = Math.floor(Math.random() * 256);
-//   const b = Math.floor(Math.random() * 256);
-//   const a = Math.floor(Math.random() * 256);
-//   return [r, g, b, a];
-// }
-
-// function getRandomboolean(): boolean {
-//   return Math.random() >= 0.5;
-// }
-
-// function parseColor(
-//   colorString: string
-// ): [number, number, number, number] | Error {
-//   colorString = "#" + colorString;
-
-//   if (colorString.length !== 9 || colorString[0] !== "#") {
-//     if (colorString.length === 7) {
-//       colorString = colorString + "ff";
-//     } else {
-//       return new Error("invalid color string");
-//     }
-//   }
-
-//   try {
-//     const r = parseInt(colorString.substring(1, 3), 16);
-//     const g = parseInt(colorString.substring(3, 5), 16);
-//     const b = parseInt(colorString.substring(5, 7), 16);
-//     const a = parseInt(colorString.substring(7, 9), 16);
-//     return [r, g, b, a];
-//   } catch (error) {
-//     return new Error("error parsing color");
-//   }
-// }
-
-// function getNextPoint(
-//   p: Point,
-//   radius: number,
-//   turn: number,
-//   dir: number
-// ): [Point, number] {
-//   if (turn === LEFT && dir === UP) {
-//     return [new Point(p.X - radius, p.Y - radius), LEFT];
-//   }
-//   if (turn === RIGHT && dir === UP) {
-//     return [new Point(p.X + radius, p.Y - radius), RIGHT];
-//   }
-//   if (turn === LEFT && dir === DOWN) {
-//     return [new Point(p.X + radius, p.Y + radius), RIGHT];
-//   }
-//   if (turn === RIGHT && dir === DOWN) {
-//     return [new Point(p.X - radius, p.Y + radius), LEFT];
-//   }
-//   if (turn === LEFT && dir === LEFT) {
-//     return [new Point(p.X - radius, p.Y + radius), DOWN];
-//   }
-//   if (turn === RIGHT && dir === LEFT) {
-//     return [new Point(p.X - radius, p.Y - radius), UP];
-//   }
-//   if (turn === LEFT && dir === RIGHT) {
-//     return [new Point(p.X + radius, p.Y - radius), UP];
-//   }
-//   if (turn === RIGHT && dir === RIGHT) {
-//     return [new Point(p.X + radius, p.Y + radius), DOWN];
-//   }
-//   return [new Point(0, 0), 0];
-// }
-
 export function fillConnected(grid: Cell[][]) {
   const rows = grid.length;
   const cols = grid[0].length;
@@ -654,10 +585,6 @@ export function prepareCells(
       }
     });
 
-    if (err) {
-    }
-
-    // Assume FillConnected is a function that exists in your TypeScript code
     fillConnected(arr);
     return [arr, width, height, minRow, minCol, maxRow, maxCol];
   }

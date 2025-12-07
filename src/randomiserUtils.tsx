@@ -120,7 +120,6 @@ export function generateRandomColor() {
   let R = Math.floor(Math.random() * 255);
   let G = Math.floor(Math.random() * 255);
   let B = Math.floor(Math.random() * 255);
-  //  let A = Math.floor(Math.random() * 127 + 127);
 
   let rgb = (R << 16) + (G << 8) + B;
   return `#${rgb.toString(16)}${generateRandomOpacity()}`;
@@ -159,13 +158,13 @@ export function generateVanGoghColor() {
   if (colorType < 0.25) {
     // Bold yellows and oranges (sunflowers, stars)
     R = Math.floor(Math.random() * 55 + 200); // 200-255
-    G = Math.floor(Math.random() * 100 + 150); // 150-250
-    B = Math.floor(Math.random() * 80 + 50);  // 50-130
+    G = Math.floor(Math.random() * 75 + 180); // 180-255
+    B = Math.floor(Math.random() * 70 + 30);  // 30-100
   } else if (colorType < 0.45) {
     // Deep blues (starry night)
-    R = Math.floor(Math.random() * 60 + 20);  // 20-80
-    G = Math.floor(Math.random() * 80 + 50);   // 50-130
-    B = Math.floor(Math.random() * 100 + 100); // 100-200
+    R = Math.floor(Math.random() * 50 + 10);  // 10-60
+    G = Math.floor(Math.random() * 60 + 40);   // 40-100
+    B = Math.floor(Math.random() * 106 + 150); // 150-255
   } else if (colorType < 0.65) {
     // Rich greens (fields, cypress trees)
     R = Math.floor(Math.random() * 80 + 50);  // 50-130

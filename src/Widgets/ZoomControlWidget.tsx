@@ -71,12 +71,8 @@ export default function ZoomControl({
   };
 
   const goFullScreen = () => {
-    // Supports most browsers and their versions.
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
-      //      document.getElementsByTagName("body")[0].style.backgroundColor = "black";
-      // document.getElementsByTagName("body")[0].className =
-      //   settingsConfig.background;
       if (config.settingsConfig.background == "plain") {
         document.getElementsByTagName("body")[0].style.backgroundColor =
           "black";

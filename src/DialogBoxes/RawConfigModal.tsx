@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { CurrentConfigContext } from "../Contexts";
 import { calculateTurns } from "../servertsx/common";
+import { downloadJSON } from "../utils/downloadUtils";
 
 function FoldsModal() {
   const [showPrepare, setShowPrepare] = useState(false);
@@ -28,23 +29,7 @@ function FoldsModal() {
     setShowPrepare(true);
 
     let turns = calculateTurns(Number(folds.folds));
-
-    const blob = new Blob([JSON.stringify(turns)], {
-      type: "application/json",
-    });
-    const href = URL.createObjectURL(blob);
-
-    // create "a" HTML element with href to file & click
-    const link = document.createElement("a");
-    link.href = href;
-    var fname = `DragonCurveTurns${folds.folds}.json`;
-    link.setAttribute("download", fname); //or any other extension
-    document.body.appendChild(link);
-    link.click();
-
-    // clean up "a" element & remove ObjectURL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(href);
+    downloadJSON(turns, `DragonCurveTurns${folds.folds}.json`);
 
     config.setFoldsShow(false);
   };

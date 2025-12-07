@@ -18,7 +18,6 @@ export function executeRandomiser(
   activeCellState: ActiveCellState,
   insideCellState: InsideCellState,
   outsideCellState: OutsideCellState,
-  slideShowRandomise: boolean,
   randomiserScheme: string,
   palette: string,
   lastConstrastValue: string,
@@ -26,57 +25,27 @@ export function executeRandomiser(
   setLastConstrastValue: (value: string) => void,
   setContrastCount: (value: number) => void
 ): RandomiserReturnType {
-  if (slideShowRandomise) {
-    state.margin = "5";
-    state.cellType = [
-      "quadrant",
-      "line",
-      "corner",
-      "knuth",
-      "knuthcurve",
-      "knuthtri",
-    ][Math.floor(Math.random() * 6)];
-
-    state.radius = ["5", "8", "10", "12"][Math.floor(Math.random() * 4)];
-    state.folds = ["7", "8", "9", "10", "11"][Math.floor(Math.random() * 5)];
-    state.gridlines = Math.random() > 0.75;
-    //state.pallette = ["pastel", "vibrant", "random"][Math.floor(Math.random() * 3)];
-
-    if (
-      state.cellType === "knuthcurve" ||
-      state.cellType === "knuth" ||
-      state.cellType === "knuthtri"
-    ) {
-      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
-    }
-
-    // set pathState.startDirection to a random value from the set of "UP", "DOWN", "LEFT", "RIGHT"
-
-    pathState.startDirection = ["UP", "DOWN", "LEFT", "RIGHT"][
-      Math.floor(Math.random() * 1)
+  // Always maintain current size - only randomize cell type
+  if (
+    state.cellType === "knuthcurve" ||
+    state.cellType === "knuth" ||
+    state.cellType === "knuthtri"
+  ) {
+    state.cellType = ["knuth", "knuthcurve", "knuthtri"][
+      Math.floor(Math.random() * 3)
     ];
   } else {
-    if (
-      state.cellType === "knuthcurve" ||
-      state.cellType === "knuth" ||
-      state.cellType === "knuthtri"
-    ) {
-      state.cellType = ["knuth", "knuthcurve", "knuthtri"][
-        Math.floor(Math.random() * 3)
-      ];
-    } else {
-      state.cellType = ["quadrant", "line", "corner", "triangle"][
-        Math.floor(Math.random() * 4)
-      ];
-    }
+    state.cellType = ["quadrant", "line", "corner", "triangle"][
+      Math.floor(Math.random() * 4)
+    ];
+  }
 
-    if (
-      state.cellType === "knuthcurve" ||
-      state.cellType === "knuth" ||
-      state.cellType === "knuthtri"
-    ) {
-      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
-    }
+  if (
+    state.cellType === "knuthcurve" ||
+    state.cellType === "knuth" ||
+    state.cellType === "knuthtri"
+  ) {
+    state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
   }
 
   state.triangleAngle = ["0", "10", "20", "30", "45", "50", "60", "65"][

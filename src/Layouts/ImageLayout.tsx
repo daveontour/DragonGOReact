@@ -3,6 +3,7 @@ import { CurrentConfigContext } from "../Contexts";
 import ZoomControl from "../Widgets/ZoomControlWidget";
 import "./ImageLayout.css";
 import { SetShowFullScreen, StopSlideShowNow } from "../types";
+import { downloadJSON } from "../utils/downloadUtils";
 
 export default function ImageLayout({
   statsURL,
@@ -17,22 +18,7 @@ export default function ImageLayout({
 
   function handleKeyPress(event: React.KeyboardEvent<HTMLDivElement>): void {
     if (event.type === "keydown" && event.key.toLowerCase() === "s") {
-      const blob = new Blob([config.configJSON], {
-        type: "application/json",
-      });
-      const href = URL.createObjectURL(blob);
-
-      // create "a" HTML element with href to file & click
-      const link = document.createElement("a");
-      link.href = href;
-      var fname = `SaveDragonCurveConfig.json`;
-      link.setAttribute("download", fname); //or any other extension
-      document.body.appendChild(link);
-      link.click();
-
-      // clean up "a" element & remove ObjectURL
-      document.body.removeChild(link);
-      URL.revokeObjectURL(href);
+      downloadJSON(config.configJSON, "SaveDragonCurveConfig.json");
     }
 
     document.getElementById("imageHTMLElement")?.focus();

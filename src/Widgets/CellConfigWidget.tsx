@@ -14,7 +14,7 @@ import {
 } from "react-bootstrap";
 import React from "react";
 import {
-  DragonCurveState,
+  CellState,
   ActiveCellState,
   InsideCellState,
   OutsideCellState,
@@ -28,8 +28,8 @@ export default function CellConfig({
   isActive,
   activeState,
 }: {
-  state: DragonCurveState;
-  setState: React.Dispatch<React.SetStateAction<DragonCurveState>>;
+  state: CellState;
+  setState: React.Dispatch<React.SetStateAction<CellState>>;
   slideShow: boolean;
   setDirty: React.Dispatch<React.SetStateAction<boolean>>;
   isActive: boolean;
