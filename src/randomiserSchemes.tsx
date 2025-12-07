@@ -3,40 +3,21 @@ import {
   generateColor,
   generatePathWidth,
 } from "./randomiserUtils";
+import {
+  DragonCurveState,
+  PathState,
+  ActiveCellState,
+  InsideCellState,
+  OutsideCellState,
+  RandomiserReturnType,
+} from "./types";
 
 export function executeRandomiser(
-  state: any,
-  pathState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    borderEnabled: boolean;
-    startDirection: string;
-  },
-  activeCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  insideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  outsideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
+  state: DragonCurveState,
+  pathState: PathState,
+  activeCellState: ActiveCellState,
+  insideCellState: InsideCellState,
+  outsideCellState: OutsideCellState,
   slideShowRandomise: boolean,
   randomiserScheme: string,
   palette: string,
@@ -44,7 +25,7 @@ export function executeRandomiser(
   contrastCount: number,
   setLastConstrastValue: (value: string) => void,
   setContrastCount: (value: number) => void
-): [any, any, any, any, any] {
+): RandomiserReturnType {
   if (slideShowRandomise) {
     state.margin = "5";
     state.cellType = [
@@ -184,44 +165,17 @@ export function executeRandomiser(
 }
 
 export function standardRandomiser(
-  state: any,
-  pathState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    borderEnabled: boolean;
-    startDirection: string;
-  },
-  activeCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  insideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  outsideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
+  state: DragonCurveState,
+  pathState: PathState,
+  activeCellState: ActiveCellState,
+  insideCellState: InsideCellState,
+  outsideCellState: OutsideCellState,
   palette: string,
   lastConstrastValue: string,
   contrastCount: number,
   setLastConstrastValue: (value: string) => void,
   setContrastCount: (value: number) => void
-): [any, any, any, any, any] {
+): RandomiserReturnType {
   pathState.borderStyle = "solid";
   pathState.borderWidth = generatePathWidth(4);
   pathState.borderColor = generateColor(
@@ -294,44 +248,17 @@ export function standardRandomiser(
 }
 
 export function pathOnlyRandomiser(
-  state: any,
-  pathState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    borderEnabled: boolean;
-    startDirection: string;
-  },
-  activeCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  insideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  outsideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
+  state: DragonCurveState,
+  pathState: PathState,
+  activeCellState: ActiveCellState,
+  insideCellState: InsideCellState,
+  outsideCellState: OutsideCellState,
   palette: string,
   lastConstrastValue: string,
   contrastCount: number,
   setLastConstrastValue: (value: string) => void,
   setContrastCount: (value: number) => void
-): [any, any, any, any, any] {
+): RandomiserReturnType {
   pathState.borderStyle = "solid";
   pathState.borderWidth = "4px";
   pathState.borderColor = generateColor(
@@ -404,44 +331,17 @@ export function pathOnlyRandomiser(
 }
 
 function noOutsideRandomiser(
-  state: any,
-  pathState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    borderEnabled: boolean;
-    startDirection: string;
-  },
-  activeCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  insideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  outsideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
+  state: DragonCurveState,
+  pathState: PathState,
+  activeCellState: ActiveCellState,
+  insideCellState: InsideCellState,
+  outsideCellState: OutsideCellState,
   palette: string,
   lastConstrastValue: string,
   contrastCount: number,
   setLastConstrastValue: (value: string) => void,
   setContrastCount: (value: number) => void
-): [any, any, any, any, any] {
+): RandomiserReturnType {
   pathState.borderStyle = "solid";
   pathState.borderWidth = "4px";
   pathState.borderColor = generateColor(
@@ -501,44 +401,17 @@ function noOutsideRandomiser(
   return [state, pathState, activeCellState, insideCellState, outsideCellState];
 }
 function boldPathRandomiser(
-  state: any,
-  pathState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    borderEnabled: boolean;
-    startDirection: string;
-  },
-  activeCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  insideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  outsideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
+  state: DragonCurveState,
+  pathState: PathState,
+  activeCellState: ActiveCellState,
+  insideCellState: InsideCellState,
+  outsideCellState: OutsideCellState,
   palette: string,
   lastConstrastValue: string,
   contrastCount: number,
   setLastConstrastValue: (value: string) => void,
   setContrastCount: (value: number) => void
-): [any, any, any, any, any] {
+): RandomiserReturnType {
   pathState.borderStyle = "solid";
   pathState.borderWidth =
     Math.floor(Math.random() * 3) + generateBorderWidth(4);
@@ -612,44 +485,17 @@ function boldPathRandomiser(
 }
 
 function triangularRandomiser(
-  state: any,
-  pathState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    borderEnabled: boolean;
-    startDirection: string;
-  },
-  activeCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  insideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
-  outsideCellState: {
-    borderStyle: string;
-    borderWidth: any;
-    borderColor: any;
-    backgroundColor: any;
-    borderEnabled: boolean;
-    fillEnabled: boolean;
-  },
+  state: DragonCurveState,
+  pathState: PathState,
+  activeCellState: ActiveCellState,
+  insideCellState: InsideCellState,
+  outsideCellState: OutsideCellState,
   palette: string,
   lastConstrastValue: string,
   contrastCount: number,
   setLastConstrastValue: (value: string) => void,
   setContrastCount: (value: number) => void
-): [any, any, any, any, any] {
+): RandomiserReturnType {
   state.margin = "0";
   state.cellType = "knuthtri";
   state.radius = ["5", "8", "10", "12"][Math.floor(Math.random() * 4)];

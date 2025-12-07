@@ -1,93 +1,33 @@
 import react, { createContext } from "react";
+import {
+  DragonCurveState,
+  PathState,
+  ActiveCellState,
+  InsideCellState,
+  OutsideCellState,
+  CollageConfig,
+  SettingsConfig,
+  ImageSize,
+} from "./types";
 
 export const ThemeContext = createContext("light");
 export const AuthContext = createContext(null);
 
 export interface Config {
-  state: any;
-  setState: react.Dispatch<
-    react.SetStateAction<{
-      folds: string;
-      margin: string;
-      cellType: string;
-      triangleAngle: string;
-      radius: string;
-      grouting: string;
-      gridlines: boolean;
-      groutingColor: string;
-      pallette: string;
-    }>
-  >;
-  pathState: any;
-  setPathState: react.Dispatch<
-    react.SetStateAction<{
-      borderStyle: string;
-      borderWidth: string;
-      borderColor: string;
-      borderEnabled: boolean;
-      title: string;
-      shortTitle: string;
-      startDirection: string;
-    }>
-  >;
-  insideCellState: any;
-  setInsideCellState: react.Dispatch<
-    react.SetStateAction<{
-      borderStyle: string;
-      borderWidth: string;
-      borderColor: string;
-      backgroundColor: string;
-      borderEnabled: boolean;
-      fillEnabled: boolean;
-      title: string;
-      shortTitle: string;
-    }>
-  >;
-  activeCellState: any;
-  setActiveCellState: react.Dispatch<
-    react.SetStateAction<{
-      borderStyle: string;
-      borderWidth: string;
-      borderColor: string;
-      backgroundColor: string;
-      borderEnabled: boolean;
-      fillEnabled: boolean;
-      title: string;
-      shortTitle: string;
-    }>
-  >;
-  outsideCellState: any;
-  setOutsideCellState: react.Dispatch<
-    react.SetStateAction<{
-      borderStyle: string;
-      borderWidth: string;
-      borderColor: string;
-      backgroundColor: string;
-      borderEnabled: boolean;
-      fillEnabled: boolean;
-      title: string;
-      shortTitle: string;
-    }>
-  >;
-  collageConfig: any;
-  setCollageConfig: react.Dispatch<
-    react.SetStateAction<{
-      width: number;
-      height: number;
-      elementWidth: number;
-      elementGap: number;
-      gapColor: string;
-      startDirection: number;
-      format: string;
-    }>
-  >;
-  settingsConfig: any;
-  setSettingsConfig: react.Dispatch<
-    react.SetStateAction<{
-      slideShowInterval: number;
-      background: string;
-    }>
-  >;
+  state: DragonCurveState;
+  setState: react.Dispatch<react.SetStateAction<DragonCurveState>>;
+  pathState: PathState;
+  setPathState: react.Dispatch<react.SetStateAction<PathState>>;
+  insideCellState: InsideCellState;
+  setInsideCellState: react.Dispatch<react.SetStateAction<InsideCellState>>;
+  activeCellState: ActiveCellState;
+  setActiveCellState: react.Dispatch<react.SetStateAction<ActiveCellState>>;
+  outsideCellState: OutsideCellState;
+  setOutsideCellState: react.Dispatch<react.SetStateAction<OutsideCellState>>;
+  collageConfig: CollageConfig;
+  setCollageConfig: react.Dispatch<react.SetStateAction<CollageConfig>>;
+  settingsConfig: SettingsConfig;
+  setSettingsConfig: react.Dispatch<react.SetStateAction<SettingsConfig>>;
   downloadShow: boolean;
   setDownloadShow: react.Dispatch<react.SetStateAction<boolean>>;
   settingsShow: boolean;
@@ -116,14 +56,8 @@ export interface Config {
   setSlideShow: react.Dispatch<react.SetStateAction<boolean>>;
   slideShowPause: boolean;
   setSlideShowPause: react.Dispatch<react.SetStateAction<boolean>>;
-  imageSize: any;
-  setImageSize: react.Dispatch<
-    react.SetStateAction<{
-      width: string;
-      height: string;
-      zoom: string;
-    }>
-  >;
+  imageSize: ImageSize;
+  setImageSize: react.Dispatch<react.SetStateAction<ImageSize>>;
   randomiserScheme: string;
   setRandomiserScheme: react.Dispatch<react.SetStateAction<string>>;
   randomHue: boolean;

@@ -1,13 +1,14 @@
 import { Button, Modal } from "react-bootstrap";
+import React from "react";
 
 function CurveStatsModal({
   statsShow,
   setStatsShow,
   statsURL,
 }: {
-  statsShow: any;
-  setStatsShow: any;
-  statsURL: any;
+  statsShow: boolean;
+  setStatsShow: React.Dispatch<React.SetStateAction<boolean>>;
+  statsURL: string;
 }) {
   const dismiss = () => {
     setStatsShow(false);

@@ -63,12 +63,14 @@ class Point2 {
   constructor(public x: number, public y: number) {}
 }
 
+import { FillStateType } from "../types";
+
 export class Cell {
   Row!: number;
   Col!: number;
   P1: Point;
   P2: Point;
-  FillState!: any;
+  FillState!: FillStateType;
   Turn!: number;
   Direction!: number;
   StartCorner!: number;

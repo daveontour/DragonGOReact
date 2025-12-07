@@ -2,15 +2,16 @@ import { useContext } from "react";
 import { CurrentConfigContext } from "../Contexts";
 import ZoomControl from "../Widgets/ZoomControlWidget";
 import "./ImageLayout.css";
+import { SetShowFullScreen, StopSlideShowNow } from "../types";
 
 export default function ImageLayout({
   statsURL,
   setShowFullScreen,
   stopSlideShowNow,
 }: {
-  statsURL: any;
-  setShowFullScreen: any;
-  stopSlideShowNow: any;
+  statsURL: string;
+  setShowFullScreen: SetShowFullScreen;
+  stopSlideShowNow: StopSlideShowNow;
 }) {
   let config = useContext(CurrentConfigContext);
 

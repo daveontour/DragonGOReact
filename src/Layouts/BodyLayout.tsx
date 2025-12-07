@@ -3,6 +3,7 @@ import ImageLayout from "./ImageLayout";
 import { CurrentConfigContext } from "../Contexts";
 import { useState } from "react";
 import { executeRandomiser } from "../randomiserSchemes";
+import { SetShowFullScreen } from "../types";
 
 export default function BodyLayout({
   showFullScreen,
@@ -10,7 +11,7 @@ export default function BodyLayout({
   handlersRef,
 }: {
   showFullScreen: boolean;
-  setShowFullScreen: any;
+  setShowFullScreen: SetShowFullScreen;
   handlersRef?: React.MutableRefObject<{
     getIntervalID: () => number | null;
     getConfigJSON: () => string;

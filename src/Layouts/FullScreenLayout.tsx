@@ -1,12 +1,13 @@
 import { useContext } from "react";
 import { CurrentConfigContext } from "../Contexts";
+import { SetShowFullScreen } from "../types";
 
 export default function FullScreenLayout({
   showFullScreen,
   setShowFullScreen,
 }: {
   showFullScreen: boolean;
-  setShowFullScreen: any;
+  setShowFullScreen: SetShowFullScreen;
 }) {
   const config = useContext(CurrentConfigContext);
   

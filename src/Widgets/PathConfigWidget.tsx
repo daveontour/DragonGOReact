@@ -12,17 +12,19 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
+import React from "react";
+import { DragonCurveState, PathState } from "../types";
 
-export default function CellConfig({
+export default function PathConfig({
   state,
   setState,
   slideShow,
   setDirty,
 }: {
-  state: any;
-  setState: any;
-  slideShow: any;
-  setDirty: any;
+  state: PathState;
+  setState: React.Dispatch<React.SetStateAction<PathState>>;
+  slideShow: boolean;
+  setDirty: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [show, setShow] = useState(false);
   const handleClose = () => {

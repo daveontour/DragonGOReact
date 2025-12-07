@@ -7,9 +7,9 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
-import { CurrentConfigContext } from "../Contexts";
+import { CurrentConfigContext, Config } from "../Contexts";
 
-function SaveCurveModal({ config }: { config: any }) {
+function SaveCurveModal({ config }: { config: Config }) {
   let c = useContext(CurrentConfigContext);
   const dismiss = () => {
     c.setSaveShow(false);

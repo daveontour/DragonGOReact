@@ -19,7 +19,7 @@ function LoadCurveModal() {
     config.setLoadShow(false);
   };
 
-  const handleChange = (file: any) => {
+  const handleChange = (file: File) => {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       const fileContent = fileReader.result as string;

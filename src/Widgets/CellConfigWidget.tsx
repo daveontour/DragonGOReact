@@ -12,6 +12,13 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
+import React from "react";
+import {
+  DragonCurveState,
+  ActiveCellState,
+  InsideCellState,
+  OutsideCellState,
+} from "../types";
 
 export default function CellConfig({
   state,
@@ -21,12 +28,12 @@ export default function CellConfig({
   isActive,
   activeState,
 }: {
-  state: any;
-  setState: any;
-  slideShow: any;
-  setDirty: any;
+  state: DragonCurveState;
+  setState: React.Dispatch<React.SetStateAction<DragonCurveState>>;
+  slideShow: boolean;
+  setDirty: React.Dispatch<React.SetStateAction<boolean>>;
   isActive: boolean;
-  activeState: any;
+  activeState: ActiveCellState | InsideCellState | OutsideCellState;
 }) {
   const [show, setShow] = useState(false);
   const handleClose = () => {

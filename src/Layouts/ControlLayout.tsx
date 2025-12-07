@@ -82,10 +82,12 @@ function calculateImageSize(
   return ["auto", "auto", "100"];
 }
 
+import { SetSlideShowRandomFunction } from "../types";
+
 export default function ControlLayout({
   setSlideShowRandomFunction,
 }: {
-  setSlideShowRandomFunction: any;
+  setSlideShowRandomFunction: SetSlideShowRandomFunction;
 }) {
   // Generate the initial image on load
   useEffect(() => {

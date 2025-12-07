@@ -2,15 +2,16 @@ import { OverlayTrigger, Stack, Tooltip, TooltipProps } from "react-bootstrap";
 import CurveStatsModal from "../DialogBoxes/CurveStatsModal";
 import { RefAttributes, useContext, useState } from "react";
 import { CurrentConfigContext } from "../Contexts";
+import { SetShowFullScreen, StopSlideShowNow } from "../types";
 
 export default function ZoomControl({
   statsURL,
   setShowFullScreen,
   stopSlideShowNow,
 }: {
-  statsURL: any;
-  setShowFullScreen: any;
-  stopSlideShowNow: any;
+  statsURL: string;
+  setShowFullScreen: SetShowFullScreen;
+  stopSlideShowNow: StopSlideShowNow;
 }) {
   let config = useContext(CurrentConfigContext);
   const [statsShow, setStatsShow] = useState(false);

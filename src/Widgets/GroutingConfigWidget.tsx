@@ -12,6 +12,8 @@ import {
   Row,
   Stack,
 } from "react-bootstrap";
+import React from "react";
+import { DragonCurveState } from "../types";
 
 export default function GroutingConfig({
   state,
@@ -19,10 +21,10 @@ export default function GroutingConfig({
   slideShow,
   setDirty,
 }: {
-  state: any;
-  setState: any;
-  slideShow: any;
-  setDirty: any;
+  state: DragonCurveState;
+  setState: React.Dispatch<React.SetStateAction<DragonCurveState>>;
+  slideShow: boolean;
+  setDirty: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [show, setShow] = useState(false);
   const handleClose = () => {
