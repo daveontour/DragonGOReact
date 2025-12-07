@@ -18,7 +18,8 @@ export function generateColor(
       "random",
       "vangogh",
       "monet",
-    ][Math.floor(Math.random() * 10)];
+      "blueyellow",
+    ][Math.floor(Math.random() * 11)];
   }
 
   if (actualPalette === "pastel") {
@@ -44,6 +45,8 @@ export function generateColor(
     return generateVanGoghColor();
   } else if (actualPalette === "monet") {
     return generateMonetColor();
+  } else if (actualPalette === "blueyellow") {
+    return generateBlueYellowColor();
   } else {
     return generateRandomColor();
   }
@@ -211,6 +214,29 @@ export function generateMonetColor() {
     R = Math.floor(Math.random() * 70 + 150); // 150-220
     G = Math.floor(Math.random() * 70 + 150); // 150-220
     B = Math.floor(Math.random() * 70 + 150); // 150-220
+  }
+
+  let rgb = (R << 16) + (G << 8) + B;
+  return `#${rgb.toString(16).padStart(6, "0")}${generateRandomOpacity()}`;
+}
+
+export function generateBlueYellowColor() {
+  // Blue and Yellow palette: only shades of blue and yellow
+  const colorType = Math.random();
+  let R, G, B;
+
+  if (colorType < 0.5) {
+    // Various shades of blue
+    // Light blues to deep blues
+    R = Math.floor(Math.random() * 80 + 10);  // 10-90 (low red)
+    G = Math.floor(Math.random() * 100 + 50);  // 50-150 (medium green)
+    B = Math.floor(Math.random() * 155 + 100); // 100-255 (high blue)
+  } else {
+    // Various shades of yellow
+    // Light yellows to deep golds
+    R = Math.floor(Math.random() * 55 + 200); // 200-255 (high red)
+    G = Math.floor(Math.random() * 55 + 200); // 200-255 (high green)
+    B = Math.floor(Math.random() * 100 + 20); // 20-120 (low blue)
   }
 
   let rgb = (R << 16) + (G << 8) + B;

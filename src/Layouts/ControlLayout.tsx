@@ -356,6 +356,7 @@ export default function ControlLayout({
             <option value="random">Random Colors</option>
             <option value="vangogh">Van Gogh</option>
             <option value="monet">Monet</option>
+            <option value="blueyellow">Blue & Yellow</option>
             <option value="randomPallette">Random Pallette</option>
           </FormControl>
         </Stack>
