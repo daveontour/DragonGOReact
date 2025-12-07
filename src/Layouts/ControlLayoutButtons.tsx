@@ -2,6 +2,7 @@ import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { JSX } from "react/jsx-runtime";
 import { RefAttributes, useContext, useState } from "react";
 import { CurrentConfigContext } from "../Contexts";
+import { openPrintDialog, downloadPrintOptimizedSVG } from "../utils/printUtils";
 
 //import { CurrentConfigContext } from "./BodyLayout"; // Import the correct type from the 'BodyLayout' file
 
@@ -79,6 +80,32 @@ export default function ControlLayoutButtons() {
     config.setDownloadShow(false);
   };
 
+  const printDragonCurve = () => {
+    let svg = document.getElementById("imageHTMLElement") as HTMLElement;
+    if (svg && svg.innerHTML) {
+      // Find the SVG element within the container
+      const svgElement = svg.querySelector("svg");
+      if (svgElement) {
+        openPrintDialog(svgElement.outerHTML);
+      } else {
+        openPrintDialog(svg.innerHTML);
+      }
+    }
+  };
+
+  const downloadPrintSVG = () => {
+    let svg = document.getElementById("imageHTMLElement") as HTMLElement;
+    if (svg && svg.innerHTML) {
+      // Find the SVG element within the container
+      const svgElement = svg.querySelector("svg");
+      if (svgElement) {
+        downloadPrintOptimizedSVG(svgElement.outerHTML);
+      } else {
+        downloadPrintOptimizedSVG(svg.innerHTML);
+      }
+    }
+  };
+
   const loadCurve = () => {
     config.setLoadShow(true);
   };
@@ -152,6 +179,24 @@ export default function ControlLayoutButtons() {
   ) => (
     <Tooltip id="button-tooltip" {...props}>
       Opens the help dialog box. (not implemented yet)
+    </Tooltip>
+  );
+  const renderPrintTooltip = (
+    props: JSX.IntrinsicAttributes &
+      TooltipProps &
+      RefAttributes<HTMLDivElement>
+  ) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Print the dragon curve on A4 paper with 0.5cm margins.
+    </Tooltip>
+  );
+  const renderPrintDownloadTooltip = (
+    props: JSX.IntrinsicAttributes &
+      TooltipProps &
+      RefAttributes<HTMLDivElement>
+  ) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Download a print-optimized SVG file for A4 paper with 0.5cm margins.
     </Tooltip>
   );
 
@@ -243,6 +288,44 @@ export default function ControlLayoutButtons() {
           >
             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
             <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
+          </svg>
+        </OverlayTrigger>
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
+          overlay={renderPrintTooltip}
+        >
+          <svg
+            onClick={printDragonCurve}
+            cursor={"pointer"}
+            xmlns="http://www.w3.org/2000/svg"
+            width="30px"
+            height="30px"
+            fill="currentColor"
+            className="bi bi-printer"
+            viewBox="0 0 16 16"
+          >
+            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5M3 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H3zm1 5a2 2 0 0 0-2 2v1h2V7zm1 0h6v6H5zm7 0v6a1 1 0 0 0 1 1h2V9a1 1 0 0 0-1-1z" />
+          </svg>
+        </OverlayTrigger>
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
+          overlay={renderPrintDownloadTooltip}
+        >
+          <svg
+            onClick={downloadPrintSVG}
+            cursor={"pointer"}
+            xmlns="http://www.w3.org/2000/svg"
+            width="30px"
+            height="30px"
+            fill="currentColor"
+            className="bi bi-printer-fill"
+            viewBox="0 0 16 16"
+          >
+            <path d="M5 1a2 2 0 0 0-2 2v1h2V3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h2V3a2 2 0 0 0-2-2H5zm2 0h6a2 2 0 0 1 2 2v2h-2V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v1H4V3a2 2 0 0 1 2-2" />
+            <path d="M11.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1M3 13a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm2-8.5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0z" />
           </svg>
         </OverlayTrigger>
         <OverlayTrigger

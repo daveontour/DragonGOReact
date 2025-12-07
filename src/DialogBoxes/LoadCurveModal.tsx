@@ -45,10 +45,7 @@ function LoadCurveModal() {
         fillEnabled: newConfig.active.fillEnabled,
       });
     } catch (error) {
-      console.error(
-        "An error occurred while setting active cell state:",
-        error
-      );
+      // Error setting active cell state
     }
     try {
       config.setOutsideCellState({
@@ -61,10 +58,7 @@ function LoadCurveModal() {
         fillEnabled: newConfig.outside.fillEnabled,
       });
     } catch (error) {
-      console.error(
-        "An error occurred while setting outside cell state:",
-        error
-      );
+      // Error setting outside cell state
     }
     try {
       config.setInsideCellState({
@@ -77,10 +71,7 @@ function LoadCurveModal() {
         fillEnabled: newConfig.inside.fillEnabled,
       });
     } catch (error) {
-      console.error(
-        "An error occurred while setting inside cell state:",
-        error
-      );
+      // Error setting inside cell state
     }
     try {
       config.setPathState({
@@ -92,7 +83,7 @@ function LoadCurveModal() {
         startDirection: newConfig.path.startDirection,
       });
     } catch (error) {
-      console.error("An error occurred while setting path state:", error);
+      // Error setting path state
     }
     try {
       config.setState({
@@ -106,7 +97,7 @@ function LoadCurveModal() {
         grouting: newConfig.state.grouting,
       });
     } catch (error) {
-      console.error("An error occurred while setting curve state:", error);
+      // Error setting curve state
     }
 
     config.setLoadShow(false);

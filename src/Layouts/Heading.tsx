@@ -55,7 +55,7 @@ export default function Heading({
             overlay={aboutTooltip}
           >
             {/* <h5>About</h5> */}
-            <h6>Version 1.6</h6>
+            <h6>Version 2.1</h6>
           </OverlayTrigger>
         </div>
       </div>

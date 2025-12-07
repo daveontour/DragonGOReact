@@ -648,7 +648,6 @@ export function prepareCells(
       try {
         arr[cell.Row][cell.Col] = cell;
       } catch (error) {
-        console.log("error", error);
         err = true;
       }
     });

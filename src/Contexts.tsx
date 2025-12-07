@@ -106,12 +106,16 @@ export interface Config {
   setSlideShowConfig: react.Dispatch<react.SetStateAction<boolean>>;
   slideShowRandomise: boolean;
   setSlideShowRandomise: react.Dispatch<react.SetStateAction<boolean>>;
+  slideShowAutoDownload: boolean;
+  setSlideShowAutoDownload: react.Dispatch<react.SetStateAction<boolean>>;
   dirty: boolean;
   setDirty: react.Dispatch<react.SetStateAction<boolean>>;
   urlHead: string;
   updateImage: (newImgUrl: string) => void; // Added function
   slideShow: boolean;
   setSlideShow: react.Dispatch<react.SetStateAction<boolean>>;
+  slideShowPause: boolean;
+  setSlideShowPause: react.Dispatch<react.SetStateAction<boolean>>;
   imageSize: any;
   setImageSize: react.Dispatch<
     react.SetStateAction<{
@@ -120,6 +124,20 @@ export interface Config {
       zoom: string;
     }>
   >;
+  randomiserScheme: string;
+  setRandomiserScheme: react.Dispatch<react.SetStateAction<string>>;
+  randomHue: boolean;
+  setRandomHue: react.Dispatch<react.SetStateAction<boolean>>;
+  lastConstrastValue: string;
+  setLastConstrastValue: react.Dispatch<react.SetStateAction<string>>;
+  contrastCount: number;
+  setContrastCount: react.Dispatch<react.SetStateAction<number>>;
+  configJSON: string;
+  setConfigJSON: react.Dispatch<react.SetStateAction<string>>;
+  intervalID: number | null;
+  setIntervalID: react.Dispatch<react.SetStateAction<number | null>>;
+  stopSlideShow: boolean;
+  setStopSlideShow: react.Dispatch<react.SetStateAction<boolean>>;
 }
 
 export const CurrentConfigContext = createContext<Config>({} as Config);

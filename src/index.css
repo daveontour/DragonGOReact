@@ -97,3 +97,36 @@ button:focus-visible {
 
 }
 
+/* Print styles for A4 paper with 0.5cm margins */
+@media print {
+  @page {
+    size: A4;
+    margin: 0.5cm;
+  }
+
+  /* Hide all UI elements during print */
+  body > *:not(#print-container) {
+    display: none !important;
+  }
+
+  /* Show only the print container */
+  #print-container {
+    position: static !important;
+    left: auto !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    padding: 5mm !important;
+    margin: 0 !important;
+    background-color: white !important;
+    display: block !important;
+  }
+
+  /* Ensure SVG scales properly */
+  #print-container svg {
+    max-width: 200mm !important;
+    max-height: 287mm !important;
+    width: auto !important;
+    height: auto !important;
+  }
+}
+

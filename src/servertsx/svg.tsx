@@ -98,21 +98,21 @@ function createSVG(
     outsideFillColor = toSVGColor(rc.OutsideFillColorRaw)[0];
     outsideOpacity = toSVGColor(rc.OutsideFillColorRaw)[1];
   }
-  let outsideStrokeColor = "#000000";
+  let outsideStrokeColor = "#ffffff";
   let outsideStrokeOpacity = 0.0;
   if (rc.OutSideStroke) {
     outsideStrokeColor = toSVGColor(rc.OutsideStrokeColorRaw)[0];
     outsideStrokeOpacity = toSVGColor(rc.OutsideStrokeColorRaw)[1];
   }
 
-  let activeFillColor = "#000000";
+  let activeFillColor = "#ffffff";
   let activeOpacity = 1;
   if (rc.ActiveFill) {
     activeFillColor = toSVGColor(rc.ActiveFillColorRaw)[0];
     activeOpacity = toSVGColor(rc.ActiveFillColorRaw)[1];
   }
 
-  let activeStrokeColor = "#000000";
+  let activeStrokeColor = "#ffffff";
   let activeStrokeOpacity = 1;
   if (rc.ActiveStroke) {
     activeStrokeColor = toSVGColor(rc.ActiveStrokeColorRaw)[0];
@@ -552,13 +552,6 @@ function getDragonPathQuadarantTemplate(
     return buf;
   }
 
-  console.error(
-    "Error: Invalid turn, start, end combination",
-    turn,
-    start,
-    end
-  );
-
   return buf;
 }
 
@@ -639,12 +632,6 @@ function getDragonTriTemplate(
     return buf;
   }
 
-  console.error(
-    "Error: Invalid turn, start, end combination",
-    turn,
-    start,
-    end
-  );
   return buf;
 }
 
@@ -690,18 +677,11 @@ function getDragonPathCornerTemplate(
     return buf;
   }
 
-  console.error(
-    "Error: Invalid turn, start, end combination",
-    turn,
-    start,
-    end
-  );
   return buf;
 }
 
 function toSVGColor(s: string): [string, number] {
   if (s === "") {
-    console.error("Color is empty");
     return ["#000000", 1];
   }
 

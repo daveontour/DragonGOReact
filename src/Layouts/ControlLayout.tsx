@@ -1,6 +1,7 @@
 import { RefAttributes, useContext, useEffect, useState } from "react";
 import {
   Button,
+  ButtonGroup,
   Col,
   Container,
   Form,
@@ -17,7 +18,6 @@ import PathConfig from "../Widgets/PathConfigWidget";
 
 import { JSX } from "react/jsx-runtime";
 import GroutingConfig from "../Widgets/GroutingConfigWidget";
-import myGlobalObject from "../globals";
 import ControlLayoutButtons from "./ControlLayoutButtons";
 import { DOWN, LEFT, RIGHT, RequestConfig, UP } from "../servertsx/common";
 import { CurrentConfigContext } from "../Contexts";
@@ -28,6 +28,7 @@ import FoldsHelpModal from "../DialogBoxes/FoldsHelpModal";
 import RendererHelpModal from "../DialogBoxes/RendererHelpModal";
 import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
 import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
+import axios from "axios";
 import { getDragonSVG, getDragonSizeSVG } from "../servertsx/svg";
 
 //var stopSlideShow = false;
@@ -82,11 +83,9 @@ function calculateImageSize(
 }
 
 export default function ControlLayout({
-  randomDragonCurveLocal,
-  randomDragonCurveLocalCurrentSize,
+  setSlideShowRandomFunction,
 }: {
-  randomDragonCurveLocal: any;
-  randomDragonCurveLocalCurrentSize: any;
+  setSlideShowRandomFunction: any;
 }) {
   // Generate the initial image on load
   useEffect(() => {
@@ -184,13 +183,6 @@ export default function ControlLayout({
       config.setDirty(false);
     }
 
-    // Now get the full screen image size
-    // let [imgSXFS, imgSYFS, zoomFS] = calculateImageSize(w, h, true);
-    // setFSImageSize({
-    //   width: imgSXFS,
-    //   height: imgSYFS,
-    //   zoom: zoomFS,
-    // });
     const imgElementFS = document.getElementById(
       "imageHTMLElementFullScreen"
     ) as HTMLImageElement;
@@ -199,78 +191,89 @@ export default function ControlLayout({
       config.setDirty(false);
     }
 
+    // Auto-download if slideshow is running and auto-download is enabled
+    // Check if interval is running (intervalID will be a number when setInterval is active)
+    const isSlideShowRunning = typeof config.intervalID === 'number' && !config.slideShowPause;
+    if (isSlideShowRunning && config.slideShowAutoDownload) {
+      const blob = new Blob([svgContent], {
+        type: "application/svg+xml",
+      });
+      const href = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = href;
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      const paletteName = config.state.pallette || "unknown";
+      const fname = `${paletteName}_DragonCurve_${timestamp}.svg`;
+      link.setAttribute("download", fname);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(href);
+    }
+
     let json = JSON.stringify(configState, null, 2);
 
-    myGlobalObject.configJSON = json;
+    config.setConfigJSON(json);
   };
 
-  const randomDragonCurve = () => {
-    if (config.slideShow) {
-      return;
-    }
+  function startInterval() {
     config.setSlideShow(true);
-    randomDragonCurveLocal();
-    generate();
-    myGlobalObject.stopSlideShow = false;
-    const interval = setInterval(() => {
-      if (myGlobalObject.stopSlideShow) {
-        clearInterval(interval);
-        config.setSlideShow(false);
-      } else {
-        randomDragonCurveLocal();
+    const intervalId = setInterval(() => {
+      if (!config.slideShowPause) {
+        setSlideShowRandomFunction();
         generate();
       }
     }, config.settingsConfig.slideShowInterval * 1000);
+    config.setIntervalID(intervalId as unknown as number);
+  }
+
+  function changeSlideShowInterval() {
+    if (config.intervalID !== null) {
+      clearInterval(config.intervalID);
+    }
+    startInterval();
+  }
+
+  const randomDragonCurve = () => {
+    startInterval();
   };
 
   const stopSlideShowNow = () => {
+    if (config.intervalID !== null) {
+      clearInterval(config.intervalID);
+      config.setIntervalID(null);
+    }
     config.setSlideShow(false);
+    config.setSlideShowPause(false);
   };
 
-  const randomDragonCurveCurrentSize = () => {
-    if (config.slideShow) {
-      return;
-    }
-    if (config.slideShowRandomise) {
-      randomDragonCurve();
-      return;
-    }
-
-    config.setSlideShow(true);
-    randomDragonCurveLocalCurrentSize();
-    generate();
-    myGlobalObject.stopSlideShow = false;
-    const interval = setInterval(() => {
-      if (myGlobalObject.stopSlideShow) {
-        clearInterval(interval);
-        config.setSlideShow(false);
-      } else {
-        randomDragonCurveLocalCurrentSize();
-        generate();
-      }
-    }, config.settingsConfig.slideShowInterval * 1000);
+  const pauseSlideShowNow = () => {
+    config.setSlideShowPause(true);
   };
+  const resumeSlideShowNow = () => {
+    config.setSlideShowPause(false);
+  };
+
+  function saveCurrentSlide(): void {
+    const blob = new Blob([config.configJSON], {
+      type: "application/json",
+    });
+    const href = URL.createObjectURL(blob);
+
+    // create "a" HTML element with href to file & click
+    const link = document.createElement("a");
+    link.href = href;
+    var fname = `SaveDragonCurveConfig.json`;
+    link.setAttribute("download", fname); //or any other extension
+    document.body.appendChild(link);
+    link.click();
+
+    // clean up "a" element & remove ObjectURL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(href);
+  }
 
   // Defintion of the tooltip for various buttons
-  // const renderCollageSlideShowTooltip = (
-  //   props: JSX.IntrinsicAttributes &
-  //     TooltipProps &
-  //     RefAttributes<HTMLDivElement>
-  // ) => (
-  //   <Tooltip id="button-tooltip" {...props}>
-  //     Generate a collage of random dragon curves in a slide show format until
-  //     the "Stop Slide Show" button is clicked.
-  //   </Tooltip>
-  // );
-  // const renderCollageSlideShowConfigureTooltip = (
-  //   props: JSX.IntrinsicAttributes &
-  //     TooltipProps &
-  //     RefAttributes<HTMLDivElement>
-  // ) => (
-  //   <Tooltip id="button-tooltip" {...props}>
-  //     Configure the collage slide show settings.
-  //   </Tooltip>
-  // );
   const renderCurrentSizeTooltip = (
     props: JSX.IntrinsicAttributes &
       TooltipProps &
@@ -282,15 +285,12 @@ export default function ControlLayout({
     </Tooltip>
   );
 
-  const renderRandomTooltip = (
-    props: JSX.IntrinsicAttributes &
-      TooltipProps &
-      RefAttributes<HTMLDivElement>
-  ) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Configre the random dragon curve slide show settings.
-    </Tooltip>
-  );
+  const rateDragonCurve = (rating: number) => {
+    let rc = JSON.parse(config.configJSON);
+    rc.rating = rating;
+
+    axios.post("/rate", rc);
+  };
 
   return (
     <>
@@ -309,128 +309,215 @@ export default function ControlLayout({
           overflowX: "hidden",
         }}
       >
-        <Stack direction="vertical" gap={1} style={{ marginTop: "20px" }}>
+        <Stack direction="vertical" gap={1} style={{ marginTop: "5px" }}>
+          <FormLabel style={{ fontWeight: "bold" }}>
+            Randomisation Scheme
+          </FormLabel>
+
+          <FormControl
+            as="select"
+            value={config.randomiserScheme}
+            onChange={(e) => {
+              let t = e.target.value;
+              config.setRandomiserScheme(t);
+            }}
+          >
+            <option value="standard">Standard</option>
+            <option value="noOutside">No Outside Cells</option>
+            <option value="boldPath">Bold Path</option>
+            <option value="pathOnly">Path Only</option>
+            <option value="triangular">Triagular Path</option>
+          </FormControl>
+        </Stack>
+        <Stack direction="vertical" gap={1} style={{ marginTop: "5px" }}>
           <FormLabel style={{ fontWeight: "bold" }}>Color Pallette</FormLabel>
+
+          <FormControl
+            as="select"
+            value={config.state.pallette}
+            onChange={(e) => {
+              let t = e.target.value;
+              config.setState({ ...config.state, pallette: t });
+              config.setSlideShowRandomise(t === "random" ? true : false);
+
+              if (t === "randomhue") {
+                config.setRandomHue(true);
+              } else {
+                config.setRandomHue(false);
+              }
+            }}
+          >
+            <option value="pastel">Pastel</option>
+            <option value="vibrant">Vibrant</option>
+            <option value="redhue">Red Hue</option>
+            <option value="greenhue">Green Hue</option>
+            <option value="bluehue">Blue Hue</option>
+            <option value="randomhue">Random Hue</option>
+            <option value="highcontrast">High Contrast</option>
+            <option value="random">Random Colors</option>
+            <option value="vangogh">Van Gogh</option>
+            <option value="monet">Monet</option>
+            <option value="randomPallette">Random Pallette</option>
+          </FormControl>
+        </Stack>
+
+        <Stack direction="vertical" gap={1} style={{ marginTop: "15px" }}>
+          <FormLabel style={{ fontWeight: "bold" }}>Size</FormLabel>
           <Form.Check
             type="radio"
-            label="Pastel Colors"
-            name="radioOptions"
-            checked={
-              myGlobalObject.colorPallete === "pastel" &&
-              !myGlobalObject.randomHue
-            }
+            label="Maintain Current Size"
+            name="radioSizeOptions"
+            checked={config.slideShowRandomise === false}
             onChange={() => {
-              myGlobalObject.randomHue = false;
-              myGlobalObject.colorPallete = "pastel";
-              config.setState({ ...config.state, pallette: "pastel" });
+              config.setSlideShowRandomise(false);
             }}
           />
           <Form.Check
             type="radio"
-            label="Vibrant Colors"
-            name="radioOptions"
-            checked={
-              myGlobalObject.colorPallete === "vibrant" &&
-              !myGlobalObject.randomHue
-            }
+            label="Random Size"
+            name="radioSizeOptions"
+            checked={config.slideShowRandomise === true}
             onChange={() => {
-              myGlobalObject.randomHue = false;
-              myGlobalObject.colorPallete = "vibrant";
-              config.setState({ ...config.state, pallette: "vibrant" });
+              config.setSlideShowRandomise(true);
             }}
           />
           <Form.Check
-            type="radio"
-            label="Red Hue Colors"
-            name="radioOptions"
-            checked={
-              myGlobalObject.colorPallete === "redhue" &&
-              !myGlobalObject.randomHue
-            }
-            onChange={() => {
-              myGlobalObject.randomHue = false;
-              myGlobalObject.colorPallete = "redhue";
-              config.setState({ ...config.state, pallette: "redhue" });
+            type="checkbox"
+            label="Auto-download each image"
+            checked={config.slideShowAutoDownload || false}
+            onChange={(e) => {
+              config.setSlideShowAutoDownload(e.target.checked);
             }}
-          />
-          <Form.Check
-            type="radio"
-            label="Green Hue Colors"
-            name="radioOptions"
-            checked={
-              myGlobalObject.colorPallete === "greenhue" &&
-              !myGlobalObject.randomHue
-            }
-            onChange={() => {
-              myGlobalObject.randomHue = false;
-              myGlobalObject.colorPallete = "greenhue";
-              config.setState({ ...config.state, pallette: "greenhue" });
-            }}
-          />
-          <Form.Check
-            type="radio"
-            label="Blue Hue Colors"
-            name="radioOptions"
-            checked={
-              myGlobalObject.colorPallete === "bluehue" &&
-              !myGlobalObject.randomHue
-            }
-            onChange={() => {
-              myGlobalObject.randomHue = false;
-              myGlobalObject.colorPallete = "bluehue";
-              config.setState({ ...config.state, pallette: "bluehue" });
-            }}
-          />
-          <Form.Check
-            type="radio"
-            label="Random Hue Set"
-            name="radioOptions"
-            checked={myGlobalObject.randomHue === true}
-            onChange={() => {
-              myGlobalObject.randomHue = true;
-              myGlobalObject.colorPallete = "randomhue";
-              config.setState({ ...config.state, pallette: "randomhue" });
-            }}
-          />
-          <Form.Check
-            type="radio"
-            label="Random Colors"
-            name="radioOptions"
-            checked={myGlobalObject.colorPallete === "random"}
-            onChange={() => {
-              myGlobalObject.randomHue = false;
-              myGlobalObject.colorPallete = "random";
-              config.setState({ ...config.state, pallette: "random" });
-            }}
-          />
-          <Form.Check
-            type="radio"
-            label="High Contrast Colors"
-            name="radioOptions"
-            checked={myGlobalObject.colorPallete === "highcontrast"}
-            onChange={() => {
-              myGlobalObject.randomHue = false;
-              myGlobalObject.colorPallete = "highcontrast";
-              config.setState({ ...config.state, pallette: "highcontrast" });
-            }}
+            style={{ marginTop: "10px" }}
           />
 
+          <Container style={{ marginTop: "15px" }}>
+            <Row className="mb-1">
+              <Col xs={8}>
+                <FormLabel>Interval (seconds)</FormLabel>
+              </Col>
+              <Col xs={4}>
+                <input
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={config.settingsConfig.slideShowInterval}
+                  onChange={(e) => {
+                    config.setSettingsConfig({
+                      ...config.settingsConfig,
+                      slideShowInterval: parseInt(e.target.value),
+                    });
+                    changeSlideShowInterval();
+                  }}
+                />
+              </Col>
+            </Row>
+          </Container>
+
+          <Stack direction="horizontal" gap={2}>
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={() => {
+                saveCurrentSlide();
+              }}
+              style={{
+                width: "136px",
+                display:
+                  config.slideShow && !config.slideShowPause ? "block" : "none",
+                marginTop: "15px",
+              }}
+            >
+              Save Current
+            </Button>
+            <Button
+              size="sm"
+              variant="warning"
+              onClick={() => {
+                pauseSlideShowNow();
+              }}
+              style={{
+                width: "136px",
+                display:
+                  config.slideShow && !config.slideShowPause ? "block" : "none",
+                marginTop: "15px",
+              }}
+            >
+              Pause Slide Show
+            </Button>
+          </Stack>
+          <Button
+            size="sm"
+            variant="success"
+            onClick={() => {
+              resumeSlideShowNow();
+            }}
+            style={{
+              width: "280px",
+              display:
+                config.slideShow && config.slideShowPause ? "block" : "none",
+              marginTop: "15px",
+            }}
+          >
+            Resume Slide Show
+          </Button>
           <Button
             size="sm"
             variant="danger"
             onClick={() => {
-              myGlobalObject.stopSlideShow = true;
-              //setStopSlideShow(true);
+              config.setStopSlideShow(true);
               stopSlideShowNow();
             }}
             style={{
               width: "280px",
               display: config.slideShow ? "block" : "none",
-              marginTop: "15px",
+              marginTop: "5px",
             }}
           >
             Stop Slide Show
           </Button>
+        </Stack>
+
+        {/* This is the Feed the AI Monster Stack*/}
+        <Stack direction="vertical" gap={1} style={{ marginTop: "20px" }}>
+          <FormLabel style={{ fontWeight: "bold" }}>
+            Feed the AI Monster
+          </FormLabel>
+          <FormLabel style={{ fontWeight: "normal" }}>
+            Rate the displayed dragon curve
+          </FormLabel>
+          <ButtonGroup>
+            <Button
+              variant="outline-secondary"
+              onClick={() => rateDragonCurve(1)}
+            >
+              1 Star
+            </Button>
+            <Button
+              variant="outline-secondary"
+              onClick={() => rateDragonCurve(2)}
+            >
+              2 Stars
+            </Button>
+            <Button
+              variant="outline-secondary"
+              onClick={() => rateDragonCurve(3)}
+            >
+              3 Stars
+            </Button>
+            <Button
+              variant="outline-secondary"
+              onClick={() => rateDragonCurve(4)}
+            >
+              4 Stars
+            </Button>
+            <Button
+              variant="outline-secondary"
+              onClick={() => rateDragonCurve(5)}
+            >
+              5 Stars
+            </Button>
+          </ButtonGroup>
         </Stack>
       </div>
 
@@ -763,13 +850,13 @@ export default function ControlLayout({
                     disabled={config.slideShow}
                     size="sm"
                     variant="primary"
-                    onClick={randomDragonCurveCurrentSize}
-                    style={{ width: "220px" }}
+                    onClick={randomDragonCurve}
+                    style={{ width: "280px" }}
                   >
                     Random Curve Slide Show
                   </Button>
                 </OverlayTrigger>
-                <OverlayTrigger
+                {/* <OverlayTrigger
                   placement="right"
                   delay={{ show: 250, hide: 400 }}
                   overlay={renderRandomTooltip}
@@ -783,7 +870,7 @@ export default function ControlLayout({
                     }}
                     style={{ width: "60px" }}
                   >
-                    {/* Randomise */}{" "}
+             
                     <svg
                       onClick={() => {
                         config.setSlideShowConfig(true);
@@ -804,7 +891,7 @@ export default function ControlLayout({
                       <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
                     </svg>
                   </Button>
-                </OverlayTrigger>
+                </OverlayTrigger> */}
               </Stack>
             </Stack>
 

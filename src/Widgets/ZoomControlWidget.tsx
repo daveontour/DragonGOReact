@@ -180,6 +180,7 @@ export default function ZoomControl({
         <svg
           style={{ cursor: "pointer", marginLeft: "15px", marginTop: "-4px" }}
           onClick={() => {
+            document.getElementById("imageHTMLElementFullScreen")?.focus();
             setShowFullScreen(true);
             goFullScreen();
           }}

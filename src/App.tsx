@@ -2,22 +2,29 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Heading from "./Layouts/Heading";
 import BodyLayout from "./Layouts/BodyLayout";
 import FullScreenLayout from "./Layouts/FullScreenLayout";
-import { useState } from "react";
-import myGlobalObject from "./globals";
+import { useState, useRef } from "react";
 
 const App: React.FC = () => {
   const [showFullScreen, setShowFullScreen] = useState(false);
+  const handlersRef = useRef<{
+    getIntervalID: () => number | null;
+    getConfigJSON: () => string;
+  } | null>(null);
 
   const handleFullScreenExit = () => {
     if (document.exitFullscreen) {
+      const intervalID = handlersRef.current?.getIntervalID();
+      if (intervalID !== null && intervalID !== undefined) {
+        clearInterval(intervalID);
+      }
       document.exitFullscreen();
       document.getElementById("imageHTMLElement")?.focus();
     }
   };
 
   function handleSave(): void {
-    console.log(myGlobalObject.configJSON);
-    const blob = new Blob([myGlobalObject.configJSON], {
+    const configJSON = handlersRef.current?.getConfigJSON() || "";
+    const blob = new Blob([configJSON], {
       type: "application/json",
     });
     const href = URL.createObjectURL(blob);
@@ -50,6 +57,7 @@ const App: React.FC = () => {
       <BodyLayout
         showFullScreen={showFullScreen}
         setShowFullScreen={setShowFullScreen}
+        handlersRef={handlersRef}
       />
       <FullScreenLayout
         showFullScreen={showFullScreen}

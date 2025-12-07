@@ -1,114 +1,26 @@
 import ControlLayout from "./ControlLayout";
 import ImageLayout from "./ImageLayout";
-import myGlobalObject from "../globals";
 import { CurrentConfigContext } from "../Contexts";
 import { useState } from "react";
-
-function hslToRgb(h: number, s: number, l: number) {
-  var r, g, b;
-  if (s == 0) {
-    r = g = b = l; // achromatic
-  } else {
-    var hue2rgb = function hue2rgb(p: number, q: number, t: number) {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1 / 6) return p + (q - p) * 6 * t;
-      if (t < 1 / 2) return q;
-      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-      return p;
-    };
-    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    var p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1 / 3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1 / 3);
-  }
-  return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-}
-
-// function hslaToRgba(h: number, s: number, l: number, a: number): string {
-//   var rgb = hslToRgb(h, s, l);
-//   return `#${rgb[0].toString(16).padStart(2, "0")}${rgb[1]
-//     .toString(16)
-//     .padStart(2, "0")}${rgb[2].toString(16).padStart(2, "0")}${Math.round(
-//     a * 255
-//   )
-//     .toString(16)
-//     .padStart(2, "0")}`;
-// }
-
-// a function for taking a hsla color and returning a hsla 137.5 degrees away
-function hslaRotate(
-  h: number,
-  s: number,
-  l: number,
-  a: number,
-  degrees: number
-): number[] {
-  let newH = (h + degrees / 360) % 360;
-  return [newH, s, l, a];
-}
-
-function rgbToHsl(r: number, g: number, b: number): number[] {
-  (r /= 255), (g /= 255), (b /= 255);
-  var max = Math.max(r, g, b),
-    min = Math.min(r, g, b);
-
-  let h,
-    s,
-    l = (max + min) / 2;
-
-  if (max == min) {
-    h = s = 0; // achromatic
-    return [h, s, l];
-  } else {
-    var d = max - min;
-    let h: number = 0;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-    switch (max) {
-      case r:
-        h = (g - b) / d + (g < b ? 6 : 0);
-        break;
-      case g:
-        h = (b - r) / d + 2;
-        break;
-      case b:
-        h = (r - g) / d + 4;
-        break;
-    }
-    h /= 6;
-
-    return [h, s, l];
-  }
-}
-
-function rgbaToHsla(r: number, g: number, b: number, a: number): number[] {
-  var hsl = rgbToHsl(r, g, b);
-  return [hsl[0], hsl[1], hsl[2], a];
-}
-
-function stringToRGBA(str: string): number[] {
-  var hex = str.replace("#", "");
-  var bigint = parseInt(hex, 16);
-  var r = (bigint >> 24) & 255;
-  var g = (bigint >> 16) & 255;
-  var b = (bigint >> 8) & 255;
-  var a = bigint & 255;
-  return [r, g, b, a];
-}
+import { executeRandomiser } from "../randomiserSchemes";
 
 export default function BodyLayout({
   showFullScreen,
   setShowFullScreen,
+  handlersRef,
 }: {
   showFullScreen: boolean;
   setShowFullScreen: any;
+  handlersRef?: React.MutableRefObject<{
+    getIntervalID: () => number | null;
+    getConfigJSON: () => string;
+  } | null>;
 }) {
   const urlHead = "http://localhost:8080";
   // const urlHead = "./";
 
   const [slideShow, setSlideShow] = useState(false);
+  const [slideShowPause, setSlideShowPause] = useState(false);
   const [imageSize, setImageSize] = useState({
     width: "calc(100vw - 320px)",
     height: "auto",
@@ -192,248 +104,85 @@ export default function BodyLayout({
   const [showFoldsHelp, setShowFoldsHelp] = useState(false);
   const [showSlideShowConfig, setSlideShowConfig] = useState(false);
   const [slideShowRandomise, setSlideShowRandomise] = useState(false);
+  const [slideShowAutoDownload, setSlideShowAutoDownload] = useState(false);
   const [dirty, setDirty] = useState(false);
+  const [randomiserScheme, setRandomiserScheme] = useState("standard");
+  const [randomHue, setRandomHue] = useState(false);
+  const [lastConstrastValue, setLastConstrastValue] = useState("");
+  const [contrastCount, setContrastCount] = useState(0);
+  const [configJSON, setConfigJSON] = useState("");
+  const [intervalID, setIntervalID] = useState<number | null>(null);
+  const [stopSlideShow, setStopSlideShow] = useState(false);
 
-  const generateColor = () => {
-    if (myGlobalObject.colorPallete === "pastel") {
-      return generatePastelColor();
-    } else if (myGlobalObject.colorPallete === "vibrant") {
-      return generateVibrantColor();
-    } else if (myGlobalObject.colorPallete === "redhue") {
-      return generateRedHueColor();
-    } else if (myGlobalObject.colorPallete === "greenhue") {
-      return generateGreenHueColor();
-    } else if (myGlobalObject.colorPallete === "bluehue") {
-      return generateBlueHueColor();
-    } else if (myGlobalObject.colorPallete === "randomhue") {
-      return generateRandomHueColor();
-    } else if (myGlobalObject.colorPallete === "highcontrast") {
-      return generateHighContrastColor();
-    } else {
-      return generateRandomColor();
-    }
-  };
+  // Expose handlers to parent component
+  if (handlersRef) {
+    handlersRef.current = {
+      getIntervalID: () => intervalID,
+      getConfigJSON: () => configJSON,
+    };
+  }
 
-  const generateHighContrastColor = () => {
-    if (
-      myGlobalObject.lastConstrastValue === "" ||
-      myGlobalObject.contrastCount % 5 === 0
-    ) {
-      let x = generateVibrantColor();
-      myGlobalObject.lastConstrastValue = x;
-      myGlobalObject.contrastCount++;
-      return x;
-    } else {
-      //convert the last contrast value to RGBA
+  const setSlideShowRandom = () => {
+    let s = executeRandomiser(
+      state,
+      pathState,
+      activeCellState,
+      insideCellState,
+      outsideCellState,
+      slideShowRandomise,
+      randomiserScheme,
+      state.pallette,
+      lastConstrastValue,
+      contrastCount,
+      setLastConstrastValue,
+      setContrastCount
+    );
+    setState({
+      ...state,
+      margin: s[0].margin,
+      cellType: s[0].cellType,
+      radius: s[0].radius,
+      gridlines: s[0].gridlines,
+      grouting: s[0].grouting,
+      triangleAngle: s[0].triangleAngle,
+      folds: s[0].folds,
+    });
+    setPathState({
+      ...pathState,
+      borderStyle: s[1].borderStyle,
+      borderWidth: s[1].borderWidth,
+      borderColor: s[1].borderColor,
+      borderEnabled: s[1].borderEnabled,
+      startDirection: s[1].startDirection,
+    });
+    setInsideCellState({
+      ...insideCellState,
+      borderStyle: s[2].borderStyle,
+      borderWidth: s[2].borderWidth,
+      borderColor: s[2].borderColor,
+      borderEnabled: s[2].borderEnabled,
+      backgroundColor: s[2].backgroundColor,
+      fillEnabled: s[2].fillEnabled,
+    });
+    setOutsideCellState({
+      ...outsideCellState,
+      borderStyle: s[3].borderStyle,
+      borderWidth: s[3].borderWidth,
+      borderColor: s[3].borderColor,
+      borderEnabled: s[3].borderEnabled,
+      backgroundColor: s[3].backgroundColor,
+      fillEnabled: s[3].fillEnabled,
+    });
 
-      let y = stringToRGBA(myGlobalObject.lastConstrastValue);
-
-      let x = rgbaToHsla(y[0], y[1], y[2], y[3] / 255);
-      var newHSL = hslaRotate(x[0], x[1], x[2], x[3], 137.5);
-      var newRGB = hslToRgb(newHSL[0], newHSL[1], newHSL[2]);
-      let newVal = `#${newRGB[0].toString(16).padStart(2, "0")}${newRGB[1]
-        .toString(16)
-        .padStart(2, "0")}${newRGB[2]
-        .toString(16)
-        .padStart(2, "0")}${Math.round(newHSL[3] * 255)
-        .toString(16)
-        .padStart(2, "0")}`;
-      myGlobalObject.lastConstrastValue = newVal;
-      myGlobalObject.contrastCount++;
-      return newVal;
-    }
-  };
-
-  const generateRandomHueColor = () => {
-    if (Math.random() > 0.66) {
-      return generateRedHueColor();
-    } else if (Math.random() > 0.5) {
-      return generateGreenHueColor();
-    } else {
-      return generateBlueHueColor();
-    }
-  };
-  const generateRedHueColor = () => {
-    let R = Math.floor(Math.random() * 127 + 127);
-    let G = Math.floor(Math.random() * 63);
-    let B = Math.floor(Math.random() * 63);
-
-    let rgb = (R << 16) + (G << 8) + B;
-    return `#${rgb.toString(16)}${generateRandomOpacity()}`;
-  };
-
-  const generateBlueHueColor = () => {
-    let R = Math.floor(Math.random() * 63);
-    let G = Math.floor(Math.random() * 63);
-    let B = Math.floor(Math.random() * 127 + 127);
-
-    let rgb = (R << 16) + (G << 8) + B;
-    return `#${rgb.toString(16)}${generateRandomOpacity()}`;
-  };
-  const generateGreenHueColor = () => {
-    let R = Math.floor(Math.random() * 63);
-    let G = Math.floor(Math.random() * 127 + 127);
-    let B = Math.floor(Math.random() * 63);
-
-    let rgb = (R << 16) + (G << 8) + B;
-    return `#${rgb.toString(16)}`;
-  };
-
-  const generateRandomColor = () => {
-    let R = Math.floor(Math.random() * 255);
-    let G = Math.floor(Math.random() * 255);
-    let B = Math.floor(Math.random() * 255);
-    //  let A = Math.floor(Math.random() * 127 + 127);
-
-    let rgb = (R << 16) + (G << 8) + B;
-    console.log(`#${rgb.toString(16)}${generateRandomOpacity()}`);
-    return `#${rgb.toString(16)}${generateRandomOpacity()}`;
-  };
-  const generatePastelColor = () => {
-    let R = Math.floor(Math.random() * 127 + 127);
-    let G = Math.floor(Math.random() * 127 + 127);
-    let B = Math.floor(Math.random() * 127 + 127);
-
-    let rgb = (R << 16) + (G << 8) + B;
-    return `#${rgb.toString(16)}${generateRandomOpacity()}`;
-  };
-
-  const generateVibrantColor = () => {
-    let R = Math.floor(Math.random() * 255);
-    let G = Math.floor(Math.random() * 255);
-    let B = Math.floor(Math.random() * 255);
-
-    if (Math.random() > 0.66) {
-      R = 255;
-    } else if (Math.random() > 0.5) {
-      G = 255;
-    } else {
-      B = 255;
-    }
-
-    let rgb = (R << 16) + (G << 8) + B;
-    return `#${rgb.toString(16).padStart(6, "0")}`;
-  };
-
-  const generateRandomOpacity = () => {
-    let randomHex = Math.floor(Math.random() * 256)
-      .toString(16)
-      .padStart(2, "0");
-    if (Math.random() > 0.5) {
-      randomHex = "ff";
-    }
-    return `${randomHex}`;
-  };
-
-  const generateBorderWidth = (seed: number) => {
-    return Math.floor(Math.random() * seed).toString() + "px";
-  };
-
-  const setRandomState = () => {
-    state.folds = ["7", "8", "9", "10", "11"][Math.floor(Math.random() * 5)];
-    state.grouting = ["0", "0", "0", "0", "0", "1", "2", "3", "4", "5"][
-      Math.floor(Math.random() * 9)
-    ];
-    state.margin = "5";
-    state.cellType = [
-      "quadrant",
-      "line",
-      "corner",
-      "knuth",
-      "knuthcurve",
-      "knuthtri",
-    ][Math.floor(Math.random() * 6)];
-
-    state.radius = ["5", "8", "10", "12"][Math.floor(Math.random() * 4)];
-    state.gridlines = Math.random() > 0.75;
-    //state.pallette = ["pastel", "vibrant", "random"][Math.floor(Math.random() * 3)];
-
-    if (
-      state.cellType === "knuthcurve" ||
-      state.cellType === "knuth" ||
-      state.cellType === "knuthtri"
-    ) {
-      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
-    }
-
-    // set pathState.startDirection to a random value from the set of "UP", "DOWN", "LEFT", "RIGHT"
-
-    pathState.startDirection = ["UP", "DOWN", "LEFT", "RIGHT"][
-      Math.floor(Math.random() * 1)
-    ];
-
-    setRandomCellScheme();
-  };
-
-  const setRandomCurrentSizeState = () => {
-    if (
-      state.cellType === "knuthcurve" ||
-      state.cellType === "knuth" ||
-      state.cellType === "knuthtri"
-    ) {
-      state.cellType = ["knuth", "knuthcurve", "knuthtri"][
-        Math.floor(Math.random() * 3)
-      ];
-    } else {
-      state.cellType = ["quadrant", "line", "corner", "triangle"][
-        Math.floor(Math.random() * 4)
-      ];
-    }
-
-    if (
-      state.cellType === "knuthcurve" ||
-      state.cellType === "knuth" ||
-      state.cellType === "knuthtri"
-    ) {
-      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
-    }
-
-    // set pathState.startDirection to a random value from the set of "UP", "DOWN", "LEFT", "RIGHT"
-    setRandomCellScheme();
-  };
-
-  const setRandomCellScheme = () => {
-    state.triangleAngle = ["0", "10", "20", "30", "45", "50", "60", "65"][
-      Math.floor(Math.random() * 8)
-    ];
-
-    state.groutingColor = generateColor();
-    if (Math.random() > 0.5) {
-      state.groutingColor = "#ffffffff";
-    }
-    state.gridlines = Math.random() > 0.75;
-    if (myGlobalObject.randomHue) {
-      myGlobalObject.colorPallete = ["redhue", "bluehue", "greenhue"][
-        Math.floor(Math.random() * 3)
-      ];
-      state.pallette = myGlobalObject.colorPallete;
-    }
-
-    pathState.borderStyle = "solid";
-    pathState.borderWidth = generateBorderWidth(4);
-    pathState.borderColor = generateColor();
-    pathState.borderEnabled = Math.random() > 0.3;
-
-    insideCellState.borderStyle = "solid";
-    insideCellState.borderWidth = generateBorderWidth(4);
-    insideCellState.borderColor = generateColor();
-    insideCellState.backgroundColor = generateColor();
-    insideCellState.borderEnabled = Math.random() > 0.2;
-    insideCellState.fillEnabled = Math.random() > 0.2;
-
-    outsideCellState.borderStyle = "solid";
-    outsideCellState.borderWidth = generateBorderWidth(4);
-    outsideCellState.borderColor = generateColor();
-    outsideCellState.backgroundColor = generateColor();
-    outsideCellState.borderEnabled = Math.random() > 0.6;
-    outsideCellState.fillEnabled = Math.random() > 0.5;
-
-    activeCellState.borderStyle = "solid";
-    activeCellState.borderWidth = generateBorderWidth(4);
-    activeCellState.borderColor = generateColor();
-    activeCellState.backgroundColor = generateColor();
-    activeCellState.borderEnabled = Math.random() > 0.5;
-    activeCellState.fillEnabled = Math.random() > 0.5;
+    setActiveCellState({
+      ...activeCellState,
+      borderStyle: s[4].borderStyle,
+      borderWidth: s[4].borderWidth,
+      borderColor: s[4].borderColor,
+      borderEnabled: s[4].borderEnabled,
+      backgroundColor: s[4].backgroundColor,
+      fillEnabled: s[4].fillEnabled,
+    });
   };
 
   return (
@@ -472,14 +221,32 @@ export default function BodyLayout({
           setSlideShowConfig,
           slideShowRandomise,
           setSlideShowRandomise,
+          slideShowAutoDownload,
+          setSlideShowAutoDownload,
           dirty,
           setDirty,
           urlHead,
           updateImage: () => {},
           slideShow,
           setSlideShow,
+          slideShowPause,
+          setSlideShowPause,
           imageSize,
           setImageSize,
+          randomiserScheme,
+          setRandomiserScheme,
+          randomHue,
+          setRandomHue,
+          lastConstrastValue,
+          setLastConstrastValue,
+          contrastCount,
+          setContrastCount,
+          configJSON,
+          setConfigJSON,
+          intervalID,
+          setIntervalID,
+          stopSlideShow,
+          setStopSlideShow,
         }}
       >
         <div
@@ -494,8 +261,7 @@ export default function BodyLayout({
           }}
         >
           <ControlLayout
-            randomDragonCurveLocal={setRandomState}
-            randomDragonCurveLocalCurrentSize={setRandomCurrentSizeState}
+            setSlideShowRandomFunction={setSlideShowRandom}
           ></ControlLayout>
 
           <ImageLayout
@@ -503,7 +269,7 @@ export default function BodyLayout({
             setShowFullScreen={setShowFullScreen}
             stopSlideShowNow={() => {
               setSlideShow(false);
-              myGlobalObject.stopSlideShow = true;
+              setStopSlideShow(true);
             }}
           />
         </div>

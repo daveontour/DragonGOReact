@@ -1,4 +1,5 @@
-import myGlobalObject from "../globals";
+import { useContext } from "react";
+import { CurrentConfigContext } from "../Contexts";
 
 export default function FullScreenLayout({
   showFullScreen,
@@ -7,13 +8,14 @@ export default function FullScreenLayout({
   showFullScreen: boolean;
   setShowFullScreen: any;
 }) {
+  const config = useContext(CurrentConfigContext);
+  
   const handleImageClick = () => {
     setShowFullScreen(false);
   };
   function handleKeyPress(event: React.KeyboardEvent<HTMLDivElement>): void {
     if (event.type === "keydown" && event.key.toLowerCase() === "s") {
-      console.log(myGlobalObject.configJSON);
-      const blob = new Blob([myGlobalObject.configJSON], {
+      const blob = new Blob([config.configJSON], {
         type: "application/json",
       });
       const href = URL.createObjectURL(blob);

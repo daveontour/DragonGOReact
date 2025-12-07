@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { CurrentConfigContext } from "../Contexts";
 import ZoomControl from "../Widgets/ZoomControlWidget";
 import "./ImageLayout.css";
-import myGlobalObject from "../globals";
 
 export default function ImageLayout({
   statsURL,
@@ -17,8 +16,7 @@ export default function ImageLayout({
 
   function handleKeyPress(event: React.KeyboardEvent<HTMLDivElement>): void {
     if (event.type === "keydown" && event.key.toLowerCase() === "s") {
-      console.log(myGlobalObject.configJSON);
-      const blob = new Blob([myGlobalObject.configJSON], {
+      const blob = new Blob([config.configJSON], {
         type: "application/json",
       });
       const href = URL.createObjectURL(blob);
