@@ -26,26 +26,26 @@ export function executeRandomiser(
   setContrastCount: (value: number) => void
 ): RandomiserReturnType {
   // Always maintain current size - only randomize cell type
-  if (
-    state.cellType === "knuthcurve" ||
-    state.cellType === "knuth" ||
-    state.cellType === "knuthtri"
-  ) {
-    state.cellType = ["knuth", "knuthcurve", "knuthtri"][
-      Math.floor(Math.random() * 3)
-    ];
-  } else {
-    state.cellType = ["quadrant", "line", "corner", "triangle"][
-      Math.floor(Math.random() * 4)
-    ];
-  }
+    if (
+      state.cellType === "knuthcurve" ||
+      state.cellType === "knuth" ||
+      state.cellType === "knuthtri"
+    ) {
+      state.cellType = ["knuth", "knuthcurve", "knuthtri"][
+        Math.floor(Math.random() * 3)
+      ];
+    } else {
+      state.cellType = ["quadrant", "line", "corner", "triangle"][
+        Math.floor(Math.random() * 4)
+      ];
+    }
 
-  if (
-    state.cellType === "knuthcurve" ||
-    state.cellType === "knuth" ||
-    state.cellType === "knuthtri"
-  ) {
-    state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
+    if (
+      state.cellType === "knuthcurve" ||
+      state.cellType === "knuth" ||
+      state.cellType === "knuthtri"
+    ) {
+      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
   }
 
   state.triangleAngle = ["0", "10", "20", "30", "45", "50", "60", "65"][

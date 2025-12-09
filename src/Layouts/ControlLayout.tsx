@@ -81,13 +81,17 @@ function calculateImageSize(
   return ["auto", "auto", "100"];
 }
 
-import { SetSlideShowRandomFunction, SavedConfig } from "../types";
+import { SetSlideShowRandomFunction, SavedConfig, SetShowFullScreen } from "../types";
 import { downloadSVG, downloadJSON } from "../utils/downloadUtils";
 
 export default function ControlLayout({
   setSlideShowRandomFunction,
+  setShowFullScreen,
+  statsURL,
 }: {
   setSlideShowRandomFunction: SetSlideShowRandomFunction;
+  setShowFullScreen: SetShowFullScreen;
+  statsURL: string;
 }) {
   // Generate the initial image on load
   useEffect(() => {
@@ -884,7 +888,7 @@ export default function ControlLayout({
           </div>
         </div>
         {/* The Miscellaneous Button Stack */}
-        <ControlLayoutButtons />
+        <ControlLayoutButtons setShowFullScreen={setShowFullScreen} statsURL={statsURL} />
       </div>
     </>
   );

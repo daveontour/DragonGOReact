@@ -2,11 +2,19 @@ import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { JSX } from "react/jsx-runtime";
 import { RefAttributes, useContext, useState } from "react";
 import { CurrentConfigContext } from "../Contexts";
-import { openPrintDialog, downloadPrintOptimizedSVG } from "../utils/printUtils";
 import { downloadSVG } from "../utils/downloadUtils";
+import { SetShowFullScreen } from "../types";
+import CurveStatsModal from "../DialogBoxes/CurveStatsModal";
 
-export default function ControlLayoutButtons() {
+export default function ControlLayoutButtons({
+  setShowFullScreen,
+  statsURL,
+}: {
+  setShowFullScreen: SetShowFullScreen;
+  statsURL: string;
+}) {
   let config = useContext(CurrentConfigContext);
+  const [statsShow, setStatsShow] = useState(false);
 
   const [configState, setConfigState] = useState({
     outside: config.outsideCellState,
@@ -24,32 +32,6 @@ export default function ControlLayoutButtons() {
       downloadSVG(svg.innerHTML, "DragonCurve.svg");
     }
     config.setDownloadShow(false);
-  };
-
-  const printDragonCurve = () => {
-    let svg = document.getElementById("imageHTMLElement") as HTMLElement;
-    if (svg && svg.innerHTML) {
-      // Find the SVG element within the container
-      const svgElement = svg.querySelector("svg");
-      if (svgElement) {
-        openPrintDialog(svgElement.outerHTML);
-      } else {
-        openPrintDialog(svg.innerHTML);
-      }
-    }
-  };
-
-  const downloadPrintSVG = () => {
-    let svg = document.getElementById("imageHTMLElement") as HTMLElement;
-    if (svg && svg.innerHTML) {
-      // Find the SVG element within the container
-      const svgElement = svg.querySelector("svg");
-      if (svgElement) {
-        downloadPrintOptimizedSVG(svgElement.outerHTML);
-      } else {
-        downloadPrintOptimizedSVG(svg.innerHTML);
-      }
-    }
   };
 
   const loadCurve = () => {
@@ -127,24 +109,57 @@ export default function ControlLayoutButtons() {
       Opens the help dialog box. (not implemented yet)
     </Tooltip>
   );
-  const renderPrintTooltip = (
+  const renderStatsTooltip = (
     props: JSX.IntrinsicAttributes &
       TooltipProps &
       RefAttributes<HTMLDivElement>
   ) => (
     <Tooltip id="button-tooltip" {...props}>
-      Print the dragon curve on A4 paper with 0.5cm margins.
+      Display the statistics on each type of tile in the curve.
     </Tooltip>
   );
-  const renderPrintDownloadTooltip = (
+  const renderFullscreenTooltip = (
     props: JSX.IntrinsicAttributes &
       TooltipProps &
       RefAttributes<HTMLDivElement>
   ) => (
     <Tooltip id="button-tooltip" {...props}>
-      Download a print-optimized SVG file for A4 paper with 0.5cm margins.
+      Display in fullscreen mode.
     </Tooltip>
   );
+
+  const exitHandler = () => {
+    if (!document.fullscreenElement) {
+      setShowFullScreen(false);
+      document.getElementsByTagName("body")[0].className = "";
+      document.getElementsByTagName("body")[0].style.backgroundColor =
+        "aliceblue";
+
+      //Reload the image so it's sized correctly
+      setTimeout(() => {
+        let btn = document.getElementById(
+          "generate-dragon-curve-button"
+        ) as HTMLButtonElement;
+        btn.click();
+      }, 500);
+    }
+  };
+
+  const goFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      if (config.settingsConfig.background == "plain") {
+        document.getElementsByTagName("body")[0].style.backgroundColor =
+          "black";
+      } else {
+        document.getElementsByTagName("body")[0].className =
+          config.settingsConfig.background;
+      }
+      document.addEventListener("fullscreenchange", exitHandler);
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  };
 
   return (
     <>
@@ -239,44 +254,6 @@ export default function ControlLayoutButtons() {
         <OverlayTrigger
           placement="right"
           delay={{ show: 250, hide: 400 }}
-          overlay={renderPrintTooltip}
-        >
-          <svg
-            onClick={printDragonCurve}
-            cursor={"pointer"}
-            xmlns="http://www.w3.org/2000/svg"
-            width="30px"
-            height="30px"
-            fill="currentColor"
-            className="bi bi-printer"
-            viewBox="0 0 16 16"
-          >
-            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
-            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5M3 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H3zm1 5a2 2 0 0 0-2 2v1h2V7zm1 0h6v6H5zm7 0v6a1 1 0 0 0 1 1h2V9a1 1 0 0 0-1-1z" />
-          </svg>
-        </OverlayTrigger>
-        <OverlayTrigger
-          placement="right"
-          delay={{ show: 250, hide: 400 }}
-          overlay={renderPrintDownloadTooltip}
-        >
-          <svg
-            onClick={downloadPrintSVG}
-            cursor={"pointer"}
-            xmlns="http://www.w3.org/2000/svg"
-            width="30px"
-            height="30px"
-            fill="currentColor"
-            className="bi bi-printer-fill"
-            viewBox="0 0 16 16"
-          >
-            <path d="M5 1a2 2 0 0 0-2 2v1h2V3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h2V3a2 2 0 0 0-2-2H5zm2 0h6a2 2 0 0 1 2 2v2h-2V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v1H4V3a2 2 0 0 1 2-2" />
-            <path d="M11.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1M3 13a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1zm2-8.5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0z" />
-          </svg>
-        </OverlayTrigger>
-        <OverlayTrigger
-          placement="right"
-          delay={{ show: 250, hide: 400 }}
           overlay={renderTurnsTooltip}
         >
           <svg
@@ -300,6 +277,48 @@ export default function ControlLayoutButtons() {
         <OverlayTrigger
           placement="right"
           delay={{ show: 250, hide: 400 }}
+          overlay={renderStatsTooltip}
+        >
+          <svg
+            onClick={() => {
+              setStatsShow(true);
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="30px"
+            height="30px"
+            fill="currentColor"
+            cursor={"pointer"}
+            className="bi bi-bar-chart"
+            viewBox="0 0 16 16"
+          >
+            <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z" />
+          </svg>
+        </OverlayTrigger>
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
+          overlay={renderFullscreenTooltip}
+        >
+          <svg
+            onClick={() => {
+              document.getElementById("imageHTMLElementFullScreen")?.focus();
+              setShowFullScreen(true);
+              goFullScreen();
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="30px"
+            height="30px"
+            fill="currentColor"
+            cursor={"pointer"}
+            className="bi bi-fullscreen"
+            viewBox="0 0 16 16"
+          >
+            <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5M.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5" />
+          </svg>
+        </OverlayTrigger>
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
           overlay={renderHelpTooltip}
         >
           <svg
@@ -315,6 +334,11 @@ export default function ControlLayoutButtons() {
           </svg>
         </OverlayTrigger>
       </div>
+      <CurveStatsModal
+        statsShow={statsShow}
+        setStatsShow={setStatsShow}
+        statsURL={statsURL}
+      />
     </>
   );
 }

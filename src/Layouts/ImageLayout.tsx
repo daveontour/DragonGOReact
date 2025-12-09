@@ -1,19 +1,9 @@
 import { useContext } from "react";
 import { CurrentConfigContext } from "../Contexts";
-import ZoomControl from "../Widgets/ZoomControlWidget";
 import "./ImageLayout.css";
-import { SetShowFullScreen, StopSlideShowNow } from "../types";
 import { downloadJSON } from "../utils/downloadUtils";
 
-export default function ImageLayout({
-  statsURL,
-  setShowFullScreen,
-  stopSlideShowNow,
-}: {
-  statsURL: string;
-  setShowFullScreen: SetShowFullScreen;
-  stopSlideShowNow: StopSlideShowNow;
-}) {
+export default function ImageLayout() {
   let config = useContext(CurrentConfigContext);
 
   function handleKeyPress(event: React.KeyboardEvent<HTMLDivElement>): void {
@@ -49,7 +39,7 @@ export default function ImageLayout({
           className={config.settingsConfig.background}
           style={{
             outline: "none",
-            height: "calc(100% - 25px)",
+            height: "100%",
             width: "100%",
             overflow: "auto",
             display: "flex",
@@ -61,21 +51,6 @@ export default function ImageLayout({
             userSelect: "none",
           }}
         ></div>
-        <div
-          style={{
-            width: "100%",
-            height: 25,
-            paddingLeft: 5,
-            backgroundColor: "#ccccccbb",
-            borderRadius: "5px",
-          }}
-        >
-          <ZoomControl
-            statsURL={statsURL}
-            setShowFullScreen={setShowFullScreen}
-            stopSlideShowNow={stopSlideShowNow}
-          />
-        </div>
       </div>
     </>
   );

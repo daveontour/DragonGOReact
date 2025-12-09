@@ -126,11 +126,11 @@ export default function BodyLayout({
 
   const setSlideShowRandom = () => {
     setState((currentState) => {
-      let s = executeRandomiser(
+    let s = executeRandomiser(
         { ...currentState },
-        pathState,
-        activeCellState,
-        insideCellState,
+      pathState,
+      activeCellState,
+      insideCellState,
         outsideCellState,
         randomiserScheme,
         currentState.pallette,
@@ -143,39 +143,39 @@ export default function BodyLayout({
       // Update other states using current values
       setPathState((currentPathState) => ({
         ...currentPathState,
-        borderStyle: s[1].borderStyle,
-        borderWidth: s[1].borderWidth,
-        borderColor: s[1].borderColor,
-        borderEnabled: s[1].borderEnabled,
-        startDirection: s[1].startDirection,
+      borderStyle: s[1].borderStyle,
+      borderWidth: s[1].borderWidth,
+      borderColor: s[1].borderColor,
+      borderEnabled: s[1].borderEnabled,
+      startDirection: s[1].startDirection,
       }));
       setInsideCellState((currentInsideState) => ({
         ...currentInsideState,
-        borderStyle: s[2].borderStyle,
-        borderWidth: s[2].borderWidth,
-        borderColor: s[2].borderColor,
-        borderEnabled: s[2].borderEnabled,
-        backgroundColor: s[2].backgroundColor,
-        fillEnabled: s[2].fillEnabled,
+      borderStyle: s[2].borderStyle,
+      borderWidth: s[2].borderWidth,
+      borderColor: s[2].borderColor,
+      borderEnabled: s[2].borderEnabled,
+      backgroundColor: s[2].backgroundColor,
+      fillEnabled: s[2].fillEnabled,
       }));
       setOutsideCellState((currentOutsideState) => ({
         ...currentOutsideState,
-        borderStyle: s[3].borderStyle,
-        borderWidth: s[3].borderWidth,
-        borderColor: s[3].borderColor,
-        borderEnabled: s[3].borderEnabled,
-        backgroundColor: s[3].backgroundColor,
-        fillEnabled: s[3].fillEnabled,
+      borderStyle: s[3].borderStyle,
+      borderWidth: s[3].borderWidth,
+      borderColor: s[3].borderColor,
+      borderEnabled: s[3].borderEnabled,
+      backgroundColor: s[3].backgroundColor,
+      fillEnabled: s[3].fillEnabled,
       }));
 
       setActiveCellState((currentActiveState) => ({
         ...currentActiveState,
-        borderStyle: s[4].borderStyle,
-        borderWidth: s[4].borderWidth,
-        borderColor: s[4].borderColor,
-        borderEnabled: s[4].borderEnabled,
-        backgroundColor: s[4].backgroundColor,
-        fillEnabled: s[4].fillEnabled,
+      borderStyle: s[4].borderStyle,
+      borderWidth: s[4].borderWidth,
+      borderColor: s[4].borderColor,
+      borderEnabled: s[4].borderEnabled,
+      backgroundColor: s[4].backgroundColor,
+      fillEnabled: s[4].fillEnabled,
       }));
       
       return {
@@ -268,16 +268,11 @@ export default function BodyLayout({
         >
           <ControlLayout
             setSlideShowRandomFunction={setSlideShowRandom}
+            setShowFullScreen={setShowFullScreen}
+            statsURL={""}
           ></ControlLayout>
 
-          <ImageLayout
-            statsURL={""}
-            setShowFullScreen={setShowFullScreen}
-            stopSlideShowNow={() => {
-              setSlideShow(false);
-              setStopSlideShow(true);
-            }}
-          />
+          <ImageLayout />
         </div>
       </CurrentConfigContext.Provider>
     </>
