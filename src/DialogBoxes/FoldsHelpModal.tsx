@@ -9,7 +9,7 @@ function FoldsHelpModal() {
   };
 
   return (
-    <Modal show={config.showFoldsHelp} onHide={dismiss} size="lg">
+    <Modal className="dragon-modal" show={config.showFoldsHelp} onHide={dismiss} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Number of Folds</Modal.Title>
       </Modal.Header>

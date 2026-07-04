@@ -52,7 +52,7 @@
 }
 
 .plain {
-  background-color: aliceblue;
+  background-color: var(--color-bg-elevated);
 }
 
 

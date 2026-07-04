@@ -15,43 +15,17 @@ export default function ImageLayout() {
   }
 
   return (
-    <>
+    <div
+      id="dragonCanvasPortal"
+      className="dragon-canvas-wrap"
+      onKeyDown={handleKeyPress}
+    >
       <div
+        tabIndex={0}
         onKeyDown={handleKeyPress}
-        style={{
-          height: "calc(100vh - 90px)",
-          width: "calc(100vw - 335px)",
-          overflow: "hide",
-          backgroundColor: "aliceblue",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          marginLeft: "2px",
-          borderRadius: "5px",
-          userSelect: "none",
-        }}
-      >
-        <div
-          tabIndex={0}
-          onKeyDown={handleKeyPress}
-          id="imageHTMLElement"
-          className={config.settingsConfig.background}
-          style={{
-            outline: "none",
-            height: "100%",
-            width: "100%",
-            overflow: "auto",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            marginLeft: "2px",
-            borderRadius: "5px",
-            userSelect: "none",
-          }}
-        ></div>
-      </div>
-    </>
+        id="imageHTMLElement"
+        className={`dragon-canvas ${config.settingsConfig.background}`}
+      />
+    </div>
   );
 }

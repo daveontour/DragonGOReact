@@ -32,10 +32,9 @@ export default function FullScreenLayout({
         onKeyDown={handleKeyPress}
         style={{
           display: showFullScreen ? "flex" : "none",
-          height: "calc(100vh - 10px)",
-          width: "calc(100vw - 10px)",
-          overflow: "hide",
-          marginLeft: "5px",
+          height: "100vh",
+          width: "100vw",
+          overflow: "hidden",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",

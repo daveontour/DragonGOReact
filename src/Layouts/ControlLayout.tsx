@@ -1,7 +1,6 @@
 import { RefAttributes, useContext, useEffect, useState, useRef } from "react";
 import {
   Button,
-  ButtonGroup,
   Col,
   Container,
   Form,
@@ -19,66 +18,126 @@ import PathConfig from "../Widgets/PathConfigWidget";
 import { JSX } from "react/jsx-runtime";
 import GroutingConfig from "../Widgets/GroutingConfigWidget";
 import ControlLayoutButtons from "./ControlLayoutButtons";
-import { DOWN, LEFT, RIGHT, RequestConfig, UP } from "../servertsx/common";
+import {
+  DOWN,
+  LEFT,
+  RIGHT,
+  RequestConfig,
+  UP,
+  precalculateTurns,
+} from "../servertsx/common";
 import { CurrentConfigContext } from "../Contexts";
-import SettingsModal from "../DialogBoxes/SettingsModal";
 import FoldsModal from "../DialogBoxes/RawConfigModal";
 import ConfigSlideShowModal from "../DialogBoxes/ConfigSlideShowModal";
 import FoldsHelpModal from "../DialogBoxes/FoldsHelpModal";
 import RendererHelpModal from "../DialogBoxes/RendererHelpModal";
 import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
 import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
-import axios from "axios";
 import { getDragonSVG, getDragonSizeSVG } from "../servertsx/svg";
 
 var opened = true;
 
-function calculateImageSize(
+const MAIN_PORTAL_ID = "dragonCanvasPortal";
+const MAIN_IMAGE_ID = "imageHTMLElement";
+const FULLSCREEN_IMAGE_ID = "imageHTMLElementFullScreen";
+/** Inset so the image sits inside the portal border/padding. */
+const PORTAL_INSET_PX = 8;
+
+/** Fit image into portal using "contain" scaling (preserve aspect ratio, no crop). */
+function fitImageToPortal(
   imgWidth: number,
   imgHeight: number,
-  fullScreen: boolean = false
-): [string, string, string] {
-  let hOffset = 120;
-  let portalWidth = window.innerWidth - 350;
-  let portalHeight = window.innerHeight - hOffset;
-
-  if (fullScreen) {
-    portalWidth = window.innerWidth;
-    portalHeight = window.innerHeight;
+  portalWidth: number,
+  portalHeight: number
+): { width: number; height: number; zoom: string } {
+  if (imgWidth <= 0 || imgHeight <= 0 || portalWidth <= 0 || portalHeight <= 0) {
+    return { width: imgWidth, height: imgHeight, zoom: "100" };
   }
 
-  let widthRatio = imgWidth / portalWidth;
-  let heightRatio = imgHeight / portalHeight;
+  const scale = Math.min(portalWidth / imgWidth, portalHeight / imgHeight);
+  return {
+    width: imgWidth * scale,
+    height: imgHeight * scale,
+    zoom: String(Math.round(scale * 100)),
+  };
+}
 
-  // If the image is smaller than the portal, then just show the image
-  if (widthRatio < 1 && heightRatio < 1) {
-    return [imgWidth + "px", imgHeight + "px", "100"];
-  }
-
-  // If the image is wider than the portal, then zoom out
-  if (widthRatio > 1 && heightRatio < 1) {
-    let zoom = Math.round(100 / widthRatio);
-    return [portalWidth + "px", "auto", String(zoom)];
-  }
-
-  // If the image is taller than the portal, then zoom out
-  if (widthRatio < 1 && heightRatio > 1) {
-    let zoom = Math.round(100 / heightRatio);
-    return ["auto", portalHeight + "px", String(zoom)];
-  }
-
-  // If the image is wider and taller than the portal, then zoom out to the larger ratio
-  if (widthRatio > 1 && heightRatio > 1) {
-    if (widthRatio > heightRatio) {
-      let zoom = Math.round(100 / widthRatio);
-      return [portalWidth + "px", "auto", String(zoom)];
-    } else {
-      let zoom = Math.round(100 / heightRatio);
-      return ["auto", portalHeight + "px", String(zoom)];
+/**
+ * Measure the layout portal (not the SVG host). The portal is sized only by
+ * flex layout, so it grows and shrinks with the window independently of the SVG.
+ */
+function getPortalSize(
+  portalId: string,
+  fallbackWidth: number,
+  fallbackHeight: number
+): { width: number; height: number } {
+  const portal = document.getElementById(portalId);
+  if (portal) {
+    const rect = portal.getBoundingClientRect();
+    const width = Math.max(rect.width - PORTAL_INSET_PX * 2, 1);
+    const height = Math.max(rect.height - PORTAL_INSET_PX * 2, 1);
+    if (width > 1 && height > 1) {
+      return { width, height };
     }
   }
+  return { width: fallbackWidth, height: fallbackHeight };
+}
 
-  return ["auto", "auto", "100"];
+function applySvgSize(
+  container: HTMLElement | null,
+  portalId: string,
+  svgContent: string,
+  imgWidth: number,
+  imgHeight: number,
+  fallbackWidth: number,
+  fallbackHeight: number
+): { width: number; height: number; zoom: string } | null {
+  if (!container) {
+    return null;
+  }
+
+  container.innerHTML = svgContent;
+  return resizeSvgInContainer(
+    container,
+    portalId,
+    imgWidth,
+    imgHeight,
+    fallbackWidth,
+    fallbackHeight
+  );
+}
+
+/** Resize an existing SVG to fit its layout portal, preserving aspect ratio. */
+function resizeSvgInContainer(
+  container: HTMLElement | null,
+  portalId: string,
+  imgWidth: number,
+  imgHeight: number,
+  fallbackWidth: number,
+  fallbackHeight: number
+): { width: number; height: number; zoom: string } | null {
+  if (!container || imgWidth <= 0 || imgHeight <= 0) {
+    return null;
+  }
+
+  const svg = container.querySelector("svg");
+  if (!svg) {
+    return null;
+  }
+
+  const portal = getPortalSize(portalId, fallbackWidth, fallbackHeight);
+  const fitted = fitImageToPortal(
+    imgWidth,
+    imgHeight,
+    portal.width,
+    portal.height
+  );
+
+  svg.setAttribute("width", String(fitted.width));
+  svg.setAttribute("height", String(fitted.height));
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+
+  return fitted;
 }
 
 import { SetSlideShowRandomFunction, SavedConfig, SetShowFullScreen } from "../types";
@@ -87,11 +146,9 @@ import { downloadSVG, downloadJSON } from "../utils/downloadUtils";
 export default function ControlLayout({
   setSlideShowRandomFunction,
   setShowFullScreen,
-  statsURL,
 }: {
   setSlideShowRandomFunction: SetSlideShowRandomFunction;
   setShowFullScreen: SetShowFullScreen;
-  statsURL: string;
 }) {
   // Generate the initial image on load
   useEffect(() => {
@@ -103,7 +160,12 @@ export default function ControlLayout({
   const autoDownloadRef = useRef<boolean>(config.slideShowAutoDownload || false);
   const slideShowPauseRef = useRef<boolean>(config.slideShowPause);
   const paletteRef = useRef<string>(config.state.pallette || "unknown");
-  
+  const intrinsicSizeRef = useRef<{ width: number; height: number } | null>(
+    null
+  );
+  const setImageSizeRef = useRef(config.setImageSize);
+  setImageSizeRef.current = config.setImageSize;
+
   // Keep refs in sync with Context state
   useEffect(() => {
     autoDownloadRef.current = config.slideShowAutoDownload || false;
@@ -116,6 +178,82 @@ export default function ControlLayout({
   useEffect(() => {
     paletteRef.current = config.state.pallette || "unknown";
   }, [config.state.pallette]);
+
+  // Re-fit the main (and fullscreen) image when the window or portal is resized.
+  useEffect(() => {
+    let frameId = 0;
+
+    const mainFallback = () => {
+      const titleBar = document.querySelector(".dragon-app .top-bar");
+      const titleBarHeight = titleBar?.getBoundingClientRect().height ?? 56;
+      const sidebar = document.querySelector(".dragon-app .dragon-sidebar");
+      const sidebarWidth =
+        sidebar?.getBoundingClientRect().width ?? 400;
+      return {
+        width: Math.max(window.innerWidth - sidebarWidth - 24, 100),
+        height: Math.max(window.innerHeight - titleBarHeight - 16, 100),
+      };
+    };
+
+    const refitImages = () => {
+      const intrinsic = intrinsicSizeRef.current;
+      if (!intrinsic) {
+        return;
+      }
+
+      const fallback = mainFallback();
+      const main = document.getElementById(MAIN_IMAGE_ID);
+      const fitted = resizeSvgInContainer(
+        main,
+        MAIN_PORTAL_ID,
+        intrinsic.width,
+        intrinsic.height,
+        fallback.width,
+        fallback.height
+      );
+      if (fitted) {
+        setImageSizeRef.current((prev) => ({
+          ...prev,
+          width: `${fitted.width}px`,
+          height: `${fitted.height}px`,
+          zoom: fitted.zoom,
+        }));
+      }
+
+      const fullscreen = document.getElementById(FULLSCREEN_IMAGE_ID);
+      resizeSvgInContainer(
+        fullscreen,
+        FULLSCREEN_IMAGE_ID,
+        intrinsic.width,
+        intrinsic.height,
+        window.innerWidth,
+        window.innerHeight
+      );
+    };
+
+    const scheduleRefit = () => {
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(refitImages);
+    };
+
+    window.addEventListener("resize", scheduleRefit);
+
+    // Observe the layout portal (not the SVG host) so growth and shrink both fire.
+    const portal = document.getElementById(MAIN_PORTAL_ID);
+    const observer =
+      portal && typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(scheduleRefit)
+        : null;
+    if (portal && observer) {
+      observer.observe(portal);
+    }
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", scheduleRefit);
+      observer?.disconnect();
+    };
+  }, []);
 
   const [configState] = useState<SavedConfig>({
     outside: config.outsideCellState,
@@ -188,31 +326,50 @@ export default function ControlLayout({
     let size = getDragonSizeSVG(rc);
     let w = size[0];
     let h = size[1];
-
-    let [imgSX, imgSY, zoom] = calculateImageSize(w, h, false);
-    config.setImageSize({
-      ...config.imageSize,
-      width: imgSX,
-      height: imgSY,
-      zoom: zoom,
-    });
+    intrinsicSizeRef.current = { width: w, height: h };
 
     let svgContent = getDragonSVG(rc);
-    const imgElement = document.getElementById(
-      "imageHTMLElement"
-    ) as HTMLImageElement;
-    if (imgElement) {
-      imgElement.innerHTML = svgContent;
-      config.setDirty(false);
-    }
 
-    const imgElementFS = document.getElementById(
-      "imageHTMLElementFullScreen"
-    ) as HTMLImageElement;
-    if (imgElementFS) {
-      imgElementFS.innerHTML = svgContent;
-      config.setDirty(false);
+    const titleBar = document.querySelector(".dragon-app .top-bar");
+    const titleBarHeight = titleBar?.getBoundingClientRect().height ?? 56;
+    const sidebar = document.querySelector(".dragon-app .dragon-sidebar");
+    const sidebarWidth = sidebar?.getBoundingClientRect().width ?? 400;
+    const mainFallbackWidth = Math.max(window.innerWidth - sidebarWidth - 24, 100);
+    const mainFallbackHeight = Math.max(
+      window.innerHeight - titleBarHeight - 16,
+      100
+    );
+
+    const imgElement = document.getElementById(MAIN_IMAGE_ID);
+    const fitted = applySvgSize(
+      imgElement,
+      MAIN_PORTAL_ID,
+      svgContent,
+      w,
+      h,
+      mainFallbackWidth,
+      mainFallbackHeight
+    );
+    if (fitted) {
+      config.setImageSize({
+        ...config.imageSize,
+        width: `${fitted.width}px`,
+        height: `${fitted.height}px`,
+        zoom: fitted.zoom,
+      });
     }
+    config.setDirty(false);
+
+    const imgElementFS = document.getElementById(FULLSCREEN_IMAGE_ID);
+    applySvgSize(
+      imgElementFS,
+      FULLSCREEN_IMAGE_ID,
+      svgContent,
+      w,
+      h,
+      window.innerWidth,
+      window.innerHeight
+    );
 
     // Auto-download if slideshow is running and auto-download is enabled
     // Use refs to check state (more reliable than Context state due to async updates)
@@ -229,6 +386,11 @@ export default function ControlLayout({
   };
 
   function startInterval() {
+    // Turns depend only on fold count. Precompute for the current folds and
+    // every fold count the slideshow randomiser may pick (7–11).
+    const currentFolds = Number(config.state.folds);
+    precalculateTurns([currentFolds, 7, 8, 9, 10, 11]);
+
     config.setSlideShow(true);
     const intervalId = setInterval(() => {
       if (!slideShowPauseRef.current) {
@@ -289,32 +451,15 @@ export default function ControlLayout({
     </Tooltip>
   );
 
-  const rateDragonCurve = (rating: number) => {
-    let rc = JSON.parse(config.configJSON);
-    rc.rating = rating;
-
-    axios.post("/rate", rc);
-  };
-
   return (
     <>
       {/* This div is an overlay to the main Control div which is shown when a slide show is executing */}
       <div
-        className="form-control"
-        style={{
-          height: "calc(100vh - 90px)",
-          display: config.slideShow ? "block" : "none",
-          justifyContent: "left",
-          alignItems: "center",
-          width: "320px",
-          backgroundColor: "#ccccccbb",
-          paddingTop: "20px",
-          overflowY: "auto",
-          overflowX: "hidden",
-        }}
+        className="dragon-sidebar-overlay"
+        style={{ display: config.slideShow ? "block" : "none" }}
       >
         <Stack direction="vertical" gap={1} style={{ marginTop: "5px" }}>
-          <FormLabel style={{ fontWeight: "bold" }}>
+          <FormLabel className="section-label">
             Randomisation Scheme
           </FormLabel>
 
@@ -334,7 +479,7 @@ export default function ControlLayout({
           </FormControl>
         </Stack>
         <Stack direction="vertical" gap={1} style={{ marginTop: "5px" }}>
-          <FormLabel style={{ fontWeight: "bold" }}>Color Pallette</FormLabel>
+          <FormLabel className="section-label">Color Pallette</FormLabel>
 
           <FormControl
             as="select"
@@ -366,6 +511,14 @@ export default function ControlLayout({
         </Stack>
 
         <Stack direction="vertical" gap={1} style={{ marginTop: "15px" }}>
+          <Form.Check
+            type="checkbox"
+            label="Randomise cell type"
+            checked={config.slideShowRandomiseCellType}
+            onChange={(e) => {
+              config.setSlideShowRandomiseCellType(e.target.checked);
+            }}
+          />
           <Form.Check
             type="checkbox"
             label="Auto-download each image"
@@ -439,7 +592,7 @@ export default function ControlLayout({
               resumeSlideShowNow();
             }}
             style={{
-              width: "280px",
+              width: "350px",
               display:
                 config.slideShow && config.slideShowPause ? "block" : "none",
               marginTop: "15px",
@@ -455,7 +608,7 @@ export default function ControlLayout({
               stopSlideShowNow();
             }}
             style={{
-              width: "280px",
+              width: "350px",
               display: config.slideShow ? "block" : "none",
               marginTop: "5px",
             }}
@@ -463,97 +616,18 @@ export default function ControlLayout({
             Stop Slide Show
           </Button>
         </Stack>
-
-        {/* This is the Feed the AI Monster Stack*/}
-        <Stack direction="vertical" gap={1} style={{ marginTop: "20px" }}>
-          <FormLabel style={{ fontWeight: "bold" }}>
-            Feed the AI Monster
-          </FormLabel>
-          <FormLabel style={{ fontWeight: "normal" }}>
-            Rate the displayed dragon curve
-          </FormLabel>
-          <ButtonGroup>
-            <Button
-              variant="outline-secondary"
-              onClick={() => rateDragonCurve(1)}
-            >
-              1 Star
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() => rateDragonCurve(2)}
-            >
-              2 Stars
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() => rateDragonCurve(3)}
-            >
-              3 Stars
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() => rateDragonCurve(4)}
-            >
-              4 Stars
-            </Button>
-            <Button
-              variant="outline-secondary"
-              onClick={() => rateDragonCurve(5)}
-            >
-              5 Stars
-            </Button>
-          </ButtonGroup>
-        </Stack>
       </div>
 
       {/* This div is the main control div */}
       <div
-        style={{
-          height: "calc(100vh - 90px)",
-          display: config.slideShow ? "none" : "grid",
-          gridTemplateRows: "1fr auto",
-          justifyContent: "left",
-          alignItems: "center",
-          width: "320px",
-          backgroundColor: "#ccccccbb",
-          overflowY: "auto",
-          overflowX: "hidden",
-          paddingLeft: "12px",
-          paddingRight: "12px",
-          borderRadius: "5px",
-        }}
+        className="dragon-sidebar"
+        style={{ display: config.slideShow ? "none" : "grid" }}
       >
-        {/* The inner shell of the control layout */}
-        <div
-          style={{
-            display: "flex",
-            flex: "1",
-            flexDirection: "column",
-            margin: "auto",
-            width: "100%",
-            minWidth: "308px",
-            maxWidth: "308px",
-            height: "100%",
-            alignSelf: "start",
-            overflowY: "auto",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              minWidth: "280px",
-              maxWidth: "280px",
-              alignSelf: "start",
-            }}
-          >
+        <div className="dragon-sidebar-inner">
+          <div className="dragon-sidebar-panel">
             {/* The Cell Config Stack */}
             <Stack direction="vertical" gap={2}>
-              <FormLabel style={{ fontWeight: "bold" }}>
+              <FormLabel className="section-label">
                 Dragon Path and Tile Configuration
               </FormLabel>
               <PathConfig
@@ -598,7 +672,7 @@ export default function ControlLayout({
             <Stack direction="vertical" gap={2} style={{ marginTop: "10px" }}>
               <Container>
                 <Row>
-                  <Col xs={8}>
+                  <Col xs={6}>
                     <FormLabel>
                       Number Of Folds
                       <svg
@@ -622,7 +696,7 @@ export default function ControlLayout({
                       </svg>
                     </FormLabel>
                   </Col>
-                  <Col xs={4}>
+                  <Col xs={6}>
                     <FormControl
                       disabled={config.slideShow}
                       size="sm"
@@ -645,10 +719,10 @@ export default function ControlLayout({
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={8}>
+                  <Col xs={6}>
                     <FormLabel>Tile Width</FormLabel>
                   </Col>
-                  <Col xs={4}>
+                  <Col xs={6}>
                     <FormControl
                       disabled={config.slideShow}
                       size="sm"
@@ -672,10 +746,10 @@ export default function ControlLayout({
                 </Row>
 
                 <Row>
-                  <Col xs={8}>
+                  <Col xs={6}>
                     <FormLabel>Outer Margin</FormLabel>
                   </Col>
-                  <Col xs={4}>
+                  <Col xs={6}>
                     <FormControl
                       disabled={config.slideShow}
                       size="sm"
@@ -698,7 +772,33 @@ export default function ControlLayout({
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={8}>
+                  <Col xs={6}>
+                    <FormLabel>Background</FormLabel>
+                  </Col>
+                  <Col xs={6}>
+                    <FormControl
+                      disabled={config.slideShow}
+                      size="sm"
+                      as="select"
+                      value={config.settingsConfig.background}
+                      onChange={(e) => {
+                        config.setSettingsConfig({
+                          ...config.settingsConfig,
+                          background: e.target.value,
+                        });
+                      }}
+                    >
+                      <option value="darksky">Dark Sky</option>
+                      <option value="auroraboreal">Aurora Boreal</option>
+                      <option value="nightgradient">Night Sky</option>
+                      <option value="dawngradient">Dawn Sky</option>
+                      <option value="sunsetgradient">Sunset Sky</option>
+                      <option value="plain">Plain Color</option>
+                    </FormControl>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={6}>
                     <FormLabel>
                       Tile Renderer
                       <svg
@@ -722,7 +822,7 @@ export default function ControlLayout({
                       </svg>
                     </FormLabel>
                   </Col>
-                  <Col xs={4}>
+                  <Col xs={6}>
                     <FormControl
                       disabled={config.slideShow}
                       size="sm"
@@ -748,10 +848,10 @@ export default function ControlLayout({
                 </Row>
 
                 <Row>
-                  <Col xs={8}>
+                  <Col xs={6}>
                     <FormLabel>Triangle Angle</FormLabel>
                   </Col>
-                  <Col xs={4}>
+                  <Col xs={6}>
                     <FormControl
                       size="sm"
                       as="select"
@@ -790,7 +890,7 @@ export default function ControlLayout({
                 onClick={generate}
                 disabled={config.slideShow}
                 style={{
-                  width: "280px",
+                  width: "350px",
                   display: config.dirty ? "none" : "block",
                 }}
               >
@@ -803,7 +903,7 @@ export default function ControlLayout({
                 onClick={generate}
                 disabled={config.slideShow}
                 style={{
-                  width: "280px",
+                  width: "350px",
                   display: config.dirty ? "block" : "none",
                 }}
               >
@@ -812,7 +912,7 @@ export default function ControlLayout({
               <div
                 style={{
                   display: "flex",
-                  width: "280px",
+                  width: "350px",
                   justifyContent: "center",
                 }}
               ></div>
@@ -834,7 +934,7 @@ export default function ControlLayout({
                     size="sm"
                     variant="primary"
                     onClick={randomDragonCurve}
-                    style={{ width: "280px" }}
+                    style={{ width: "350px" }}
                   >
                     Random Curve Slide Show
                   </Button>
@@ -878,7 +978,6 @@ export default function ControlLayout({
               </Stack>
             </Stack>
 
-            <SettingsModal />
             <FoldsModal />
             <SaveCurveModal config={configState} />
             <LoadCurveModal />
@@ -888,7 +987,7 @@ export default function ControlLayout({
           </div>
         </div>
         {/* The Miscellaneous Button Stack */}
-        <ControlLayoutButtons setShowFullScreen={setShowFullScreen} statsURL={statsURL} />
+        <ControlLayoutButtons setShowFullScreen={setShowFullScreen} />
       </div>
     </>
   );

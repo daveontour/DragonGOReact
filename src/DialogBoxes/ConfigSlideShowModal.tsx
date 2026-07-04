@@ -3,7 +3,6 @@ import {
   Button,
   Col,
   Container,
-  FormControl,
   FormLabel,
   Modal,
   Row,
@@ -18,7 +17,7 @@ function ConfigSlideShowModal() {
   };
 
   return (
-    <Modal show={config.showSlideShowConfig} onHide={dismiss} size="lg">
+    <Modal className="dragon-modal" show={config.showSlideShowConfig} onHide={dismiss} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Slide Show Configuration</Modal.Title>
       </Modal.Header>

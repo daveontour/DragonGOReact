@@ -1,6 +1,7 @@
 // Color and styling types
 export type ColorValue = string; // Hex color string (e.g., "#000000ff")
 export type BorderWidth = string; // CSS border width (e.g., "3px")
+export type BorderStyle = "solid" | "dashed" | "none";
 
 // Fill state type for cells
 export type FillStateType = number | string; // Can be number (0, 1, 2) or string ("INSIDE", "OUTSIDE", "ACTIVE")
@@ -20,7 +21,7 @@ export interface DragonCurveState {
 
 // Path configuration state
 export interface PathState {
-  borderStyle: string;
+  borderStyle: BorderStyle;
   borderWidth: BorderWidth;
   borderColor: ColorValue;
   borderEnabled: boolean;
@@ -31,7 +32,7 @@ export interface PathState {
 
 // Base cell state (shared properties)
 export interface BaseCellState {
-  borderStyle: string;
+  borderStyle: BorderStyle;
   borderWidth: BorderWidth;
   borderColor: ColorValue;
   borderRadius: string;
@@ -103,7 +104,7 @@ export type RandomiserReturnType = [
 
 // Cell state parameter types for randomiser functions
 export interface PathStateParam {
-  borderStyle: string;
+  borderStyle: BorderStyle;
   borderWidth: BorderWidth;
   borderColor: ColorValue;
   borderEnabled: boolean;
@@ -111,7 +112,7 @@ export interface PathStateParam {
 }
 
 export interface CellStateParam {
-  borderStyle: string;
+  borderStyle: BorderStyle;
   borderWidth: BorderWidth;
   borderColor: ColorValue;
   backgroundColor: ColorValue;

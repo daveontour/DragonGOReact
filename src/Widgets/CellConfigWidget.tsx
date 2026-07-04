@@ -102,7 +102,7 @@ export default function CellConfig({
         </div>
       </Stack>
 
-      <Modal show={show} onHide={handleClose} size="lg">
+      <Modal className="dragon-modal" show={show} onHide={handleClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{state.title}</Modal.Title>
         </Modal.Header>

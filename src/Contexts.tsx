@@ -30,8 +30,6 @@ export interface Config {
   setSettingsConfig: react.Dispatch<react.SetStateAction<SettingsConfig>>;
   downloadShow: boolean;
   setDownloadShow: react.Dispatch<react.SetStateAction<boolean>>;
-  settingsShow: boolean;
-  setSettingsShow: react.Dispatch<react.SetStateAction<boolean>>;
   foldsShow: boolean;
   setFoldsShow: react.Dispatch<react.SetStateAction<boolean>>;
   saveShow: boolean;
@@ -46,10 +44,10 @@ export interface Config {
   setSlideShowConfig: react.Dispatch<react.SetStateAction<boolean>>;
   slideShowAutoDownload: boolean;
   setSlideShowAutoDownload: react.Dispatch<react.SetStateAction<boolean>>;
+  slideShowRandomiseCellType: boolean;
+  setSlideShowRandomiseCellType: react.Dispatch<react.SetStateAction<boolean>>;
   dirty: boolean;
   setDirty: react.Dispatch<react.SetStateAction<boolean>>;
-  urlHead: string;
-  updateImage: (newImgUrl: string) => void; // Added function
   slideShow: boolean;
   setSlideShow: react.Dispatch<react.SetStateAction<boolean>>;
   slideShowPause: boolean;

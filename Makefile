@@ -1,48 +1,21 @@
 SRCDIR := .
-DESTDIR := C:\Users\dave_\Desktop\DragonArt
-REACTAPPDIR := C:\Users\dave_\source\repos\DragonGOReact
-AIDIR := C:\Users\dave_\source\repos\DragonArt.AI
+DIST_HTML := $(SRCDIR)/dist/index.html
+DESTDIR := C:/Users/dave_/Desktop/DragonArt
 
-buildstatic:
-	-del $(AIDIR)\server\public\*.html
-	cd $(REACTAPPDIR) && npm run build
-	copy $(REACTAPPDIR)\dist\*.* $(AIDIR)\server\public
-	-del $(AIDIR)\server\public\vite.svg
-	
+.PHONY: build run clean install
 
+# Build a single self-contained HTML file (JS/CSS inlined) at dist/index.html
 build:
-	make clean
-	-mkdir $(SRCDIR)\server\public
-	-mkdir $(SRCDIR)\server\public\assets
-	cd $(REACTAPPDIR) && npm run build
-	copy $(REACTAPPDIR)\dist\*.* $(SRCDIR)\server\public 
-	-del $(SRCDIR)\server\public\vite.svg
-	copy $(REACTAPPDIR)\dist\assets\*.* $(SRCDIR)\server\public\assets 
-	make lint
-	go build  -ldflags="-s -w" -o $(DESTDIR)\dragongo.exe .
-	copy *.json $(DESTDIR)
-	copy *.crt $(DESTDIR)
-	copy *.pem $(DESTDIR)
-	copy *.txt $(DESTDIR)
+	cd $(SRCDIR) && npm run build
 
+# Serve the built single-file app locally
+run: build
+	cd $(SRCDIR) && npm run preview
 
 clean:
-	-del $(DESTDIR)\*.exe
-	-del $(DESTDIR)\*.json	
-	-del $(DESTDIR)\*.bak
-	-del $(DESTDIR)\*.crt
-	-del $(DESTDIR)\*.key
-	-del $(DESTDIR)\*.txt
-	-del $(SRCDIR)\server\public\*.exe
-	-del $(SRCDIR)\server\public\*.html
-	-del $(SRCDIR)\server\public\assets\*.js
-	-del $(SRCDIR)\server\public\assets\*.css
-	-del $(AIDIR)\server\public\*.exe
-	-del $(AIDIR)\server\public\*.html
-	-del $(AIDIR)\server\public\assets\*.js
-	-del $(AIDIR)\server\public\assets\*.css
+	rm -rf $(SRCDIR)/dist
 
-	
-
-lint: 
-	-golangci-lint run
+# Copy the single HTML file to the install directory
+install: build
+	mkdir -p $(DESTDIR)
+	cp -f $(DIST_HTML) $(DESTDIR)/DragonCurves.html

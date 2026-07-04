@@ -9,7 +9,7 @@ function RendererHelpModal() {
   };
 
   return (
-    <Modal show={config.showRendererHelp} onHide={dismiss} size="lg">
+    <Modal className="dragon-modal" show={config.showRendererHelp} onHide={dismiss} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Tile Renderers</Modal.Title>
       </Modal.Header>

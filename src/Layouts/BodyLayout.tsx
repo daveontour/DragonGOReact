@@ -1,9 +1,16 @@
 import ControlLayout from "./ControlLayout";
 import ImageLayout from "./ImageLayout";
 import { CurrentConfigContext } from "../Contexts";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { executeRandomiser } from "../randomiserSchemes";
 import { SetShowFullScreen } from "../types";
+import type {
+  ActiveCellState,
+  DragonCurveState,
+  InsideCellState,
+  OutsideCellState,
+  PathState,
+} from "../types";
 
 export default function BodyLayout({
   showFullScreen,
@@ -17,12 +24,10 @@ export default function BodyLayout({
     getConfigJSON: () => string;
   } | null>;
 }) {
-  const urlHead = "http://localhost:8080";
-
   const [slideShow, setSlideShow] = useState(false);
   const [slideShowPause, setSlideShowPause] = useState(false);
   const [imageSize, setImageSize] = useState({
-    width: "calc(100vw - 320px)",
+    width: "calc(100vw - 400px)",
     height: "auto",
     zoom: "100",
   });
@@ -32,7 +37,7 @@ export default function BodyLayout({
     slideShowInterval: 5,
   });
 
-  const [state, setState] = useState({
+  const [state, setState] = useState<DragonCurveState>({
     folds: "9",
     margin: "1",
     cellType: "knuthcurve",
@@ -44,7 +49,7 @@ export default function BodyLayout({
     pallette: "pastel",
   });
 
-  const [pathState, setPathState] = useState({
+  const [pathState, setPathState] = useState<PathState>({
     borderStyle: "solid",
     borderWidth: "3px",
     borderColor: "#000000ff",
@@ -54,7 +59,7 @@ export default function BodyLayout({
     shortTitle: "Dragon Curve Path Configuration",
     startDirection: "LEFT",
   });
-  const [activeCellState, setActiveCellState] = useState({
+  const [activeCellState, setActiveCellState] = useState<ActiveCellState>({
     borderStyle: "solid",
     borderWidth: "1px",
     borderColor: "#000000ff",
@@ -66,7 +71,7 @@ export default function BodyLayout({
     shortTitle: "Active Tile Configuration",
   });
 
-  const [insideCellState, setInsideCellState] = useState({
+  const [insideCellState, setInsideCellState] = useState<InsideCellState>({
     borderStyle: "solid",
     borderWidth: "2px",
     borderColor: "#00ffff",
@@ -77,7 +82,7 @@ export default function BodyLayout({
     title: "Inside Tile Configuration (Empty tiles encompassed by the path)",
     shortTitle: "Inside Tile Configuration",
   });
-  const [outsideCellState, setOutsideCellState] = useState({
+  const [outsideCellState, setOutsideCellState] = useState<OutsideCellState>({
     borderStyle: "solid",
     borderWidth: "1px",
     borderColor: "#000000ff",
@@ -99,7 +104,6 @@ export default function BodyLayout({
     format: "png",
   });
   const [downloadShow, setDownloadShow] = useState(false);
-  const [settingsShow, setSettingsShow] = useState(false);
   const [foldsShow, setFoldsShow] = useState(false);
   const [saveShow, setSaveShow] = useState(false);
   const [loadShow, setLoadShow] = useState(false);
@@ -107,6 +111,10 @@ export default function BodyLayout({
   const [showFoldsHelp, setShowFoldsHelp] = useState(false);
   const [showSlideShowConfig, setSlideShowConfig] = useState(false);
   const [slideShowAutoDownload, setSlideShowAutoDownload] = useState(false);
+  const [slideShowRandomiseCellType, setSlideShowRandomiseCellType] =
+    useState(true);
+  const slideShowRandomiseCellTypeRef = useRef(true);
+  slideShowRandomiseCellTypeRef.current = slideShowRandomiseCellType;
   const [dirty, setDirty] = useState(false);
   const [randomiserScheme, setRandomiserScheme] = useState("standard");
   const [randomHue, setRandomHue] = useState(false);
@@ -125,19 +133,45 @@ export default function BodyLayout({
   }
 
   const setSlideShowRandom = () => {
+    const schemes = [
+      "standard",
+      "noOutside",
+      "boldPath",
+      "pathOnly",
+      "triangular",
+    ];
+    const palettes = [
+      "pastel",
+      "vibrant",
+      "redhue",
+      "greenhue",
+      "bluehue",
+      "randomhue",
+      "highcontrast",
+      "random",
+      "vangogh",
+      "monet",
+      "blueyellow",
+    ];
+    const scheme = schemes[Math.floor(Math.random() * schemes.length)];
+    const palette = palettes[Math.floor(Math.random() * palettes.length)];
+    setRandomiserScheme(scheme);
+    setRandomHue(palette === "randomhue");
+
     setState((currentState) => {
     let s = executeRandomiser(
-        { ...currentState },
+        { ...currentState, pallette: palette },
       pathState,
       activeCellState,
       insideCellState,
         outsideCellState,
-        randomiserScheme,
-        currentState.pallette,
+        scheme,
+        palette,
         lastConstrastValue,
         contrastCount,
         setLastConstrastValue,
-        setContrastCount
+        setContrastCount,
+        slideShowRandomiseCellTypeRef.current
       );
       
       // Update other states using current values
@@ -187,7 +221,7 @@ export default function BodyLayout({
         grouting: s[0].grouting,
         triangleAngle: s[0].triangleAngle,
         folds: s[0].folds,
-        pallette: currentState.pallette,
+        pallette: palette,
         groutingColor: currentState.groutingColor,
       };
     });
@@ -213,8 +247,6 @@ export default function BodyLayout({
           setSettingsConfig,
           downloadShow,
           setDownloadShow,
-          settingsShow,
-          setSettingsShow,
           foldsShow,
           setFoldsShow,
           saveShow,
@@ -229,10 +261,10 @@ export default function BodyLayout({
           setSlideShowConfig,
           slideShowAutoDownload,
           setSlideShowAutoDownload,
+          slideShowRandomiseCellType,
+          setSlideShowRandomiseCellType,
           dirty,
           setDirty,
-          urlHead,
-          updateImage: () => {},
           slideShow,
           setSlideShow,
           slideShowPause,
@@ -256,20 +288,12 @@ export default function BodyLayout({
         }}
       >
         <div
-          className="mw-100"
-          style={{
-            display: showFullScreen ? "none" : "flex",
-            height: "calc(100vh - 85px)",
-            rowGap: "10px",
-            justifyContent: "left",
-            alignItems: "center",
-            marginLeft: "5px",
-          }}
+          className="main-content"
+          style={{ display: showFullScreen ? "none" : "flex" }}
         >
           <ControlLayout
             setSlideShowRandomFunction={setSlideShowRandom}
             setShowFullScreen={setShowFullScreen}
-            statsURL={""}
           ></ControlLayout>
 
           <ImageLayout />

@@ -5,16 +5,92 @@ import { CurrentConfigContext } from "../Contexts";
 import { downloadSVG } from "../utils/downloadUtils";
 import { SetShowFullScreen } from "../types";
 import CurveStatsModal from "../DialogBoxes/CurveStatsModal";
+import {
+  DOWN,
+  LEFT,
+  RIGHT,
+  RequestConfig,
+  UP,
+  getTileStats,
+  TileStats,
+} from "../servertsx/common";
+import { Config } from "../Contexts";
+
+function buildRequestConfig(config: Config): RequestConfig {
+  let sd = LEFT;
+  if (config.pathState.startDirection === "random") {
+    const directions = [UP, DOWN, LEFT, RIGHT];
+    sd = directions[Math.floor(Math.random() * 4)];
+  } else if (config.pathState.startDirection === "LEFT") {
+    sd = LEFT;
+  } else if (config.pathState.startDirection === "RIGHT") {
+    sd = RIGHT;
+  } else if (config.pathState.startDirection === "UP") {
+    sd = UP;
+  } else if (config.pathState.startDirection === "DOWN") {
+    sd = DOWN;
+  }
+
+  return {
+    OutSideFill: config.outsideCellState.fillEnabled,
+    OutSideStroke: config.outsideCellState.borderEnabled,
+    InsideFill: config.insideCellState.fillEnabled,
+    InsideStroke: config.insideCellState.borderEnabled,
+    ActiveFill: config.activeCellState.fillEnabled,
+    ActiveStroke: config.activeCellState.borderEnabled,
+    PathStroke: config.pathState.borderEnabled,
+    GridLines: config.state.gridlines,
+    NumberFolds: Number(config.state.folds),
+    Radius: Number(config.state.radius),
+    StartDirection: sd,
+    CellType: config.state.cellType,
+    OriginX: 0,
+    OrignY: 0,
+    Margin: Number(config.state.margin.replace(/px/g, "")),
+    InsideStrokeColorRaw: config.insideCellState.borderColor,
+    InsideFillColorRaw: config.insideCellState.backgroundColor,
+    OutsideStrokeColorRaw: config.outsideCellState.borderColor,
+    OutsideFillColorRaw: config.outsideCellState.backgroundColor,
+    ActiveStrokeColorRaw: config.activeCellState.borderColor,
+    ActiveFillColorRaw: config.activeCellState.backgroundColor,
+    PathStrokeColorRaw: config.pathState.borderColor,
+    GroutingColorRaw: config.state.groutingColor,
+    InsideStrokeWidth: Number(
+      config.insideCellState.borderWidth.replace(/px/g, "")
+    ),
+    OutsideStrokeWidth: Number(
+      config.outsideCellState.borderWidth.replace(/px/g, "")
+    ),
+    ActiveStrokeWidth: Number(
+      config.activeCellState.borderWidth.replace(/px/g, "")
+    ),
+    PathWidth: Number(config.pathState.borderWidth.replace(/px/g, "")),
+    Grouting: Number(config.state.grouting.replace(/px/g, "")),
+    TriangleAngle: Number(config.state.triangleAngle),
+    Format: "",
+  };
+}
 
 export default function ControlLayoutButtons({
   setShowFullScreen,
-  statsURL,
 }: {
   setShowFullScreen: SetShowFullScreen;
-  statsURL: string;
 }) {
   let config = useContext(CurrentConfigContext);
   const [statsShow, setStatsShow] = useState(false);
+  const [stats, setStats] = useState<TileStats>({
+    total: 0,
+    active: 0,
+    activeLeftOnly: 0,
+    activeRightOnly: 0,
+    complementary: 0,
+    inside: 0,
+    outside: 0,
+    horizontal: 0,
+    vertical: 0,
+  });
+  const [statsRequestConfig, setStatsRequestConfig] =
+    useState<RequestConfig | null>(null);
 
   const [configState, setConfigState] = useState({
     outside: config.outsideCellState,
@@ -23,6 +99,13 @@ export default function ControlLayoutButtons({
     path: config.pathState,
     state: config.state,
   });
+
+  const showStatistics = () => {
+    const rc = buildRequestConfig(config);
+    setStats(getTileStats(rc));
+    setStatsRequestConfig(rc);
+    setStatsShow(true);
+  };
 
   const downloadDragonCurveSVG = () => {
     config.setDownloadShow(true);
@@ -81,15 +164,6 @@ export default function ControlLayoutButtons({
       Download the SVG file of the current dragon curve.
     </Tooltip>
   );
-  const renderSettingsTooltip = (
-    props: JSX.IntrinsicAttributes &
-      TooltipProps &
-      RefAttributes<HTMLDivElement>
-  ) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Open the settings dialog box to change the general settings.
-    </Tooltip>
-  );
   const renderTurnsTooltip = (
     props: JSX.IntrinsicAttributes &
       TooltipProps &
@@ -100,22 +174,13 @@ export default function ControlLayoutButtons({
       dragon curve.
     </Tooltip>
   );
-  const renderHelpTooltip = (
-    props: JSX.IntrinsicAttributes &
-      TooltipProps &
-      RefAttributes<HTMLDivElement>
-  ) => (
-    <Tooltip id="button-tooltip" {...props}>
-      Opens the help dialog box. (not implemented yet)
-    </Tooltip>
-  );
   const renderStatsTooltip = (
     props: JSX.IntrinsicAttributes &
       TooltipProps &
       RefAttributes<HTMLDivElement>
   ) => (
     <Tooltip id="button-tooltip" {...props}>
-      Display the statistics on each type of tile in the curve.
+      Show tile counts for the current curve.
     </Tooltip>
   );
   const renderFullscreenTooltip = (
@@ -131,9 +196,8 @@ export default function ControlLayoutButtons({
   const exitHandler = () => {
     if (!document.fullscreenElement) {
       setShowFullScreen(false);
-      document.getElementsByTagName("body")[0].className = "";
-      document.getElementsByTagName("body")[0].style.backgroundColor =
-        "aliceblue";
+      document.body.className = "";
+      document.body.style.backgroundColor = "";
 
       //Reload the image so it's sized correctly
       setTimeout(() => {
@@ -149,11 +213,9 @@ export default function ControlLayoutButtons({
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
       if (config.settingsConfig.background == "plain") {
-        document.getElementsByTagName("body")[0].style.backgroundColor =
-          "black";
+        document.body.style.backgroundColor = "#0d1117";
       } else {
-        document.getElementsByTagName("body")[0].className =
-          config.settingsConfig.background;
+        document.body.className = config.settingsConfig.background;
       }
       document.addEventListener("fullscreenchange", exitHandler);
     } else if (document.exitFullscreen) {
@@ -163,37 +225,7 @@ export default function ControlLayoutButtons({
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          height: "40px",
-          width: "280px",
-          paddingTop: "5px",
-          borderRadius: "5px",
-        }}
-      >
-        {" "}
-        <OverlayTrigger
-          placement="right"
-          delay={{ show: 250, hide: 400 }}
-          overlay={renderSettingsTooltip}
-        >
-          <svg
-            onClick={() => config.setSettingsShow(true)}
-            xmlns="http://www.w3.org/2000/svg"
-            width="30px"
-            height="30px"
-            fill="#444444"
-            cursor={"pointer"}
-            className="bi bi-gear"
-            viewBox="0 0 16 16"
-          >
-            <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0" />
-            <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z" />
-          </svg>
-        </OverlayTrigger>
+      <div className="dragon-toolbar">
         <OverlayTrigger
           placement="right"
           delay={{ show: 250, hide: 400 }}
@@ -280,9 +312,7 @@ export default function ControlLayoutButtons({
           overlay={renderStatsTooltip}
         >
           <svg
-            onClick={() => {
-              setStatsShow(true);
-            }}
+            onClick={showStatistics}
             xmlns="http://www.w3.org/2000/svg"
             width="30px"
             height="30px"
@@ -316,28 +346,12 @@ export default function ControlLayoutButtons({
             <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5M.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5" />
           </svg>
         </OverlayTrigger>
-        <OverlayTrigger
-          placement="right"
-          delay={{ show: 250, hide: 400 }}
-          overlay={renderHelpTooltip}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="30px"
-            height="30px"
-            fill="currentColor"
-            cursor={"pointer"}
-            className="bi bi-question"
-            viewBox="0 0 16 16"
-          >
-            <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94" />
-          </svg>
-        </OverlayTrigger>
       </div>
       <CurveStatsModal
-        statsShow={statsShow}
-        setStatsShow={setStatsShow}
-        statsURL={statsURL}
+        show={statsShow}
+        onHide={() => setStatsShow(false)}
+        stats={stats}
+        requestConfig={statsRequestConfig}
       />
     </>
   );

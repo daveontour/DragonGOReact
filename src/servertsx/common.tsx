@@ -187,9 +187,17 @@ export function fillConnected(grid: Cell[][]) {
   }
 }
 
+/** Cache of fold-count → turn sequence. First fold is always LEFT. */
+const turnsCache = new Map<number, number[]>();
+
 export function calculateTurns(n: number): number[] {
   if (n <= 0) {
     return [];
+  }
+
+  const cached = turnsCache.get(n);
+  if (cached) {
+    return cached;
   }
 
   let turns: number[] = [0];
@@ -201,7 +209,18 @@ export function calculateTurns(n: number): number[] {
     }
     turns = [...turns, 0, ...reversed];
   }
-  return turns.map((turn) => (turn === 0 ? LEFT : RIGHT));
+  const result = turns.map((turn) => (turn === 0 ? LEFT : RIGHT));
+  turnsCache.set(n, result);
+  return result;
+}
+
+/** Precompute and cache turn sequences for the given fold counts. */
+export function precalculateTurns(foldCounts: number[]): void {
+  for (const n of foldCounts) {
+    if (n > 0) {
+      calculateTurns(n);
+    }
+  }
 }
 
 function reverse(arr: number[]): number[] {
@@ -393,6 +412,7 @@ export function calcCellsKnuth(
     const newCell = new Cell();
     newCell.FillState = OUTSIDE;
     newCell.KnuthType = 0;
+    newCell.Turn = turn;
 
     if (currentCell.KEnd === DOWN) {
       newCell.FillState = ACTIVE;
@@ -497,8 +517,6 @@ export function prepareCells(
   let minRow: number, minCol: number, maxRow: number, maxCol: number;
 
   if (rc.CellType.includes("knuth")) {
-    // Assume CalcCellsKnuth is a function that exists in your TypeScript code
-
     let ck = calcCellsKnuth(turns, rc.StartDirection);
     cells = ck[0];
     minRow = ck[1];
@@ -506,7 +524,6 @@ export function prepareCells(
     maxRow = ck[3];
     maxCol = ck[4];
   } else {
-    // Assume CalcCells is a function that exists in your TypeScript code
     let cc = calcCells(turns, rc.StartDirection);
     cells = cc[0];
     minRow = cc[1];
@@ -573,15 +590,14 @@ export function prepareCells(
       return [null, width, height, minRow, minCol, maxRow, maxCol];
     }
 
-    let err = false;
     cells.forEach((cell, idx) => {
       cell.Color = AltPalette[idx % AltPalette.length];
       cell.Row += rowOffset;
       cell.Col += colOffset;
       try {
         arr[cell.Row][cell.Col] = cell;
-      } catch (error) {
-        err = true;
+      } catch {
+        // cell coordinates out of bounds
       }
     });
 
@@ -592,4 +608,66 @@ export function prepareCells(
   return [null, width, height, minRow, minCol, maxRow, maxCol];
 }
 
-// Helper functions like calculateTurns, calcCells, calcCellsKnuth, and fillConnected need to be defined in TypeScript.
+export interface TileStats {
+  total: number;
+  active: number;
+  /** Active tiles with a single left turn (not complementary). */
+  activeLeftOnly: number;
+  /** Active tiles with a single right turn (not complementary). */
+  activeRightOnly: number;
+  /** Active tiles with two path segments (Knuth types 5 and 6). */
+  complementary: number;
+  inside: number;
+  outside: number;
+  /** Number of tile columns (horizontal). */
+  horizontal: number;
+  /** Number of tile rows (vertical). */
+  vertical: number;
+}
+
+/** Count tiles by type for the current curve configuration. */
+export function getTileStats(rc: RequestConfig): TileStats {
+  const stats: TileStats = {
+    total: 0,
+    active: 0,
+    activeLeftOnly: 0,
+    activeRightOnly: 0,
+    complementary: 0,
+    inside: 0,
+    outside: 0,
+    horizontal: 0,
+    vertical: 0,
+  };
+  const [cells] = prepareCells(rc, true);
+  if (!cells || cells.length === 0) {
+    return stats;
+  }
+
+  stats.vertical = cells.length;
+  stats.horizontal = cells[0].length;
+
+  for (const row of cells) {
+    for (const cell of row) {
+      stats.total++;
+      if (cell.FillState === ACTIVE || cell.FillState === 1) {
+        stats.active++;
+        const isComplementary =
+          cell.KnuthType === 5 || cell.KnuthType === 6;
+        if (isComplementary) {
+          stats.complementary++;
+        } else if (cell.Turn === LEFT) {
+          stats.activeLeftOnly++;
+        } else if (cell.Turn === RIGHT) {
+          stats.activeRightOnly++;
+        }
+      } else if (cell.FillState === OUTSIDE || cell.FillState === 2) {
+        stats.outside++;
+      } else {
+        stats.inside++;
+      }
+    }
+  }
+
+  return stats;
+}
+

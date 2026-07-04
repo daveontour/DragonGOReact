@@ -35,7 +35,7 @@ function FoldsModal() {
   };
 
   return (
-    <Modal show={config.foldsShow} onHide={dismiss} size="lg">
+    <Modal className="dragon-modal" show={config.foldsShow} onHide={dismiss} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Download Dragon Curve Turns</Modal.Title>
       </Modal.Header>

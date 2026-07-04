@@ -30,14 +30,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div
-      className={showFullScreen ? "min-vw-100" : "min-vw-100"}
-      style={{
-        maxHeight: "100vh",
-        maxWidth: "100vw",
-        backgroundColor: showFullScreen ? "unset" : "aliceblue",
-      }}
-    >
+    <div className="dragon-app min-vw-100">
       <Heading showFullScreen={showFullScreen} />
       <BodyLayout
         showFullScreen={showFullScreen}

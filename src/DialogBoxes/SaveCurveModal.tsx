@@ -24,7 +24,7 @@ function SaveCurveModal({ config }: { config: SavedConfig }) {
 
   return (
     <>
-      <Modal show={c.saveShow} onHide={dismiss} size="lg">
+      <Modal className="dragon-modal" show={c.saveShow} onHide={dismiss} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>
             Save Curve. - Copy and save or Download the configuration below

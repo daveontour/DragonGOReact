@@ -23,9 +23,10 @@ export function executeRandomiser(
   lastConstrastValue: string,
   contrastCount: number,
   setLastConstrastValue: (value: string) => void,
-  setContrastCount: (value: number) => void
+  setContrastCount: (value: number) => void,
+  randomiseCellType: boolean = true
 ): RandomiserReturnType {
-  // Always maintain current size - only randomize cell type
+  if (randomiseCellType) {
     if (
       state.cellType === "knuthcurve" ||
       state.cellType === "knuth" ||
@@ -39,13 +40,14 @@ export function executeRandomiser(
         Math.floor(Math.random() * 4)
       ];
     }
+  }
 
-    if (
-      state.cellType === "knuthcurve" ||
-      state.cellType === "knuth" ||
-      state.cellType === "knuthtri"
-    ) {
-      state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
+  if (
+    state.cellType === "knuthcurve" ||
+    state.cellType === "knuth" ||
+    state.cellType === "knuthtri"
+  ) {
+    state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];
   }
 
   state.triangleAngle = ["0", "10", "20", "30", "45", "50", "60", "65"][
@@ -115,7 +117,8 @@ export function executeRandomiser(
       lastConstrastValue,
       contrastCount,
       setLastConstrastValue,
-      setContrastCount
+      setContrastCount,
+      randomiseCellType
     );
   } else {
     return standardRandomiser(
@@ -463,10 +466,13 @@ function triangularRandomiser(
   lastConstrastValue: string,
   contrastCount: number,
   setLastConstrastValue: (value: string) => void,
-  setContrastCount: (value: number) => void
+  setContrastCount: (value: number) => void,
+  randomiseCellType: boolean = true
 ): RandomiserReturnType {
   state.margin = "0";
-  state.cellType = "knuthtri";
+  if (randomiseCellType) {
+    state.cellType = "knuthtri";
+  }
   state.radius = ["5", "8", "10", "12"][Math.floor(Math.random() * 4)];
   state.gridlines = false;
   state.grouting = ["1", "2", "3", "4", "5"][Math.floor(Math.random() * 5)];

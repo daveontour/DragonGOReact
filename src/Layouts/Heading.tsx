@@ -1,5 +1,5 @@
 import { RefAttributes } from "react";
-import { OverlayTrigger, Stack, Tooltip, TooltipProps } from "react-bootstrap";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
 export default function Heading({
   showFullScreen,
@@ -19,46 +19,22 @@ export default function Heading({
     </Tooltip>
   );
   return (
-    <>
-      <div
-        className="w-auto p-3 form-control"
-        style={{
-          display: showFullScreen ? "none" : "flex",
-          justifyContent: "space-between", // Add this line to align the children in the center horizontally
-          alignItems: "flex-end", // Add this line to align the children in the center vertically
-          backgroundColor: "#eee",
-          maxHeight: "80px",
-          minHeight: "80px",
-          marginLeft: "5px",
-          marginRight: "5px",
-        }}
-      >
-        <Stack direction="horizontal" gap={20}>
-          <h1>DragonCurves.Art</h1>
-          <h4 style={{ marginLeft: "30px", marginTop: "12px" }}>
-            Generate variations of Heighway-Hater Dragon
-          </h4>
-        </Stack>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
-            width: "400px",
-            height: "100%",
-          }}
-        >
-          <OverlayTrigger
-            placement="left"
-            delay={{ show: 250, hide: 4000 }}
-            overlay={aboutTooltip}
-          >
-            {/* <h5>About</h5> */}
-            <h6>Version 2.1</h6>
-          </OverlayTrigger>
-        </div>
+    <div className="top-bar" style={{ display: showFullScreen ? "none" : "flex" }}>
+      <div className="top-bar-title">
+        <h1>DragonCurves.Art</h1>
+        <p className="top-bar-subtitle">
+          Generate variations of Heighway-Hater Dragon
+        </p>
       </div>
-    </>
+      <div className="top-bar-meta">
+        <OverlayTrigger
+          placement="left"
+          delay={{ show: 250, hide: 4000 }}
+          overlay={aboutTooltip}
+        >
+          <span>Version 3.0</span>
+        </OverlayTrigger>
+      </div>
+    </div>
   );
 }

@@ -114,7 +114,7 @@ function LoadCurveModal() {
 
   return (
     <>
-      <Modal show={config.loadShow} onHide={dismiss} size="lg">
+      <Modal className="dragon-modal" show={config.loadShow} onHide={dismiss} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>Load Curve</Modal.Title>
         </Modal.Header>
