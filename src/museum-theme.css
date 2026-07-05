@@ -434,6 +434,53 @@ body {
   border-color: var(--color-blue);
 }
 
+.modal.dragon-modal.overlay-block-modal .modal-dialog {
+  height: 90vh;
+  max-height: 90vh;
+}
+
+.modal.dragon-modal.overlay-block-modal .modal-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal.dragon-modal.overlay-block-modal .overlay-block-modal__body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal.dragon-modal.overlay-block-modal .overlay-block-modal__tabs {
+  flex-shrink: 0;
+  border-bottom-color: var(--color-border);
+}
+
+.modal.dragon-modal.overlay-block-modal .overlay-block-modal__tabs .nav-link {
+  color: var(--color-text-muted);
+  border-color: transparent;
+}
+
+.modal.dragon-modal.overlay-block-modal .overlay-block-modal__tabs .nav-link:hover {
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.modal.dragon-modal.overlay-block-modal .overlay-block-modal__tabs .nav-link.active {
+  color: var(--color-text);
+  background: var(--color-bg-elevated);
+  border-color: var(--color-border) var(--color-border) var(--color-bg-elevated);
+}
+
+.modal.dragon-modal.overlay-block-modal .overlay-block-modal__tab-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-top: 12px;
+}
+
 /* --- Tooltips (also portaled to body) --- */
 .tooltip .tooltip-inner {
   background-color: var(--color-bg-surface);

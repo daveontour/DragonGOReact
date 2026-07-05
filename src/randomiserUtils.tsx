@@ -154,35 +154,42 @@ export function generateVibrantColor() {
 }
 
 export function generateVanGoghColor() {
-  // Van Gogh palette: bold yellows, deep blues, rich greens, oranges, warm earth tones
+  // Van Gogh pigments: chrome/cadmium yellow, Prussian/ultramarine blue,
+  // viridian/olive green, vermillion and earth reds/ochres. Weighted toward
+  // his signature yellow–blue contrast (Sunflowers, Starry Night).
   const colorType = Math.random();
   let R, G, B;
 
-  if (colorType < 0.25) {
-    // Bold yellows and oranges (sunflowers, stars)
-    R = Math.floor(Math.random() * 55 + 200); // 200-255
-    G = Math.floor(Math.random() * 75 + 180); // 180-255
-    B = Math.floor(Math.random() * 70 + 30);  // 30-100
-  } else if (colorType < 0.45) {
-    // Deep blues (starry night)
-    R = Math.floor(Math.random() * 50 + 10);  // 10-60
-    G = Math.floor(Math.random() * 60 + 40);   // 40-100
-    B = Math.floor(Math.random() * 106 + 150); // 150-255
-  } else if (colorType < 0.65) {
-    // Rich greens (fields, cypress trees)
-    R = Math.floor(Math.random() * 80 + 50);  // 50-130
-    G = Math.floor(Math.random() * 100 + 100); // 100-200
-    B = Math.floor(Math.random() * 70 + 40);  // 40-110
-  } else if (colorType < 0.80) {
-    // Warm earth tones and reds
-    R = Math.floor(Math.random() * 80 + 140); // 140-220
-    G = Math.floor(Math.random() * 100 + 80); // 80-180
-    B = Math.floor(Math.random() * 60 + 40);  // 40-100
+  if (colorType < 0.28) {
+    // Chrome / cadmium yellow (sunflowers, stars, wheat)
+    R = Math.floor(Math.random() * 40 + 215); // 215-255
+    G = Math.floor(Math.random() * 50 + 160); // 160-210 (always < R)
+    B = Math.floor(Math.random() * 40 + 10); // 10-50
+  } else if (colorType < 0.42) {
+    // Yellow ochre / gold
+    R = Math.floor(Math.random() * 40 + 180); // 180-220
+    G = Math.floor(Math.random() * 40 + 120); // 120-160
+    B = Math.floor(Math.random() * 30 + 20); // 20-50
+  } else if (colorType < 0.62) {
+    // Prussian / ultramarine / cobalt night blues
+    R = Math.floor(Math.random() * 45 + 15); // 15-60
+    G = Math.floor(Math.random() * 50 + 30); // 30-80
+    B = Math.floor(Math.random() * 70 + 140); // 140-210
+  } else if (colorType < 0.74) {
+    // Cypress / field greens (olive and viridian, not lime)
+    R = Math.floor(Math.random() * 45 + 35); // 35-80
+    G = Math.floor(Math.random() * 55 + 90); // 90-145
+    B = Math.floor(Math.random() * 40 + 35); // 35-75
+  } else if (colorType < 0.86) {
+    // Vermillion / red ochre
+    R = Math.floor(Math.random() * 50 + 170); // 170-220
+    G = Math.floor(Math.random() * 45 + 35); // 35-80
+    B = Math.floor(Math.random() * 35 + 25); // 25-60
   } else {
-    // Mix of vibrant colors
-    R = Math.floor(Math.random() * 120 + 120); // 120-240
-    G = Math.floor(Math.random() * 120 + 100); // 100-220
-    B = Math.floor(Math.random() * 100 + 80);  // 80-180
+    // Burnt sienna / umber earth
+    R = Math.floor(Math.random() * 50 + 110); // 110-160
+    G = Math.floor(Math.random() * 40 + 55); // 55-95
+    B = Math.floor(Math.random() * 30 + 25); // 25-55
   }
 
   let rgb = (R << 16) + (G << 8) + B;

@@ -29,6 +29,7 @@ export interface RequestConfig {
   ActiveStroke: boolean;
   PathStroke: boolean;
   GridLines: boolean;
+  TileBlockGridSize: number;
   NumberFolds: number;
   Radius: number;
   StartDirection: number;

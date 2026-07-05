@@ -15,6 +15,7 @@ export interface DragonCurveState {
   radius: string;
   grouting: string;
   gridlines: boolean;
+  tileBlockGridSize: number;
   groutingColor: string;
   pallette: string;
 }
@@ -70,6 +71,7 @@ export interface CollageConfig {
 export interface SettingsConfig {
   slideShowInterval: number;
   background: string;
+  planView: boolean;
 }
 
 // Image size configuration
@@ -77,20 +79,6 @@ export interface ImageSize {
   width: string;
   height: string;
   zoom: string;
-}
-
-// Function types
-export type SetShowFullScreen = (show: boolean) => void;
-export type StopSlideShowNow = () => void;
-export type SetSlideShowRandomFunction = () => void;
-
-// Saved config structure (what gets saved/loaded)
-export interface SavedConfig {
-  outside: OutsideCellState;
-  inside: InsideCellState;
-  active: ActiveCellState;
-  path: PathState;
-  state: DragonCurveState;
 }
 
 // Randomiser return type tuple
@@ -101,6 +89,20 @@ export type RandomiserReturnType = [
   InsideCellState,
   OutsideCellState
 ];
+
+// Function types
+export type SetShowFullScreen = (show: boolean) => void;
+export type StopSlideShowNow = () => void;
+export type SetSlideShowRandomFunction = () => RandomiserReturnType;
+
+// Saved config structure (what gets saved/loaded)
+export interface SavedConfig {
+  outside: OutsideCellState;
+  inside: InsideCellState;
+  active: ActiveCellState;
+  path: PathState;
+  state: DragonCurveState;
+}
 
 // Cell state parameter types for randomiser functions
 export interface PathStateParam {

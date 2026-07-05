@@ -33,7 +33,7 @@ import FoldsHelpModal from "../DialogBoxes/FoldsHelpModal";
 import RendererHelpModal from "../DialogBoxes/RendererHelpModal";
 import LoadCurveModal from "../DialogBoxes/LoadCurveModal";
 import SaveCurveModal from "../DialogBoxes/SaveCurveModal";
-import { getDragonSVG, getDragonSizeSVG } from "../servertsx/svg";
+import { getDragonSVG, getDragonSizeSVG, getPlansDisplaySVG, getPlansSizeSVG } from "../servertsx/svg";
 
 var opened = true;
 
@@ -140,7 +140,12 @@ function resizeSvgInContainer(
   return fitted;
 }
 
-import { SetSlideShowRandomFunction, SavedConfig, SetShowFullScreen } from "../types";
+import {
+  SetSlideShowRandomFunction,
+  SavedConfig,
+  SetShowFullScreen,
+  RandomiserReturnType,
+} from "../types";
 import { downloadSVG, downloadJSON } from "../utils/downloadUtils";
 
 export default function ControlLayout({
@@ -263,72 +268,83 @@ export default function ControlLayout({
     state: config.state,
   });
 
-  const generate = () => {
+  const generate = (
+    randomized?: RandomiserReturnType,
+    planView?: boolean
+  ) => {
+    const curveState = randomized?.[0] ?? config.state;
+    const path = randomized?.[1] ?? config.pathState;
+    const active = randomized?.[2] ?? config.activeCellState;
+    const inside = randomized?.[3] ?? config.insideCellState;
+    const outside = randomized?.[4] ?? config.outsideCellState;
+
     let sd = LEFT;
-    if (config.pathState.startDirection === "random") {
+    if (path.startDirection === "random") {
       let directions = [UP, DOWN, LEFT, RIGHT];
       let index = Math.floor(Math.random() * 4);
       sd = directions[index];
     }
 
-    if (config.pathState.startDirection === "LEFT") {
+    if (path.startDirection === "LEFT") {
       sd = LEFT;
     }
-    if (config.pathState.startDirection === "RIGHT") {
+    if (path.startDirection === "RIGHT") {
       sd = RIGHT;
     }
-    if (config.pathState.startDirection === "UP") {
+    if (path.startDirection === "UP") {
       sd = UP;
     }
-    if (config.pathState.startDirection === "DOWN") {
+    if (path.startDirection === "DOWN") {
       sd = DOWN;
     }
 
     let rc: RequestConfig = {
-      OutSideFill: config.outsideCellState.fillEnabled,
-      OutSideStroke: config.outsideCellState.borderEnabled,
-      InsideFill: config.insideCellState.fillEnabled,
-      InsideStroke: config.insideCellState.borderEnabled,
-      ActiveFill: config.activeCellState.fillEnabled,
-      ActiveStroke: config.activeCellState.borderEnabled,
-      PathStroke: config.pathState.borderEnabled,
-      GridLines: config.state.gridlines,
-      NumberFolds: Number(config.state.folds),
-      Radius: Number(config.state.radius),
+      OutSideFill: outside.fillEnabled,
+      OutSideStroke: outside.borderEnabled,
+      InsideFill: inside.fillEnabled,
+      InsideStroke: inside.borderEnabled,
+      ActiveFill: active.fillEnabled,
+      ActiveStroke: active.borderEnabled,
+      PathStroke: path.borderEnabled,
+      GridLines: curveState.gridlines,
+      TileBlockGridSize: curveState.tileBlockGridSize,
+      NumberFolds: Number(curveState.folds),
+      Radius: Number(curveState.radius),
       StartDirection: sd,
-      CellType: config.state.cellType,
+      CellType: curveState.cellType,
       OriginX: 0,
       OrignY: 0,
-      Margin: Number(config.state.margin.replace(/px/g, "")),
-      InsideStrokeColorRaw: config.insideCellState.borderColor,
-      InsideFillColorRaw: config.insideCellState.backgroundColor,
-      OutsideStrokeColorRaw: config.outsideCellState.borderColor,
-      OutsideFillColorRaw: config.outsideCellState.backgroundColor,
-      ActiveStrokeColorRaw: config.activeCellState.borderColor,
-      ActiveFillColorRaw: config.activeCellState.backgroundColor,
-      PathStrokeColorRaw: config.pathState.borderColor,
-      GroutingColorRaw: config.state.groutingColor,
-      InsideStrokeWidth: Number(
-        config.insideCellState.borderWidth.replace(/px/g, "")
-      ),
-      OutsideStrokeWidth: Number(
-        config.outsideCellState.borderWidth.replace(/px/g, "")
-      ),
-      ActiveStrokeWidth: Number(
-        config.activeCellState.borderWidth.replace(/px/g, "")
-      ),
-      PathWidth: Number(config.pathState.borderWidth.replace(/px/g, "")),
-      Grouting: Number(config.state.grouting.replace(/px/g, "")),
-      TriangleAngle: Number(config.state.triangleAngle),
+      Margin: Number(curveState.margin.replace(/px/g, "")),
+      InsideStrokeColorRaw: inside.borderColor,
+      InsideFillColorRaw: inside.backgroundColor,
+      OutsideStrokeColorRaw: outside.borderColor,
+      OutsideFillColorRaw: outside.backgroundColor,
+      ActiveStrokeColorRaw: active.borderColor,
+      ActiveFillColorRaw: active.backgroundColor,
+      PathStrokeColorRaw: path.borderColor,
+      GroutingColorRaw: curveState.groutingColor,
+      InsideStrokeWidth: Number(inside.borderWidth.replace(/px/g, "")),
+      OutsideStrokeWidth: Number(outside.borderWidth.replace(/px/g, "")),
+      ActiveStrokeWidth: Number(active.borderWidth.replace(/px/g, "")),
+      PathWidth: Number(path.borderWidth.replace(/px/g, "")),
+      Grouting: Number(curveState.grouting.replace(/px/g, "")),
+      TriangleAngle: Number(curveState.triangleAngle),
       Format: "",
     };
 
-    let size = getDragonSizeSVG(rc);
+    let size: [number, number];
+    let svgContent: string;
+    const usePlanView = planView ?? config.settingsConfig.planView;
+    if (usePlanView) {
+      svgContent = getPlansDisplaySVG(rc);
+      size = getPlansSizeSVG(rc);
+    } else {
+      size = getDragonSizeSVG(rc);
+      svgContent = getDragonSVG(rc);
+    }
     let w = size[0];
     let h = size[1];
     intrinsicSizeRef.current = { width: w, height: h };
-
-    let svgContent = getDragonSVG(rc);
 
     const titleBar = document.querySelector(".dragon-app .top-bar");
     const titleBarHeight = titleBar?.getBoundingClientRect().height ?? 56;
@@ -394,8 +410,8 @@ export default function ControlLayout({
     config.setSlideShow(true);
     const intervalId = setInterval(() => {
       if (!slideShowPauseRef.current) {
-        setSlideShowRandomFunction();
-        generate();
+        const randomized = setSlideShowRandomFunction();
+        generate(randomized);
       }
     }, config.settingsConfig.slideShowInterval * 1000);
     const intervalIdNumber = intervalId as unknown as number;
@@ -538,13 +554,18 @@ export default function ControlLayout({
               <Col xs={4}>
                 <input
                   type="number"
-                  min="1"
+                  min="0.1"
                   max="60"
+                  step="0.1"
                   value={config.settingsConfig.slideShowInterval}
                   onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (Number.isNaN(value)) {
+                      return;
+                    }
                     config.setSettingsConfig({
                       ...config.settingsConfig,
-                      slideShowInterval: parseInt(e.target.value),
+                      slideShowInterval: value,
                     });
                     changeSlideShowInterval();
                   }}
@@ -553,7 +574,7 @@ export default function ControlLayout({
             </Row>
           </Container>
 
-          <Stack direction="horizontal" gap={2}>
+          <Stack direction="vertical" gap={2} style={{ marginTop: "15px" }}>
             <Button
               size="sm"
               variant="primary"
@@ -561,10 +582,9 @@ export default function ControlLayout({
                 saveCurrentSlide();
               }}
               style={{
-                width: "136px",
+                width: "350px",
                 display:
                   config.slideShow && !config.slideShowPause ? "block" : "none",
-                marginTop: "15px",
               }}
             >
               Save Current
@@ -576,45 +596,42 @@ export default function ControlLayout({
                 pauseSlideShowNow();
               }}
               style={{
-                width: "136px",
+                width: "350px",
                 display:
                   config.slideShow && !config.slideShowPause ? "block" : "none",
-                marginTop: "15px",
               }}
             >
               Pause Slide Show
             </Button>
+            <Button
+              size="sm"
+              variant="success"
+              onClick={() => {
+                resumeSlideShowNow();
+              }}
+              style={{
+                width: "350px",
+                display:
+                  config.slideShow && config.slideShowPause ? "block" : "none",
+              }}
+            >
+              Resume Slide Show
+            </Button>
+            <Button
+              size="sm"
+              variant="danger"
+              onClick={() => {
+                config.setStopSlideShow(true);
+                stopSlideShowNow();
+              }}
+              style={{
+                width: "350px",
+                display: config.slideShow ? "block" : "none",
+              }}
+            >
+              Stop Slide Show
+            </Button>
           </Stack>
-          <Button
-            size="sm"
-            variant="success"
-            onClick={() => {
-              resumeSlideShowNow();
-            }}
-            style={{
-              width: "350px",
-              display:
-                config.slideShow && config.slideShowPause ? "block" : "none",
-              marginTop: "15px",
-            }}
-          >
-            Resume Slide Show
-          </Button>
-          <Button
-            size="sm"
-            variant="danger"
-            onClick={() => {
-              config.setStopSlideShow(true);
-              stopSlideShowNow();
-            }}
-            style={{
-              width: "350px",
-              display: config.slideShow ? "block" : "none",
-              marginTop: "5px",
-            }}
-          >
-            Stop Slide Show
-          </Button>
         </Stack>
       </div>
 
@@ -797,6 +814,41 @@ export default function ControlLayout({
                     </FormControl>
                   </Col>
                 </Row>
+
+                <Row>
+                  <Col xs={6}>
+                    <FormLabel>Grid overlay (tiles)</FormLabel>
+                  </Col>
+                  <Col xs={6}>
+                    <FormControl
+                      disabled={config.slideShow}
+                      size="sm"
+                      as="select"
+                      value={config.state.tileBlockGridSize}
+                      onChange={(e) => {
+                        const size = Number(e.target.value);
+                        const newState = {
+                          ...config.state,
+                          tileBlockGridSize: size,
+                        };
+                        config.setState(newState);
+                        generate([
+                          newState,
+                          config.pathState,
+                          config.activeCellState,
+                          config.insideCellState,
+                          config.outsideCellState,
+                        ]);
+                      }}
+                    >
+                      {[...Array(11).keys()].map((i) => (
+                        <option key={i} value={i}>
+                          {i === 0 ? "Off" : `${i}×${i}`}
+                        </option>
+                      ))}
+                    </FormControl>
+                  </Col>
+                </Row>
                 <Row>
                   <Col xs={6}>
                     <FormLabel>
@@ -878,6 +930,26 @@ export default function ControlLayout({
                     </FormControl>
                   </Col>
                 </Row>
+                <Row>
+                <Col xs={6}>
+                    <FormLabel>Plan View</FormLabel>
+                  </Col>
+                  <Col xs={6}>
+                    <Form.Check
+                      type="checkbox"
+                      checked={config.settingsConfig.planView}
+                      disabled={config.slideShow}
+                      onChange={(e) => {
+                        const planView = e.target.checked;
+                        config.setSettingsConfig({
+                          ...config.settingsConfig,
+                          planView,
+                        });
+                        generate(undefined, planView);
+                      }}
+                    />
+                  </Col>
+                </Row>
               </Container>
             </Stack>
 
@@ -887,7 +959,7 @@ export default function ControlLayout({
                 id="generate-dragon-curve-button"
                 size="sm"
                 variant="primary"
-                onClick={generate}
+                onClick={() => generate()}
                 disabled={config.slideShow}
                 style={{
                   width: "350px",
@@ -900,7 +972,7 @@ export default function ControlLayout({
               <Button
                 size="sm"
                 variant="success"
-                onClick={generate}
+                onClick={() => generate()}
                 disabled={config.slideShow}
                 style={{
                   width: "350px",

@@ -60,6 +60,71 @@ function computeSvgDimensions(
   };
 }
 
+function appendTileBlockGrid(
+  parts: string[],
+  ox: number,
+  oy: number,
+  ri: number,
+  grouting: number,
+  svgWidth: number,
+  svgHeight: number,
+  tilesPerBlock: number
+): void {
+  const blockPitch = tilesPerBlock * (ri + grouting);
+  const startX = ox - grouting;
+  const startY = oy - grouting;
+
+  for (let w = 0; ; w++) {
+    const x = startX + w * blockPitch;
+    if (x > svgWidth) {
+      break;
+    }
+    parts.push(
+      `<line x1="${x}" y1="0" x2="${x}" y2="${svgHeight}" stroke="#000000aa" stroke-width="2" />`
+    );
+  }
+  for (let h = 0; ; h++) {
+    const y = startY + h * blockPitch;
+    if (y > svgHeight) {
+      break;
+    }
+    parts.push(
+      `<line x1="0" y1="${y}" x2="${svgWidth}" y2="${y}" stroke="#000000aa" stroke-width="2" />`
+    );
+  }
+}
+
+function appendPlanBlockHitTargets(
+  parts: string[],
+  ox: number,
+  oy: number,
+  ri: number,
+  grouting: number,
+  gridWidth: number,
+  gridHeight: number,
+  tilesPerBlock: number
+): void {
+  const blockPitch = tilesPerBlock * (ri + grouting);
+  const startX = ox - grouting;
+  const startY = oy - grouting;
+
+  for (let blockRow = 0; ; blockRow++) {
+    const y = startY + blockRow * blockPitch;
+    if (y >= gridHeight) {
+      break;
+    }
+    for (let blockCol = 0; ; blockCol++) {
+      const x = startX + blockCol * blockPitch;
+      if (x >= gridWidth) {
+        break;
+      }
+      parts.push(
+        `<rect class="plan-block-hit" data-block-row="${blockRow}" data-block-col="${blockCol}" x="${x}" y="${y}" width="${blockPitch}" height="${blockPitch}" fill="transparent" />`
+      );
+    }
+  }
+}
+
 function cellOrigin(
   col: number,
   row: number,
@@ -398,6 +463,19 @@ function createSVG(
         `<line x1="0" y1="${y}" x2="${svgWidth}" y2="${y}" stroke="#00000088" stroke-width="1" />`
       );
     }
+  }
+
+  if (rc.TileBlockGridSize > 0) {
+    appendTileBlockGrid(
+      parts,
+      ox,
+      oy,
+      ri,
+      rc.Grouting,
+      svgWidth,
+      svgHeight,
+      rc.TileBlockGridSize
+    );
   }
 
   parts.push(`</svg>`);
@@ -795,6 +873,287 @@ export function getDragonSVG(rc: common.RequestConfig): string {
     : "";
 }
 
+export type TileInfo = {
+  type: "active" | "inside" | "outside";
+  turn: "left" | "right" | "none";
+  complementary: boolean;
+  knuthType: number;
+  rows: number;
+  cols: number;
+};
+
+export function getTileGridSize(
+  rc: common.RequestConfig
+): { rows: number; cols: number } | null {
+  const [cells] = common.prepareCells(rc, true);
+  if (!cells || cells.length === 0) {
+    return null;
+  }
+  return { rows: cells.length, cols: cells[0].length };
+}
+
+/**
+ * Render a single tile as SVG. Row and column are 1-based (same as plans).
+ */
+export function getTileSVG(
+  rc: common.RequestConfig,
+  row: number,
+  col: number
+): { svg: string; info: TileInfo } | null {
+  const [cells] = common.prepareCells(rc, true);
+  if (!cells || cells.length === 0) {
+    return null;
+  }
+
+  const rows = cells.length;
+  const cols = cells[0].length;
+  const r = row - 1;
+  const c = col - 1;
+  if (r < 0 || c < 0 || r >= rows || c >= cols) {
+    return null;
+  }
+
+  const cell = cells[r][c];
+  const pad = 4;
+  const size = rc.Radius + pad * 2;
+  const templateArray = buildTemplateCache(rc);
+  const knuthTemplateArray = buildKnuthTemplateArray(rc);
+
+  let cellContent = "";
+
+  if (isActiveFill(cell.FillState)) {
+    const turn = normalizeTurn(cell.Turn);
+    if (isKnuthCellType(rc.CellType)) {
+      cellContent = knuthTemplateArray[cell.KnuthType] || "";
+    } else {
+      cellContent =
+        templateArray[common.ACTIVE][turn][cell.StartCorner][cell.EndCorner] ||
+        "";
+    }
+  } else if (isOutsideFill(cell.FillState)) {
+    cellContent = templateArray[common.OUTSIDE][0][0][0];
+  } else {
+    cellContent = templateArray[common.INSIDE][0][0][0];
+  }
+
+  const info = cellToTileInfo(cell, rows, cols);
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 ${size} ${size}">
+    <style>${buildStyleBlock(rc)}</style>
+    <rect class="bgrect" x="0" y="0" width="${size}" height="${size}" />
+    <g transform="translate(${pad}, ${pad})">${cellContent}</g>
+  </svg>`;
+
+  return { svg, info };
+}
+
+function cellToTileInfo(
+  cell: common.Cell,
+  rows: number,
+  cols: number
+): TileInfo {
+  let type: TileInfo["type"] = "inside";
+  if (isActiveFill(cell.FillState)) {
+    type = "active";
+  } else if (isOutsideFill(cell.FillState)) {
+    type = "outside";
+  }
+
+  const turnLabel: TileInfo["turn"] =
+    type !== "active"
+      ? "none"
+      : cell.Turn === common.LEFT
+        ? "left"
+        : cell.Turn === common.RIGHT
+          ? "right"
+          : "none";
+
+  return {
+    type,
+    turn: turnLabel,
+    complementary:
+      type === "active" && (cell.KnuthType === 5 || cell.KnuthType === 6),
+    knuthType: cell.KnuthType,
+    rows,
+    cols,
+  };
+}
+
+function appendPlansCellContent(
+  parts: string[],
+  cell: common.Cell,
+  rc: common.RequestConfig,
+  templateArray: ReturnType<typeof buildTemplateCache>,
+  knuthTemplateArray: string[],
+  groutingFillColor: string,
+  col: number,
+  row: number,
+  ox: number,
+  oy: number,
+  ri: number,
+  grouting: number
+): void {
+  const { x, y } = cellOrigin(col, row, ox, oy, ri, grouting);
+  parts.push(`<g transform="translate(${x}, ${y})">`);
+
+  if (isActiveFill(cell.FillState)) {
+    const turn = normalizeTurn(cell.Turn);
+    if (isKnuthCellType(rc.CellType)) {
+      parts.push(knuthTemplateArray[cell.KnuthType]);
+    } else {
+      parts.push(
+        templateArray[common.ACTIVE][turn][cell.StartCorner][cell.EndCorner]
+      );
+    }
+  } else if (isOutsideFill(cell.FillState)) {
+    parts.push(templateArray[common.OUTSIDE][0][0][0]);
+  } else if (isInsideFill(cell.FillState)) {
+    parts.push(templateArray[common.INSIDE][0][0][0]);
+  }
+
+  if (rc.Grouting > 0) {
+    appendGroutingRects(parts, rc, groutingFillColor);
+  }
+
+  parts.push(`</g>`);
+}
+
+export type OverlayBlockTile = {
+  row: number;
+  col: number;
+  info: TileInfo;
+};
+
+export type OverlayBlockDetails = {
+  blockRow: number;
+  blockCol: number;
+  blockSize: number;
+  startRow: number;
+  startCol: number;
+  endRow: number;
+  endCol: number;
+  activeLeftOnly: number;
+  activeRightOnly: number;
+  complementary: number;
+  inside: number;
+  outside: number;
+  total: number;
+  tiles: OverlayBlockTile[];
+  svg: string;
+};
+
+export function getOverlayBlockDetails(
+  base: common.RequestConfig,
+  blockRow: number,
+  blockCol: number
+): OverlayBlockDetails | null {
+  const blockSize = base.TileBlockGridSize;
+  if (blockSize <= 0) {
+    return null;
+  }
+
+  const rc = buildPlansConfig(base);
+  const [cells] = common.prepareCells(rc, true);
+  if (!cells || cells.length === 0) {
+    return null;
+  }
+
+  const rows = cells.length;
+  const cols = cells[0].length;
+  const startRow0 = blockRow * blockSize;
+  const startCol0 = blockCol * blockSize;
+  if (startRow0 >= rows || startCol0 >= cols) {
+    return null;
+  }
+
+  const endRow0 = Math.min(startRow0 + blockSize, rows) - 1;
+  const endCol0 = Math.min(startCol0 + blockSize, cols) - 1;
+  const blockRows = endRow0 - startRow0 + 1;
+  const blockCols = endCol0 - startCol0 + 1;
+
+  const templateArray = buildTemplateCache(rc);
+  const knuthTemplateArray = buildKnuthTemplateArray(rc);
+  const [groutingFillColor] = toSVGColor(rc.GroutingColorRaw);
+  const ri = rc.Radius;
+  const ox = rc.Grouting;
+  const oy = rc.Grouting;
+  const { svgWidth, svgHeight } = computeSvgDimensions(
+    blockCols - 1,
+    blockRows - 1,
+    rc
+  );
+
+  const parts: string[] = [
+    `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 ${svgWidth.toFixed(2)} ${svgHeight.toFixed(2)}">`,
+    `<style>${buildStyleBlock(rc)}
+        .inside { stroke-dasharray: 2 2; }
+    </style>`,
+    `<rect class="bgrect" x="0" y="0" height="${svgHeight}" width="${svgWidth}" />`,
+  ];
+
+  const tiles: OverlayBlockTile[] = [];
+  let activeLeftOnly = 0;
+  let activeRightOnly = 0;
+  let complementary = 0;
+  let inside = 0;
+  let outside = 0;
+
+  for (let r = startRow0; r <= endRow0; r++) {
+    for (let c = startCol0; c <= endCol0; c++) {
+      const cell = cells[r][c];
+      const info = cellToTileInfo(cell, rows, cols);
+      tiles.push({ row: r + 1, col: c + 1, info });
+
+      if (info.type === "inside") {
+        inside++;
+      } else if (info.type === "outside") {
+        outside++;
+      } else if (info.complementary) {
+        complementary++;
+      } else if (info.turn === "left") {
+        activeLeftOnly++;
+      } else if (info.turn === "right") {
+        activeRightOnly++;
+      }
+
+      appendPlansCellContent(
+        parts,
+        cell,
+        rc,
+        templateArray,
+        knuthTemplateArray,
+        groutingFillColor,
+        c - startCol0,
+        r - startRow0,
+        ox,
+        oy,
+        ri,
+        rc.Grouting
+      );
+    }
+  }
+
+  parts.push(`</svg>`);
+
+  return {
+    blockRow,
+    blockCol,
+    blockSize,
+    startRow: startRow0 + 1,
+    startCol: startCol0 + 1,
+    endRow: endRow0 + 1,
+    endCol: endCol0 + 1,
+    activeLeftOnly,
+    activeRightOnly,
+    complementary,
+    inside,
+    outside,
+    total: tiles.length,
+    tiles,
+    svg: parts.join(""),
+  };
+}
+
 /** Black-and-white schematic style for printable plans (uses base Tile Renderer). */
 export function buildPlansConfig(base: common.RequestConfig): common.RequestConfig {
   return {
@@ -841,7 +1200,8 @@ function createPlansSVG(
   maxRow: number,
   maxCol: number,
   rc: common.RequestConfig,
-  stats: common.TileStats
+  stats: common.TileStats,
+  includeStats = true
 ): string {
   const templateArray = buildTemplateCache(rc);
   const knuthTemplateArray = buildKnuthTemplateArray(rc);
@@ -881,7 +1241,9 @@ function createPlansSVG(
 
   const statsX = labelOffsetX + gridSvgWidth + PLANS_STATS_GAP;
   const statsY = gridBottom - statsBoxHeight;
-  const svgWidth = statsX + PLANS_STATS_WIDTH;
+  const svgWidth = includeStats
+    ? statsX + PLANS_STATS_WIDTH
+    : labelOffsetX + gridSvgWidth;
   const svgHeight = Math.max(labelOffsetY + gridSvgHeight, gridBottom);
 
   const parts: string[] = [
@@ -913,6 +1275,12 @@ function createPlansSVG(
             fill: #ffffff;
             stroke: #000000;
             stroke-width: 1.5;
+        }
+        .plan-block-hit {
+            cursor: pointer;
+        }
+        .plan-block-hit:hover {
+            fill: rgba(0, 0, 0, 0.08);
         }
     </style>`,
     `<rect class="bgrect" x="0" y="0" height="${svgHeight}" width="${svgWidth}" />`,
@@ -970,6 +1338,32 @@ function createPlansSVG(
     }
   }
 
+  if (rc.TileBlockGridSize > 0) {
+    appendTileBlockGrid(
+      parts,
+      ox,
+      oy,
+      ri,
+      rc.Grouting,
+      gridSvgWidth,
+      gridSvgHeight,
+      rc.TileBlockGridSize
+    );
+  }
+
+  if (!includeStats && rc.TileBlockGridSize > 0) {
+    appendPlanBlockHitTargets(
+      parts,
+      ox,
+      oy,
+      ri,
+      rc.Grouting,
+      gridSvgWidth,
+      gridSvgHeight,
+      rc.TileBlockGridSize
+    );
+  }
+
   parts.push(`</g>`);
 
   // Column numbers (1-based) along the top
@@ -992,25 +1386,62 @@ function createPlansSVG(
     );
   }
 
-  // Statistics box in the lower right
-  parts.push(
-    `<rect class="plans-stats-box" x="${statsX}" y="${statsY}" width="${PLANS_STATS_WIDTH}" height="${statsBoxHeight}" />`
-  );
-
-  statsLines.forEach((line, i) => {
-    const y =
-      statsY +
-      PLANS_STATS_PAD +
-      PLANS_STATS_FIRST_BASELINE +
-      i * PLANS_STATS_LINE_HEIGHT;
-    const cls = line.bold ? "plans-stats-title" : "plans-stats-text";
+  // Statistics box in the lower right (download only)
+  if (includeStats) {
     parts.push(
-      `<text class="${cls}" x="${statsX + PLANS_STATS_PAD}" y="${y}">${line.text}</text>`
+      `<rect class="plans-stats-box" x="${statsX}" y="${statsY}" width="${PLANS_STATS_WIDTH}" height="${statsBoxHeight}" />`
     );
-  });
+
+    statsLines.forEach((line, i) => {
+      const y =
+        statsY +
+        PLANS_STATS_PAD +
+        PLANS_STATS_FIRST_BASELINE +
+        i * PLANS_STATS_LINE_HEIGHT;
+      const cls = line.bold ? "plans-stats-title" : "plans-stats-text";
+      parts.push(
+        `<text class="${cls}" x="${statsX + PLANS_STATS_PAD}" y="${y}">${line.text}</text>`
+      );
+    });
+  }
 
   parts.push(`</svg>`);
   return parts.join("");
+}
+
+/**
+ * Generate a black-and-white schematic SVG for on-screen plan view.
+ */
+export function getPlansDisplaySVG(base: common.RequestConfig): string {
+  const rc = buildPlansConfig(base);
+  const [cells, , , minRow, minCol, maxRow, maxCol] = common.prepareCells(
+    rc,
+    true
+  );
+  if (!cells) {
+    return "";
+  }
+
+  const stats = common.getTileStats(rc);
+  return createPlansSVG(
+    cells,
+    minRow,
+    minCol,
+    maxRow,
+    maxCol,
+    rc,
+    stats,
+    false
+  );
+}
+
+export function getPlansSizeSVG(base: common.RequestConfig): [number, number] {
+  const svg = getPlansDisplaySVG(base);
+  const match = svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
+  if (!match) {
+    return [0, 0];
+  }
+  return [Number(match[1]), Number(match[2])];
 }
 
 /**
@@ -1028,9 +1459,17 @@ export function getPlansSVG(base: common.RequestConfig): string {
   }
 
   const stats = common.getTileStats(rc);
-  const svg = createPlansSVG(cells, minRow, minCol, maxRow, maxCol, rc, stats);
-  const width = maxCol - minCol;
-  const height = maxRow - minRow;
+  const svg = createPlansSVG(
+    cells,
+    minRow,
+    minCol,
+    maxRow,
+    maxCol,
+    rc,
+    stats,
+    true
+  );
+  const [, width, height] = common.prepareCells(rc, false);
   const { svgWidth: gridW, svgHeight: gridH } = computeSvgDimensions(
     width,
     height,
@@ -1038,10 +1477,7 @@ export function getPlansSVG(base: common.RequestConfig): string {
   );
   const contentWidth =
     PLANS_LABEL_GUTTER + gridW + PLANS_STATS_GAP + PLANS_STATS_WIDTH;
-  const contentHeight = Math.max(
-    PLANS_LABEL_GUTTER + gridH,
-    PLANS_LABEL_GUTTER + gridH
-  );
+  const contentHeight = PLANS_LABEL_GUTTER + gridH;
   const page =
     contentWidth >= contentHeight ? A4_LANDSCAPE_MM : A4_PORTRAIT_MM;
 

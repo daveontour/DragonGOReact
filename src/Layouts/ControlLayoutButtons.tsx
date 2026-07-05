@@ -5,71 +5,13 @@ import { CurrentConfigContext } from "../Contexts";
 import { downloadSVG } from "../utils/downloadUtils";
 import { SetShowFullScreen } from "../types";
 import CurveStatsModal from "../DialogBoxes/CurveStatsModal";
+import TileInspectModal from "../DialogBoxes/TileInspectModal";
 import {
-  DOWN,
-  LEFT,
-  RIGHT,
-  RequestConfig,
-  UP,
   getTileStats,
+  RequestConfig,
   TileStats,
 } from "../servertsx/common";
-import { Config } from "../Contexts";
-
-function buildRequestConfig(config: Config): RequestConfig {
-  let sd = LEFT;
-  if (config.pathState.startDirection === "random") {
-    const directions = [UP, DOWN, LEFT, RIGHT];
-    sd = directions[Math.floor(Math.random() * 4)];
-  } else if (config.pathState.startDirection === "LEFT") {
-    sd = LEFT;
-  } else if (config.pathState.startDirection === "RIGHT") {
-    sd = RIGHT;
-  } else if (config.pathState.startDirection === "UP") {
-    sd = UP;
-  } else if (config.pathState.startDirection === "DOWN") {
-    sd = DOWN;
-  }
-
-  return {
-    OutSideFill: config.outsideCellState.fillEnabled,
-    OutSideStroke: config.outsideCellState.borderEnabled,
-    InsideFill: config.insideCellState.fillEnabled,
-    InsideStroke: config.insideCellState.borderEnabled,
-    ActiveFill: config.activeCellState.fillEnabled,
-    ActiveStroke: config.activeCellState.borderEnabled,
-    PathStroke: config.pathState.borderEnabled,
-    GridLines: config.state.gridlines,
-    NumberFolds: Number(config.state.folds),
-    Radius: Number(config.state.radius),
-    StartDirection: sd,
-    CellType: config.state.cellType,
-    OriginX: 0,
-    OrignY: 0,
-    Margin: Number(config.state.margin.replace(/px/g, "")),
-    InsideStrokeColorRaw: config.insideCellState.borderColor,
-    InsideFillColorRaw: config.insideCellState.backgroundColor,
-    OutsideStrokeColorRaw: config.outsideCellState.borderColor,
-    OutsideFillColorRaw: config.outsideCellState.backgroundColor,
-    ActiveStrokeColorRaw: config.activeCellState.borderColor,
-    ActiveFillColorRaw: config.activeCellState.backgroundColor,
-    PathStrokeColorRaw: config.pathState.borderColor,
-    GroutingColorRaw: config.state.groutingColor,
-    InsideStrokeWidth: Number(
-      config.insideCellState.borderWidth.replace(/px/g, "")
-    ),
-    OutsideStrokeWidth: Number(
-      config.outsideCellState.borderWidth.replace(/px/g, "")
-    ),
-    ActiveStrokeWidth: Number(
-      config.activeCellState.borderWidth.replace(/px/g, "")
-    ),
-    PathWidth: Number(config.pathState.borderWidth.replace(/px/g, "")),
-    Grouting: Number(config.state.grouting.replace(/px/g, "")),
-    TriangleAngle: Number(config.state.triangleAngle),
-    Format: "",
-  };
-}
+import { buildRequestConfig } from "../utils/buildRequestConfig";
 
 export default function ControlLayoutButtons({
   setShowFullScreen,
@@ -91,6 +33,9 @@ export default function ControlLayoutButtons({
   });
   const [statsRequestConfig, setStatsRequestConfig] =
     useState<RequestConfig | null>(null);
+  const [tileInspectShow, setTileInspectShow] = useState(false);
+  const [tileInspectConfig, setTileInspectConfig] =
+    useState<RequestConfig | null>(null);
 
   const [configState, setConfigState] = useState({
     outside: config.outsideCellState,
@@ -105,6 +50,11 @@ export default function ControlLayoutButtons({
     setStats(getTileStats(rc));
     setStatsRequestConfig(rc);
     setStatsShow(true);
+  };
+
+  const showTileInspect = () => {
+    setTileInspectConfig(buildRequestConfig(config));
+    setTileInspectShow(true);
   };
 
   const downloadDragonCurveSVG = () => {
@@ -181,6 +131,15 @@ export default function ControlLayoutButtons({
   ) => (
     <Tooltip id="button-tooltip" {...props}>
       Show tile counts for the current curve.
+    </Tooltip>
+  );
+  const renderTileInspectTooltip = (
+    props: JSX.IntrinsicAttributes &
+      TooltipProps &
+      RefAttributes<HTMLDivElement>
+  ) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Inspect a single tile by row and column.
     </Tooltip>
   );
   const renderFullscreenTooltip = (
@@ -309,6 +268,24 @@ export default function ControlLayoutButtons({
         <OverlayTrigger
           placement="right"
           delay={{ show: 250, hide: 400 }}
+          overlay={renderTileInspectTooltip}
+        >
+          <svg
+            onClick={showTileInspect}
+            xmlns="http://www.w3.org/2000/svg"
+            width="30px"
+            height="30px"
+            fill="currentColor"
+            cursor={"pointer"}
+            className="bi bi-grid-3x3"
+            viewBox="0 0 16 16"
+          >
+            <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5zM1.5 1a.5.5 0 0 0-.5.5V5h4V1zM5 6H1v4h4zm1 4h4V6H6zm-1 1H1v3.5a.5.5 0 0 0 .5.5H5zm1 0v4h4v-4zm5 0v4h3.5a.5.5 0 0 0 .5-.5V11zm0-1h4V6h-4zm0-5h4V1.5a.5.5 0 0 0-.5-.5H11zm-1 0V1H6v4z" />
+          </svg>
+        </OverlayTrigger>
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
           overlay={renderStatsTooltip}
         >
           <svg
@@ -352,6 +329,11 @@ export default function ControlLayoutButtons({
         onHide={() => setStatsShow(false)}
         stats={stats}
         requestConfig={statsRequestConfig}
+      />
+      <TileInspectModal
+        show={tileInspectShow}
+        onHide={() => setTileInspectShow(false)}
+        requestConfig={tileInspectConfig}
       />
     </>
   );

@@ -35,6 +35,7 @@ export default function BodyLayout({
   const [settingsConfig, setSettingsConfig] = useState({
     background: "plain",
     slideShowInterval: 5,
+    planView: false,
   });
 
   const [state, setState] = useState<DragonCurveState>({
@@ -45,6 +46,7 @@ export default function BodyLayout({
     radius: "22",
     grouting: "2",
     gridlines: false,
+    tileBlockGridSize: 0,
     groutingColor: "#ffffffff",
     pallette: "pastel",
   });
@@ -117,9 +119,25 @@ export default function BodyLayout({
   slideShowRandomiseCellTypeRef.current = slideShowRandomiseCellType;
   const [dirty, setDirty] = useState(false);
   const [randomiserScheme, setRandomiserScheme] = useState("standard");
+  const randomiserSchemeRef = useRef(randomiserScheme);
+  randomiserSchemeRef.current = randomiserScheme;
   const [randomHue, setRandomHue] = useState(false);
   const [lastConstrastValue, setLastConstrastValue] = useState("");
   const [contrastCount, setContrastCount] = useState(0);
+  const stateRef = useRef(state);
+  const pathStateRef = useRef(pathState);
+  const activeCellStateRef = useRef(activeCellState);
+  const insideCellStateRef = useRef(insideCellState);
+  const outsideCellStateRef = useRef(outsideCellState);
+  const lastConstrastValueRef = useRef(lastConstrastValue);
+  const contrastCountRef = useRef(contrastCount);
+  stateRef.current = state;
+  pathStateRef.current = pathState;
+  activeCellStateRef.current = activeCellState;
+  insideCellStateRef.current = insideCellState;
+  outsideCellStateRef.current = outsideCellState;
+  lastConstrastValueRef.current = lastConstrastValue;
+  contrastCountRef.current = contrastCount;
   const [configJSON, setConfigJSON] = useState("");
   const [intervalID, setIntervalID] = useState<number | null>(null);
   const [stopSlideShow, setStopSlideShow] = useState(false);
@@ -133,98 +151,52 @@ export default function BodyLayout({
   }
 
   const setSlideShowRandom = () => {
-    const schemes = [
-      "standard",
-      "noOutside",
-      "boldPath",
-      "pathOnly",
-      "triangular",
-    ];
-    const palettes = [
-      "pastel",
-      "vibrant",
-      "redhue",
-      "greenhue",
-      "bluehue",
-      "randomhue",
-      "highcontrast",
-      "random",
-      "vangogh",
-      "monet",
-      "blueyellow",
-    ];
-    const scheme = schemes[Math.floor(Math.random() * schemes.length)];
-    const palette = palettes[Math.floor(Math.random() * palettes.length)];
-    setRandomiserScheme(scheme);
-    setRandomHue(palette === "randomhue");
+    // Work on copies and return the snapshot synchronously so generate() can
+    // use the new cellType/colors immediately (React setState is async).
+    const currentState = stateRef.current;
+    const nextState = { ...currentState };
+    const nextPath = { ...pathStateRef.current };
+    const nextActive = { ...activeCellStateRef.current };
+    const nextInside = { ...insideCellStateRef.current };
+    const nextOutside = { ...outsideCellStateRef.current };
 
-    setState((currentState) => {
-    let s = executeRandomiser(
-        { ...currentState, pallette: palette },
-      pathState,
-      activeCellState,
-      insideCellState,
-        outsideCellState,
-        scheme,
-        palette,
-        lastConstrastValue,
-        contrastCount,
-        setLastConstrastValue,
-        setContrastCount,
-        slideShowRandomiseCellTypeRef.current
-      );
-      
-      // Update other states using current values
-      setPathState((currentPathState) => ({
-        ...currentPathState,
-      borderStyle: s[1].borderStyle,
-      borderWidth: s[1].borderWidth,
-      borderColor: s[1].borderColor,
-      borderEnabled: s[1].borderEnabled,
-      startDirection: s[1].startDirection,
-      }));
-      setInsideCellState((currentInsideState) => ({
-        ...currentInsideState,
-      borderStyle: s[2].borderStyle,
-      borderWidth: s[2].borderWidth,
-      borderColor: s[2].borderColor,
-      borderEnabled: s[2].borderEnabled,
-      backgroundColor: s[2].backgroundColor,
-      fillEnabled: s[2].fillEnabled,
-      }));
-      setOutsideCellState((currentOutsideState) => ({
-        ...currentOutsideState,
-      borderStyle: s[3].borderStyle,
-      borderWidth: s[3].borderWidth,
-      borderColor: s[3].borderColor,
-      borderEnabled: s[3].borderEnabled,
-      backgroundColor: s[3].backgroundColor,
-      fillEnabled: s[3].fillEnabled,
-      }));
+    const s = executeRandomiser(
+      nextState,
+      nextPath,
+      nextActive,
+      nextInside,
+      nextOutside,
+      randomiserSchemeRef.current,
+      currentState.pallette,
+      lastConstrastValueRef.current,
+      contrastCountRef.current,
+      setLastConstrastValue,
+      setContrastCount,
+      slideShowRandomiseCellTypeRef.current
+    );
 
-      setActiveCellState((currentActiveState) => ({
-        ...currentActiveState,
-      borderStyle: s[4].borderStyle,
-      borderWidth: s[4].borderWidth,
-      borderColor: s[4].borderColor,
-      borderEnabled: s[4].borderEnabled,
-      backgroundColor: s[4].backgroundColor,
-      fillEnabled: s[4].fillEnabled,
-      }));
-      
-      return {
-        ...currentState,
-        margin: s[0].margin,
-        cellType: s[0].cellType,
-        radius: s[0].radius,
-        gridlines: s[0].gridlines,
-        grouting: s[0].grouting,
-        triangleAngle: s[0].triangleAngle,
-        folds: s[0].folds,
-        pallette: palette,
-        groutingColor: currentState.groutingColor,
-      };
+    setState({
+      ...nextState,
+      pallette: currentState.pallette,
+      groutingColor: currentState.groutingColor,
     });
+    setPathState(nextPath);
+    setActiveCellState(nextActive);
+    setInsideCellState(nextInside);
+    setOutsideCellState(nextOutside);
+
+    // Keep refs current for the next interval tick.
+    stateRef.current = {
+      ...nextState,
+      pallette: currentState.pallette,
+      groutingColor: currentState.groutingColor,
+    };
+    pathStateRef.current = nextPath;
+    activeCellStateRef.current = nextActive;
+    insideCellStateRef.current = nextInside;
+    outsideCellStateRef.current = nextOutside;
+
+    return s;
   };
 
   return (

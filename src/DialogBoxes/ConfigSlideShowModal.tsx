@@ -31,13 +31,18 @@ function ConfigSlideShowModal() {
               <Col xs={4}>
                 <input
                   type="number"
-                  min="1"
+                  min="0.1"
                   max="60"
+                  step="0.1"
                   value={config.settingsConfig.slideShowInterval}
                   onChange={(e) => {
+                    const value = parseFloat(e.target.value);
+                    if (Number.isNaN(value)) {
+                      return;
+                    }
                     config.setSettingsConfig({
                       ...config.settingsConfig,
-                      slideShowInterval: parseInt(e.target.value),
+                      slideShowInterval: value,
                     });
                   }}
                 />
