@@ -1,4 +1,4 @@
-import { RefAttributes, useContext, useEffect, useState, useRef } from "react";
+import { RefAttributes, useContext, useEffect, useRef } from "react";
 import {
   Button,
   Col,
@@ -142,11 +142,11 @@ function resizeSvgInContainer(
 
 import {
   SetSlideShowRandomFunction,
-  SavedConfig,
   SetShowFullScreen,
   RandomiserReturnType,
 } from "../types";
 import { downloadSVG, downloadJSON } from "../utils/downloadUtils";
+import { buildSavedConfig } from "../utils/savedConfig";
 
 export default function ControlLayout({
   setSlideShowRandomFunction,
@@ -259,14 +259,6 @@ export default function ControlLayout({
       observer?.disconnect();
     };
   }, []);
-
-  const [configState] = useState<SavedConfig>({
-    outside: config.outsideCellState,
-    inside: config.insideCellState,
-    active: config.activeCellState,
-    path: config.pathState,
-    state: config.state,
-  });
 
   const generate = (
     randomized?: RandomiserReturnType,
@@ -396,10 +388,19 @@ export default function ControlLayout({
       downloadSVG(svgContent, fname);
     }
 
-    let json = JSON.stringify(configState, null, 2);
+    let json = JSON.stringify(buildSavedConfig(config), null, 2);
 
     config.setConfigJSON(json);
   };
+
+  const generateRef = useRef(generate);
+  generateRef.current = generate;
+
+  useEffect(() => {
+    config.registerRegenerateCurve((snapshot) => {
+      generateRef.current(snapshot);
+    });
+  }, [config.registerRegenerateCurve]);
 
   function startInterval() {
     // Turns depend only on fold count. Precompute for the current folds and
@@ -1051,7 +1052,7 @@ export default function ControlLayout({
             </Stack>
 
             <FoldsModal />
-            <SaveCurveModal config={configState} />
+            <SaveCurveModal />
             <LoadCurveModal />
             <RendererHelpModal />
             <FoldsHelpModal />

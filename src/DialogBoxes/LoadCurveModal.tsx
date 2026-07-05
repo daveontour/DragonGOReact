@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import {
   Button,
   Col,
@@ -7,109 +8,84 @@ import {
   Modal,
   Row,
 } from "react-bootstrap";
-
-import { FileUploader } from "react-drag-drop-files";
 import { CurrentConfigContext } from "../Contexts";
-
-const fileTypes = ["json"];
+import {
+  applySavedConfig,
+  buildLoadedSnapshot,
+  parseSavedConfig,
+} from "../utils/savedConfig";
 
 function LoadCurveModal() {
-  let config = useContext(CurrentConfigContext);
+  const config = useContext(CurrentConfigContext);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [configText, setConfigText] = useState("");
+  const [error, setError] = useState("");
+
   const dismiss = () => {
     config.setLoadShow(false);
   };
 
-  const handleChange = (file: File) => {
+  useEffect(() => {
+    if (config.loadShow) {
+      setConfigText("");
+      setError("");
+    }
+  }, [config.loadShow]);
+
+  const loadFileContent = (file: File) => {
     const fileReader = new FileReader();
     fileReader.onload = () => {
-      const fileContent = fileReader.result as string;
-      const jsonData = JSON.parse(fileContent);
-      let s = document.getElementById("paste") as HTMLInputElement;
-      s.value = JSON.stringify(jsonData);
+      try {
+        const fileContent = fileReader.result as string;
+        const saved = parseSavedConfig(fileContent);
+        setConfigText(JSON.stringify(saved, null, 2));
+        setError("");
+      } catch {
+        setError("The selected file is not a valid configuration.");
+      }
     };
     fileReader.readAsText(file);
   };
 
+  const handleSelectFile = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      loadFileContent(file);
+    }
+    event.target.value = "";
+  };
+
   const handleClose = () => {
-    const text = document.getElementById("paste") as HTMLInputElement;
-    const newConfig = JSON.parse(text.value);
-
-    try {
-      config.setActiveCellState({
-        ...config.activeCellState,
-        backgroundColor: newConfig.active.backgroundColor,
-        borderColor: newConfig.active.borderColor,
-        borderWidth: newConfig.active.borderWidth,
-        borderStyle: newConfig.active.borderStyle,
-        borderEnabled: newConfig.active.borderEnabled,
-        fillEnabled: newConfig.active.fillEnabled,
-      });
-    } catch (error) {
-      // Error setting active cell state
-    }
-    try {
-      config.setOutsideCellState({
-        ...config.outsideCellState,
-        backgroundColor: newConfig.outside.backgroundColor,
-        borderColor: newConfig.outside.borderColor,
-        borderWidth: newConfig.outside.borderWidth,
-        borderStyle: newConfig.outside.borderStyle,
-        borderEnabled: newConfig.outside.borderEnabled,
-        fillEnabled: newConfig.outside.fillEnabled,
-      });
-    } catch (error) {
-      // Error setting outside cell state
-    }
-    try {
-      config.setInsideCellState({
-        ...config.insideCellState,
-        backgroundColor: newConfig.inside.backgroundColor,
-        borderColor: newConfig.inside.borderColor,
-        borderWidth: newConfig.inside.borderWidth,
-        borderStyle: newConfig.inside.borderStyle,
-        borderEnabled: newConfig.inside.borderEnabled,
-        fillEnabled: newConfig.inside.fillEnabled,
-      });
-    } catch (error) {
-      // Error setting inside cell state
-    }
-    try {
-      config.setPathState({
-        ...config.pathState,
-        borderColor: newConfig.path.borderColor,
-        borderWidth: newConfig.path.borderWidth,
-        borderStyle: newConfig.path.borderStyle,
-        borderEnabled: newConfig.path.borderEnabled,
-        startDirection: newConfig.path.startDirection,
-      });
-    } catch (error) {
-      // Error setting path state
-    }
-    try {
-      config.setState({
-        ...config.state,
-        folds: newConfig.state.folds,
-        margin: newConfig.state.margin,
-        cellType: newConfig.state.cellType,
-        triangleAngle: newConfig.state.triangleAngle,
-        radius: newConfig.state.radius,
-        grouting: newConfig.state.grouting,
-      });
-    } catch (error) {
-      // Error setting curve state
+    if (!configText.trim()) {
+      setError("Select a configuration file or paste JSON before loading.");
+      return;
     }
 
-    config.setLoadShow(false);
-
-    //This is a bit hacky, but it works
-    setTimeout(() => {
-      let btn = document.getElementById(
-        "generate-dragon-curve-button"
-      ) as HTMLButtonElement;
-      btn.click();
-    }, 1000);
-
-    config.setDirty(true);
+    try {
+      const saved = parseSavedConfig(configText);
+      const snapshot = buildLoadedSnapshot(config, saved);
+      flushSync(() => {
+        applySavedConfig(config, saved);
+        if (saved.state.pallette === "randomhue") {
+          config.setRandomHue(true);
+        } else {
+          config.setRandomHue(false);
+        }
+      });
+      config.setLoadShow(false);
+      config.setDirty(false);
+      config.regenerateCurve(snapshot);
+    } catch {
+      setError(
+        "The configuration text is not valid JSON or is missing required fields."
+      );
+    }
   };
 
   return (
@@ -120,26 +96,42 @@ function LoadCurveModal() {
         </Modal.Header>
         <Modal.Body>
           <Container>
-            <Row>
+            <Row className="mb-3">
               <Col xs={12}>
-                <FileUploader
-                  style={{ width: "100%" }}
-                  handleChange={handleChange}
-                  name="file"
-                  types={fileTypes}
-                  multiple={false}
-                  children={
-                    <FormControl
-                      as="textarea"
-                      aria-label="With textarea"
-                      defaultValue="Paste or Drop a previously saved config file here"
-                      style={{ height: "15em", width: "750px" }}
-                      id="paste"
-                    />
-                  }
+                <Button variant="outline-secondary" onClick={handleSelectFile}>
+                  Select File
+                </Button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".json,application/json"
+                  style={{ display: "none" }}
+                  onChange={handleFileInputChange}
                 />
               </Col>
             </Row>
+            <Row>
+              <Col xs={12}>
+                <FormControl
+                  as="textarea"
+                  aria-label="Configuration JSON"
+                  placeholder="Select a file or paste a saved configuration here"
+                  style={{ height: "15em", width: "100%" }}
+                  value={configText}
+                  onChange={(e) => {
+                    setConfigText(e.target.value);
+                    setError("");
+                  }}
+                />
+              </Col>
+            </Row>
+            {error && (
+              <Row className="mt-2">
+                <Col xs={12}>
+                  <p className="text-danger mb-0">{error}</p>
+                </Col>
+              </Row>
+            )}
           </Container>
         </Modal.Body>
         <Modal.Footer>

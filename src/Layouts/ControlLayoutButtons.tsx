@@ -37,14 +37,6 @@ export default function ControlLayoutButtons({
   const [tileInspectConfig, setTileInspectConfig] =
     useState<RequestConfig | null>(null);
 
-  const [configState, setConfigState] = useState({
-    outside: config.outsideCellState,
-    inside: config.insideCellState,
-    active: config.activeCellState,
-    path: config.pathState,
-    state: config.state,
-  });
-
   const showStatistics = () => {
     const rc = buildRequestConfig(config);
     setStats(getTileStats(rc));
@@ -72,14 +64,6 @@ export default function ControlLayoutButtons({
   };
 
   const saveCurve = () => {
-    setConfigState({
-      ...configState,
-      state: config.state,
-      inside: config.insideCellState,
-      outside: config.outsideCellState,
-      active: config.activeCellState,
-      path: config.pathState,
-    });
     config.setSaveShow(true);
   };
 
@@ -91,7 +75,7 @@ export default function ControlLayoutButtons({
       RefAttributes<HTMLDivElement>
   ) => (
     <Tooltip id="button-tooltip" {...props}>
-      Save the configuration settings of the current dragon curve by showing the
+      Download the configuration settings of the current dragon curve by showing the
       underlying configuration which can be saved as a JSON file.
     </Tooltip>
   );
@@ -111,7 +95,7 @@ export default function ControlLayoutButtons({
       RefAttributes<HTMLDivElement>
   ) => (
     <Tooltip id="button-tooltip" {...props}>
-      Download the SVG file of the current dragon curve.
+      Save the SVG file of the current dragon curve.
     </Tooltip>
   );
   const renderTurnsTooltip = (
@@ -197,11 +181,11 @@ export default function ControlLayoutButtons({
             height="30px"
             cursor={"pointer"}
             fill="currentColor"
-            className="bi bi-floppy"
-            viewBox="0 0 20 20"
+            className="bi bi-download"
+            viewBox="0 0 16 16"
           >
-            <path d="M11 2H9v3h2z" />
-            <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z" />
+                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
           </svg>
         </OverlayTrigger>
         <OverlayTrigger
@@ -216,11 +200,11 @@ export default function ControlLayoutButtons({
             width="30px"
             height="30px"
             fill="currentColor"
-            className="bi bi-door-open"
-            viewBox="0 0 20 20"
+            className="bi bi-upload"
+            viewBox="0 0 16 16"
           >
-            <path d="M8.5 10c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1" />
-            <path d="M10.828.122A.5.5 0 0 1 11 .5V1h.5A1.5 1.5 0 0 1 13 2.5V15h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V1.5a.5.5 0 0 1 .43-.495l7-1a.5.5 0 0 1 .398.117M11.5 2H11v13h1V2.5a.5.5 0 0 0-.5-.5M4 1.934V15h6V1.077z" />
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
+            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z" />
           </svg>
         </OverlayTrigger>
         <OverlayTrigger
@@ -235,11 +219,12 @@ export default function ControlLayoutButtons({
             width="30px"
             height="30px"
             fill="currentColor"
-            className="bi bi-download"
-            viewBox="0 0 20 20"
+            className="bi bi-floppy"
+            viewBox="0 0 16 16"
           >
-            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5" />
-            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z" />
+            <path d="M11 2H9v3h2z" />
+            <path d="M1.5 0h11.586a1.5 1.5 0 0 1 1.06.44l1.415 1.414A1.5 1.5 0 0 1 16 2.914V14.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 14.5v-13A1.5 1.5 0 0 1 1.5 0M1 1.5v13a.5.5 0 0 0 .5.5H2v-4.5A1.5 1.5 0 0 1 3.5 9h9a1.5 1.5 0 0 1 1.5 1.5V15h.5a.5.5 0 0 0 .5-.5V2.914a.5.5 0 0 0-.146-.353l-1.415-1.415A.5.5 0 0 0 13.086 1H13v4.5A1.5 1.5 0 0 1 11.5 7h-7A1.5 1.5 0 0 1 3 5.5V1H1.5a.5.5 0 0 0-.5.5m3 4a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 .5-.5V1H4zM3 15h10v-4.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5z" />
+
           </svg>
         </OverlayTrigger>
         <OverlayTrigger

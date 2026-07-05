@@ -86,7 +86,7 @@ export default function OverlayBlockModal({
             <Tab.Content className="overlay-block-modal__tab-content">
               <Tab.Pane eventKey="overview">
                 <p className="mb-2">
-                  Overlay square {details.blockRow + 1}×{details.blockCol + 1}
+                  Overlay square row {details.blockRow + 1}, column {details.blockCol + 1}
                   {" · "}
                   tiles rows {details.startRow}–{details.endRow}, columns{" "}
                   {details.startCol}–{details.endCol}

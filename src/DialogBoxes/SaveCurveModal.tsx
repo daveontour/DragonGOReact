@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import {
   Button,
   Col,
@@ -9,22 +9,32 @@ import {
 } from "react-bootstrap";
 import { CurrentConfigContext } from "../Contexts";
 import { downloadJSON } from "../utils/downloadUtils";
-import { SavedConfig } from "../types";
+import { buildSavedConfig } from "../utils/savedConfig";
 
-function SaveCurveModal({ config }: { config: SavedConfig }) {
-  let c = useContext(CurrentConfigContext);
+function SaveCurveModal() {
+  const config = useContext(CurrentConfigContext);
+  const savedConfig = useMemo(
+    () => buildSavedConfig(config),
+    [
+      config.state,
+      config.pathState,
+      config.activeCellState,
+      config.insideCellState,
+      config.outsideCellState,
+    ]
+  );
+
   const dismiss = () => {
-    c.setSaveShow(false);
+    config.setSaveShow(false);
   };
   const handleClose = () => {
-    c.setSaveShow(false);
-    downloadJSON(config, "DragonCurveConfig.json");
-    c.setSaveShow(false);
+    downloadJSON(savedConfig, "DragonCurveConfig.json");
+    config.setSaveShow(false);
   };
 
   return (
     <>
-      <Modal className="dragon-modal" show={c.saveShow} onHide={dismiss} size="lg">
+      <Modal className="dragon-modal" show={config.saveShow} onHide={dismiss} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>
             Save Curve. - Copy and save or Download the configuration below
@@ -37,7 +47,7 @@ function SaveCurveModal({ config }: { config: SavedConfig }) {
                 <FormControl
                   as="textarea"
                   aria-label="With textarea"
-                  value={JSON.stringify(config, null, 2)}
+                  value={JSON.stringify(savedConfig, null, 2)}
                   readOnly
                   style={{ height: "15em" }}
                 />

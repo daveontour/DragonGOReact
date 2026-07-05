@@ -8,6 +8,7 @@ import {
   CollageConfig,
   SettingsConfig,
   ImageSize,
+  RandomiserReturnType,
 } from "./types";
 
 export const ThemeContext = createContext("light");
@@ -68,6 +69,10 @@ export interface Config {
   setIntervalID: react.Dispatch<react.SetStateAction<number | null>>;
   stopSlideShow: boolean;
   setStopSlideShow: react.Dispatch<react.SetStateAction<boolean>>;
+  registerRegenerateCurve: (
+    handler: (snapshot?: RandomiserReturnType) => void
+  ) => void;
+  regenerateCurve: (snapshot?: RandomiserReturnType) => void;
 }
 
 export const CurrentConfigContext = createContext<Config>({} as Config);

@@ -1,7 +1,7 @@
 import ControlLayout from "./ControlLayout";
 import ImageLayout from "./ImageLayout";
 import { CurrentConfigContext } from "../Contexts";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { executeRandomiser } from "../randomiserSchemes";
 import { SetShowFullScreen } from "../types";
 import type {
@@ -10,6 +10,7 @@ import type {
   InsideCellState,
   OutsideCellState,
   PathState,
+  RandomiserReturnType,
 } from "../types";
 
 export default function BodyLayout({
@@ -141,6 +142,18 @@ export default function BodyLayout({
   const [configJSON, setConfigJSON] = useState("");
   const [intervalID, setIntervalID] = useState<number | null>(null);
   const [stopSlideShow, setStopSlideShow] = useState(false);
+  const regenerateRef = useRef<
+    ((snapshot?: RandomiserReturnType) => void) | null
+  >(null);
+  const registerRegenerateCurve = useCallback(
+    (handler: (snapshot?: RandomiserReturnType) => void) => {
+      regenerateRef.current = handler;
+    },
+    []
+  );
+  const regenerateCurve = useCallback((snapshot?: RandomiserReturnType) => {
+    regenerateRef.current?.(snapshot);
+  }, []);
 
   // Expose handlers to parent component
   if (handlersRef) {
@@ -257,6 +270,8 @@ export default function BodyLayout({
           setIntervalID,
           stopSlideShow,
           setStopSlideShow,
+          registerRegenerateCurve,
+          regenerateCurve,
         }}
       >
         <div
