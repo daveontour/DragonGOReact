@@ -846,3 +846,382 @@ body {
   text-shadow: 0 0 4px #fff;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
 }
+
+.dragon-app .mathart-viz-card-preview--pi-n-gon::before {
+  content: "";
+  position: absolute;
+  inset: 22%;
+  border: 2px solid rgba(112, 144, 183, 0.7);
+  border-radius: 50%;
+}
+
+.dragon-app .mathart-viz-card-preview--pi-n-gon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 42%;
+  height: 42%;
+  transform: translate(-50%, -50%) rotate(15deg);
+  background: rgba(125, 206, 160, 0.28);
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  border: 2px solid rgba(125, 206, 160, 0.85);
+  box-shadow: 0 0 0 6px rgba(232, 184, 109, 0.22);
+}
+
+/* --- Pi by n-gon --- */
+.dragon-app .pi-ngon-sidebar {
+  display: block;
+}
+
+.dragon-app .pi-ngon-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .pi-ngon-hint {
+  margin: 8px 0 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .pi-ngon-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .pi-ngon-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .pi-ngon-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .pi-ngon-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+  word-break: break-all;
+}
+
+.dragon-app .pi-ngon-result-value--pi {
+  font-size: var(--text-md);
+  color: #7dcea0;
+}
+
+.dragon-app .pi-ngon-result-value--lower {
+  color: #7dcea0;
+}
+
+.dragon-app .pi-ngon-result-value--upper {
+  color: #e8b86d;
+}
+
+.dragon-app .pi-ngon-result-label--lower::before,
+.dragon-app .pi-ngon-result-label--upper::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.dragon-app .pi-ngon-result-label--lower::before {
+  background: rgba(125, 206, 160, 0.95);
+}
+
+.dragon-app .pi-ngon-result-label--upper::before {
+  background: rgba(232, 184, 109, 0.95);
+}
+
+.dragon-app .pi-ngon-formula {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.5;
+}
+
+.dragon-app .pi-ngon-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.dragon-app .pi-ngon-svg {
+  width: min(100%, 520px);
+  height: auto;
+  max-height: 100%;
+}
+
+.dragon-app .pi-ngon-circle {
+  fill: none;
+  stroke: rgba(112, 144, 183, 0.95);
+  stroke-width: 0.05;
+  vector-effect: non-scaling-stroke;
+}
+
+.dragon-app .pi-ngon-polygon {
+  fill: none;
+  stroke-width: 0.04;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.dragon-app .pi-ngon-polygon--inscribed {
+  fill: rgba(125, 206, 160, 0.14);
+  stroke: rgba(125, 206, 160, 0.95);
+}
+
+.dragon-app .pi-ngon-polygon--circumscribed {
+  fill: rgba(232, 184, 109, 0.1);
+  stroke: rgba(232, 184, 109, 0.95);
+}
+
+.dragon-app .pi-ngon-vertex {
+  stroke-width: 0.02;
+  vector-effect: non-scaling-stroke;
+}
+
+.dragon-app .pi-ngon-vertex--lower {
+  fill: rgba(125, 206, 160, 0.95);
+  stroke: rgba(255, 255, 255, 0.8);
+}
+
+.dragon-app .pi-ngon-vertex--upper {
+  fill: rgba(232, 184, 109, 0.95);
+  stroke: rgba(255, 255, 255, 0.8);
+}
+
+.dragon-app .pi-ngon-legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dragon-app .pi-ngon-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.dragon-app .pi-ngon-legend-item::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.dragon-app .pi-ngon-legend-item--lower::before {
+  background: rgba(125, 206, 160, 0.95);
+}
+
+.dragon-app .pi-ngon-legend-item--upper::before {
+  background: rgba(232, 184, 109, 0.95);
+}
+
+.dragon-app .pi-ngon-center-point {
+  fill: rgba(255, 255, 255, 0.75);
+}
+
+/* --- Collatz Conjecture --- */
+.dragon-app .collatz-sidebar {
+  display: block;
+}
+
+.dragon-app .collatz-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .collatz-hint {
+  margin: 8px 0 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .collatz-error {
+  margin: 8px 0 0;
+  font-size: var(--text-xs);
+  color: #e88a8a;
+}
+
+.dragon-app .collatz-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .collatz-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .collatz-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .collatz-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+  word-break: break-all;
+}
+
+.dragon-app .collatz-result-value--peak {
+  color: #9ec5ff;
+}
+
+.dragon-app .collatz-sequence-list {
+  min-height: 0;
+}
+
+.dragon-app .collatz-sequence-scroll {
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.dragon-app .collatz-sequence-item {
+  white-space: nowrap;
+}
+
+.dragon-app .collatz-sequence-arrow {
+  margin: 0 4px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.dragon-app .collatz-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: auto;
+}
+
+.dragon-app .collatz-chart {
+  width: min(100%, 760px);
+  height: auto;
+  max-height: 100%;
+}
+
+.dragon-app .collatz-chart-bg {
+  fill: rgba(0, 0, 0, 0.18);
+}
+
+.dragon-app .collatz-axis {
+  stroke: rgba(255, 255, 255, 0.25);
+  stroke-width: 1.5;
+}
+
+.dragon-app .collatz-axis-label {
+  fill: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+}
+
+.dragon-app .collatz-line {
+  fill: none;
+  stroke: rgba(158, 197, 255, 0.95);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.dragon-app .collatz-line--range {
+  stroke-width: 2;
+}
+
+.dragon-app .collatz-point {
+  fill: rgba(158, 197, 255, 0.85);
+}
+
+.dragon-app .collatz-point--start {
+  fill: #7dcea0;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.dragon-app .collatz-point--end {
+  fill: #e8b86d;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.dragon-app .collatz-point--range {
+  fill: rgba(125, 206, 160, 0.9);
+}
+
+.dragon-app .mathart-viz-card-preview--collatz::before {
+  content: "";
+  position: absolute;
+  inset: 24% 14% 24% 14%;
+  border-left: 2px solid rgba(158, 197, 255, 0.35);
+  border-bottom: 2px solid rgba(158, 197, 255, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--collatz::after {
+  content: "";
+  position: absolute;
+  inset: 24% 14% 24% 14%;
+  background: transparent;
+  clip-path: polygon(
+    0% 72%,
+    18% 58%,
+    34% 64%,
+    52% 28%,
+    68% 40%,
+    84% 12%,
+    100% 0%,
+    100% 100%,
+    0% 100%
+  );
+  background: linear-gradient(
+    180deg,
+    rgba(158, 197, 255, 0.15) 0%,
+    rgba(158, 197, 255, 0.02) 100%
+  );
+  border-top: 2px solid rgba(158, 197, 255, 0.85);
+}

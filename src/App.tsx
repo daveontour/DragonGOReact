@@ -3,6 +3,8 @@ import { useState } from "react";
 import HomePage from "./pages/HomePage";
 import DragonCurvesApp from "./visualizations/DragonCurvesApp";
 import KnightsTourApp from "./visualizations/KnightsTourApp";
+import PiNGonApp from "./visualizations/PiNGonApp";
+import CollatzApp from "./visualizations/CollatzApp";
 import { VisualizationId } from "./visualizations/registry";
 
 type AppView = "home" | VisualizationId;
@@ -39,6 +41,24 @@ const App: React.FC = () => {
           style={{ display: view === "knights-tour" ? "flex" : "none" }}
         >
           <KnightsTourApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("pi-n-gon") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "pi-n-gon" ? "flex" : "none" }}
+        >
+          <PiNGonApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("collatz") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "collatz" ? "flex" : "none" }}
+        >
+          <CollatzApp onHome={() => setView("home")} />
         </div>
       ) : null}
     </div>
