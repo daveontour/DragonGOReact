@@ -17,6 +17,7 @@ export default function BodyLayout({
   showFullScreen,
   setShowFullScreen,
   handlersRef,
+  sidebarTitle,
 }: {
   showFullScreen: boolean;
   setShowFullScreen: SetShowFullScreen;
@@ -24,6 +25,7 @@ export default function BodyLayout({
     getIntervalID: () => number | null;
     getConfigJSON: () => string;
   } | null>;
+  sidebarTitle?: string;
 }) {
   const [slideShow, setSlideShow] = useState(false);
   const [slideShowPause, setSlideShowPause] = useState(false);
@@ -283,6 +285,7 @@ export default function BodyLayout({
           <ControlLayout
             setSlideShowRandomFunction={setSlideShowRandom}
             setShowFullScreen={setShowFullScreen}
+            sidebarTitle={sidebarTitle}
           ></ControlLayout>
 
           <ImageLayout />

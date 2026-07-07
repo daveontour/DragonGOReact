@@ -1,10 +1,12 @@
 import { RefAttributes } from "react";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 
-export default function Heading({
+export default function VisualizationTopBar({
   showFullScreen,
+  onHome,
 }: {
   showFullScreen: boolean;
+  onHome: () => void;
 }) {
   const aboutTooltip = (
     props: JSX.IntrinsicAttributes &
@@ -18,13 +20,16 @@ export default function Heading({
       </a>
     </Tooltip>
   );
+
   return (
-    <div className="top-bar" style={{ display: showFullScreen ? "none" : "flex" }}>
-      <div className="top-bar-title">
-        <h1>DragonCurves.Art</h1>
-        <p className="top-bar-subtitle">
-          Generate variations of Heighway-Hater Dragon
-        </p>
+    <div
+      className="top-bar"
+      style={{ display: showFullScreen ? "none" : "flex" }}
+    >
+      <div className="top-bar-nav">
+        <button type="button" className="top-bar-home-link" onClick={onHome}>
+          Home
+        </button>
       </div>
       <div className="top-bar-meta">
         <OverlayTrigger

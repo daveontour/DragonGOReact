@@ -11,17 +11,16 @@ describe("pathAnimation", () => {
     expect(segmentDuration(1000)).toBeGreaterThan(0);
   });
 
-  it("orders paths by data-path-index on parent groups", () => {
-    const makeGroup = (index: number) => ({
+  it("orders paths by data-path-index on path elements", () => {
+    const makePath = (index: number) => ({
       getAttribute: (attr: string) =>
         attr === "data-path-index" ? String(index) : null,
-      querySelectorAll: () => [{ pathIndex: index }],
     });
 
     const container = {
       querySelectorAll: (selector: string) => {
-        if (selector === "g[data-path-index]") {
-          return [makeGroup(2), makeGroup(0), makeGroup(1)];
+        if (selector === "path.dragon[data-path-index]") {
+          return [makePath(2), makePath(0), makePath(1)];
         }
         return [];
       },
@@ -29,7 +28,7 @@ describe("pathAnimation", () => {
 
     const paths = getDragonPathsInOrder(container);
     expect(
-      paths.map((path) => (path as unknown as { pathIndex: number }).pathIndex)
+      paths.map((path) => Number(path.getAttribute("data-path-index")))
     ).toEqual([0, 1, 2]);
   });
 });

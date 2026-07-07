@@ -153,9 +153,11 @@ import { schedulePathAnimation } from "../utils/pathAnimation";
 export default function ControlLayout({
   setSlideShowRandomFunction,
   setShowFullScreen,
+  sidebarTitle,
 }: {
   setSlideShowRandomFunction: SetSlideShowRandomFunction;
   setShowFullScreen: SetShowFullScreen;
+  sidebarTitle?: string;
 }) {
   // Generate the initial image on load
   useEffect(() => {
@@ -655,6 +657,11 @@ export default function ControlLayout({
         style={{ display: config.slideShow ? "none" : "grid" }}
       >
         <div className="dragon-sidebar-inner">
+          {sidebarTitle ? (
+            <div className="dragon-sidebar-heading">
+              <h2 className="dragon-sidebar-title">{sidebarTitle}</h2>
+            </div>
+          ) : null}
           <div className="dragon-sidebar-panel">
             {/* The Cell Config Stack */}
             <Stack direction="vertical" gap={2}>

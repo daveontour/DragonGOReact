@@ -88,6 +88,31 @@ body {
   gap: 16px;
 }
 
+.dragon-app .top-bar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.dragon-app .top-bar-home-link {
+  margin: 0;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: #fff;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.dragon-app .top-bar-home-link:hover,
+.dragon-app .top-bar-home-link:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #fff;
+}
+
 .dragon-app .top-bar-title h1 {
   margin: 0;
   font-size: var(--text-lg);
@@ -149,6 +174,23 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   padding: 12px;
+}
+
+.dragon-app .dragon-sidebar-heading {
+  width: 100%;
+  min-width: 350px;
+  max-width: 350px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.dragon-app .dragon-sidebar-title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
 }
 
 .dragon-app .dragon-sidebar-panel {
@@ -499,4 +541,308 @@ body {
 
 .tooltip .tooltip-arrow::before {
   border-top-color: var(--color-border) !important;
+}
+
+/* --- App shell: visualization view --- */
+.dragon-app .viz-shell {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* --- MathArt home --- */
+.dragon-app .mathart-home {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  padding: 32px 24px 40px;
+  overflow-y: auto;
+}
+
+.dragon-app .mathart-home-header {
+  max-width: 720px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.dragon-app .mathart-home-title {
+  margin: 0 0 8px;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.dragon-app .mathart-home-subtitle {
+  margin: 0;
+  font-size: var(--text-md);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.dragon-app .mathart-home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.dragon-app .mathart-viz-card {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-base);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dragon-app .mathart-viz-card:hover,
+.dragon-app .mathart-viz-card:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  outline: none;
+}
+
+.dragon-app .mathart-viz-card-preview {
+  height: 160px;
+  background: linear-gradient(145deg, #1a2332 0%, #0f1419 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.dragon-app .mathart-viz-card-preview--dragon-curves::before {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  border: 2px solid rgba(112, 144, 183, 0.5);
+  border-radius: 4px;
+  background:
+    linear-gradient(135deg, transparent 46%, rgba(112, 144, 183, 0.35) 46%, rgba(112, 144, 183, 0.35) 54%, transparent 54%),
+    linear-gradient(45deg, transparent 46%, rgba(112, 144, 183, 0.25) 46%, rgba(112, 144, 183, 0.25) 54%, transparent 54%);
+  background-size: 24px 24px;
+}
+
+.dragon-app .mathart-viz-card-preview--dragon-curves::after {
+  content: "";
+  position: absolute;
+  top: 28%;
+  left: 22%;
+  width: 56%;
+  height: 44%;
+  border-left: 3px solid rgba(255, 255, 255, 0.7);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    12px 0 0 0 rgba(255, 255, 255, 0.45),
+    12px -12px 0 0 rgba(255, 255, 255, 0.35),
+    24px -12px 0 0 rgba(255, 255, 255, 0.25);
+}
+
+.dragon-app .mathart-viz-card-preview--knights-tour::before {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 0;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  background:
+    conic-gradient(#769656 0 25%, #eeeed2 0 50%, #769656 0 75%, #eeeed2 0)
+    0 0 / 24px 24px;
+  opacity: 0.85;
+}
+
+.dragon-app .mathart-viz-card-preview--knights-tour::after {
+  content: "♞";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.dragon-app .mathart-viz-card-body {
+  padding: 16px 18px 20px;
+}
+
+.dragon-app .mathart-viz-card-title {
+  margin: 0 0 8px;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: #fff;
+}
+
+.dragon-app .mathart-viz-card-description {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* --- Knight's Tour --- */
+.dragon-app .knights-tour-sidebar {
+  display: block;
+}
+
+.dragon-app .knights-tour-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .knights-tour-coords {
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.dragon-app .knights-tour-coords strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.dragon-app .knights-tour-status {
+  margin: 0;
+  min-height: 1.5rem;
+  font-size: var(--text-sm);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.dragon-app .knights-tour-status--calculating,
+.dragon-app .knights-tour-status--playing {
+  color: #f6d860;
+}
+
+.dragon-app .knights-tour-status--success {
+  color: #7dcea0;
+}
+
+.dragon-app .knights-tour-status--warning {
+  color: #f6d860;
+}
+
+.dragon-app .knights-tour-status--error {
+  color: #e88a8a;
+}
+
+.dragon-app .knights-tour-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.dragon-app .knights-tour-board-frame {
+  position: relative;
+  width: min(100%, 520px);
+  aspect-ratio: 1;
+  border: 4px solid var(--color-bg-elevated);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .knights-tour-board {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+
+.dragon-app .knights-tour-square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-size: clamp(0.55rem, 1.8vw, 0.85rem);
+  font-weight: 700;
+  color: rgba(30, 30, 30, 0.75);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dragon-app .knights-tour-square:disabled {
+  cursor: default;
+}
+
+.dragon-app .knights-tour-square--light {
+  background-color: #eeeed2;
+}
+
+.dragon-app .knights-tour-square--dark {
+  background-color: #769656;
+}
+
+.dragon-app .knights-tour-square--start {
+  background-color: #baca44;
+}
+
+.dragon-app .knights-tour-square--visited {
+  background-color: #f6f669;
+}
+
+.dragon-app .knights-tour-path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.dragon-app .knights-tour-path-line {
+  stroke: rgba(0, 0, 0, 0.4);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.dragon-app .knights-tour-path-line--closed {
+  stroke: #e57373;
+}
+
+.dragon-app .knights-tour-knight {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition:
+    top 0.2s ease-in-out,
+    left 0.2s ease-in-out;
+}
+
+.dragon-app .knights-tour-knight-piece {
+  font-size: clamp(1.25rem, 4vw, 2rem);
+  color: #1a1a1a;
+  text-shadow: 0 0 4px #fff;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
 }

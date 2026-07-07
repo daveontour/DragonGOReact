@@ -13,6 +13,19 @@ export function segmentDuration(pathCount: number): number {
 export function getDragonPathsInOrder(
   container: HTMLElement
 ): SVGPathElement[] {
+  const indexedPaths = Array.from(
+    container.querySelectorAll<SVGPathElement>("path.dragon[data-path-index]")
+  );
+
+  if (indexedPaths.length > 0) {
+    indexedPaths.sort((a, b) => {
+      const ai = Number(a.getAttribute("data-path-index"));
+      const bi = Number(b.getAttribute("data-path-index"));
+      return ai - bi;
+    });
+    return indexedPaths;
+  }
+
   const groups = Array.from(
     container.querySelectorAll<SVGGElement>("g[data-path-index]")
   );

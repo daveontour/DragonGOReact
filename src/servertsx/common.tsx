@@ -85,6 +85,12 @@ export class Cell {
   Color: [number, number, number, number];
   /** Order along the dragon path (turn sequence), set in prepareCells. */
   PathIndex?: number;
+  /** Second visit path order for complementary Knuth tiles (types 5 and 6). */
+  PathIndexSecond?: number;
+  /** Knuth geometry type used on the first visit to a complementary tile. */
+  KnuthSegmentFirst?: number;
+  /** Knuth geometry type used on the second visit to a complementary tile. */
+  KnuthSegmentSecond?: number;
 
   constructor() {
     this.P1 = new Point(0, 0);
@@ -486,15 +492,28 @@ export function calcCellsKnuth(
     currentCell = newCell;
   }
 
+  let pathIndex = 0;
+  for (const cell of cells) {
+    if (cell.FillState === ACTIVE) {
+      cell.PathIndex = pathIndex++;
+    }
+  }
+
   for (let i = 0; i < cells.length; i++) {
     for (let j = i + 1; j < cells.length; j++) {
       if (cells[i].Row === cells[j].Row && cells[i].Col === cells[j].Col) {
         if (cells[i].KnuthType === 1 || cells[i].KnuthType === 3) {
+          cells[i].KnuthSegmentFirst = cells[i].KnuthType;
+          cells[i].KnuthSegmentSecond = cells[j].KnuthType;
+          cells[i].PathIndexSecond = cells[j].PathIndex;
           cells[i].KnuthType = 5;
           cells.splice(j, 1);
           break;
         }
         if (cells[i].KnuthType === 2 || cells[i].KnuthType === 4) {
+          cells[i].KnuthSegmentFirst = cells[i].KnuthType;
+          cells[i].KnuthSegmentSecond = cells[j].KnuthType;
+          cells[i].PathIndexSecond = cells[j].PathIndex;
           cells[i].KnuthType = 6;
           cells.splice(j, 1);
           break;
@@ -601,8 +620,10 @@ export function prepareCells(
       cell.Row += rowOffset;
       cell.Col += colOffset;
       if (cell.FillState === ACTIVE || cell.FillState === 1) {
-        cell.PathIndex = pathIndex;
-        pathIndex++;
+        if (cell.PathIndex === undefined) {
+          cell.PathIndex = pathIndex;
+          pathIndex++;
+        }
       }
       try {
         arr[cell.Row][cell.Col] = cell;

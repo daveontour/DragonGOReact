@@ -302,8 +302,45 @@ function emptyDragonPath(): string {
   return `<path class="dragon" d="" />`;
 }
 
+function dragonPath(d: string, pathIndex?: number): string {
+  const indexAttr =
+    pathIndex !== undefined ? ` data-path-index="${pathIndex}"` : "";
+  return `<path class="dragon"${indexAttr} d="${d}" />`;
+}
+
 function closeDragonPath(buf: string, d: string): string {
   return `${buf}d="${d}" />`;
+}
+
+function injectPathIndex(
+  html: string,
+  pathIndex: number | undefined
+): string {
+  if (pathIndex === undefined) {
+    return html;
+  }
+
+  return html.replace(
+    /<path class="dragon"(?![^>]*data-path-index)/g,
+    `<path class="dragon" data-path-index="${pathIndex}"`
+  );
+}
+
+function isComplementaryKnuthType(knuthType: number): boolean {
+  return knuthType === 5 || knuthType === 6;
+}
+
+function pathIndexForKnuthSegment(
+  cell: common.Cell,
+  geometryType: number
+): number | undefined {
+  if (cell.KnuthSegmentFirst === geometryType) {
+    return cell.PathIndex;
+  }
+  if (cell.KnuthSegmentSecond === geometryType) {
+    return cell.PathIndexSecond;
+  }
+  return cell.PathIndex;
 }
 
 function buildTemplateCache(rc: common.RequestConfig): TemplateCache {
@@ -407,18 +444,23 @@ function createSVG(
 
       const { x, y } = cellOrigin(idx, idy, ox, oy, ri, rc.Grouting);
       const turn = normalizeTurn(cell.Turn);
-      const pathIndexAttr =
-        cell.PathIndex !== undefined
-          ? ` data-path-index="${cell.PathIndex}"`
-          : "";
 
-      parts.push(`<g transform="translate(${x}, ${y})"${pathIndexAttr}>`);
+      parts.push(`<g transform="translate(${x}, ${y})">`);
 
       if (isKnuthCellType(rc.CellType)) {
-        parts.push(knuthTemplateArray[cell.KnuthType]);
+        if (isComplementaryKnuthType(cell.KnuthType)) {
+          parts.push(getComplementaryKnuthActiveCellContent(cell, rc));
+        } else {
+          parts.push(
+            injectPathIndex(knuthTemplateArray[cell.KnuthType], cell.PathIndex)
+          );
+        }
       } else {
         parts.push(
-          templateArray[common.ACTIVE][turn][cell.StartCorner][cell.EndCorner]
+          injectPathIndex(
+            templateArray[common.ACTIVE][turn][cell.StartCorner][cell.EndCorner],
+            cell.PathIndex
+          )
         );
       }
 
@@ -530,17 +572,11 @@ function getSVGCellDrawer(rc: common.RequestConfig): PathDrawer {
   }
 }
 
-function getDragonPathKnuthTemplate(
+function getKnuthPathSegment(
   rc: common.RequestConfig,
-  knuthType: number,
-  _start: number,
-  _end: number
+  geometryType: number,
+  pathIndex?: number
 ): string {
-  void _start;
-  void _end;
-
-  const buf = `<path class="dragon" `;
-
   if (rc.CellType.includes("knuthtri")) {
     const theta = (Math.PI / 180) * rc.TriangleAngle;
     const d = rc.Radius / 2;
@@ -562,157 +598,138 @@ function getDragonPathKnuthTemplate(
     const p4x = cx - short;
     const p4y = cy - short;
 
-    if (knuthType === 1) {
-      return closeDragonPath(buf, `M 0 ${d} L ${p1x} ${p1y} L ${d} ${2 * d}`);
+    if (geometryType === 1) {
+      return dragonPath(`M 0 ${d} L ${p1x} ${p1y} L ${d} ${2 * d}`, pathIndex);
     }
 
-    if (knuthType === 2) {
-      return closeDragonPath(
-        buf,
-        `M ${d} ${2 * d} L ${p2x} ${p2y} L ${2 * d} ${d}`
+    if (geometryType === 2) {
+      return dragonPath(
+        `M ${d} ${2 * d} L ${p2x} ${p2y} L ${2 * d} ${d}`,
+        pathIndex
       );
     }
 
-    if (knuthType === 3) {
-      return closeDragonPath(buf, `M ${d} 0 L ${p3x} ${p3y} L ${2 * d} ${d}`);
+    if (geometryType === 3) {
+      return dragonPath(`M ${d} 0 L ${p3x} ${p3y} L ${2 * d} ${d}`, pathIndex);
     }
 
-    if (knuthType === 4) {
-      return closeDragonPath(buf, `M 0 ${d} L ${p4x} ${p4y} L ${d} 0`);
-    }
-
-    if (knuthType === 5) {
-      return (
-        closeDragonPath(buf, `M 0 ${d} L ${p1x} ${p1y} L ${d} ${2 * d}`) +
-        `<path class="dragon" d="M ${d} 0 L ${p3x} ${p3y} L ${2 * d} ${d}" />`
-      );
-    }
-
-    if (knuthType === 6) {
-      return (
-        closeDragonPath(
-          buf,
-          `M ${d} ${2 * d} L ${p2x} ${p2y} L ${2 * d} ${d}`
-        ) +
-        `<path class="dragon" d="M 0 ${d} L ${p4x} ${p4y} L ${d} 0" />`
-      );
+    if (geometryType === 4) {
+      return dragonPath(`M 0 ${d} L ${p4x} ${p4y} L ${d} 0`, pathIndex);
     }
   } else if (rc.CellType.includes("knuthcurve")) {
-    if (knuthType === 1) {
-      return closeDragonPath(
-        buf,
+    if (geometryType === 1) {
+      return dragonPath(
         `M ${rc.Radius / 2} ${rc.Radius} A ${rc.Radius / 2} ${
           rc.Radius / 2
-        } 90 0 0 0 ${rc.Radius / 2}`
+        } 90 0 0 0 ${rc.Radius / 2}`,
+        pathIndex
       );
     }
 
-    if (knuthType === 2) {
-      return closeDragonPath(
-        buf,
+    if (geometryType === 2) {
+      return dragonPath(
         `M ${rc.Radius / 2} ${rc.Radius} A ${rc.Radius / 2} ${
           rc.Radius / 2
-        } 90 0 1 ${rc.Radius} ${rc.Radius / 2}`
+        } 90 0 1 ${rc.Radius} ${rc.Radius / 2}`,
+        pathIndex
       );
     }
 
-    if (knuthType === 3) {
-      return closeDragonPath(
-        buf,
+    if (geometryType === 3) {
+      return dragonPath(
         `M ${rc.Radius / 2} 0 A ${rc.Radius / 2} ${
           rc.Radius / 2
-        } 90 0 0 ${rc.Radius} ${rc.Radius / 2}`
+        } 90 0 0 ${rc.Radius} ${rc.Radius / 2}`,
+        pathIndex
       );
     }
 
-    if (knuthType === 4) {
-      return closeDragonPath(
-        buf,
+    if (geometryType === 4) {
+      return dragonPath(
         `M ${rc.Radius / 2} 0 A ${rc.Radius / 2} ${
           rc.Radius / 2
-        } 90 0 1 0 ${rc.Radius / 2}`
-      );
-    }
-
-    if (knuthType === 5) {
-      return (
-        closeDragonPath(
-          buf,
-          `M ${rc.Radius / 2} ${rc.Radius} A ${rc.Radius / 2} ${
-            rc.Radius / 2
-          } 90 0 0 0 ${rc.Radius / 2}`
-        ) +
-        `<path class="dragon" d="M ${rc.Radius / 2} 0 A ${rc.Radius / 2} ${
-          rc.Radius / 2
-        } 90 0 0 ${rc.Radius} ${rc.Radius / 2}" />`
-      );
-    }
-
-    if (knuthType === 6) {
-      return (
-        closeDragonPath(
-          buf,
-          `M ${rc.Radius / 2} ${rc.Radius} A ${rc.Radius / 2} ${
-            rc.Radius / 2
-          } 90 0 1 ${rc.Radius} ${rc.Radius / 2}`
-        ) +
-        `<path class="dragon" d="M ${rc.Radius / 2} 0 A ${rc.Radius / 2} ${
-          rc.Radius / 2
-        } 90 0 1 0 ${rc.Radius / 2}" />`
+        } 90 0 1 0 ${rc.Radius / 2}`,
+        pathIndex
       );
     }
   } else {
-    if (knuthType === 1) {
-      return closeDragonPath(
-        buf,
-        `M ${rc.Radius / 2} ${rc.Radius} L 0 ${rc.Radius / 2}`
+    if (geometryType === 1) {
+      return dragonPath(
+        `M ${rc.Radius / 2} ${rc.Radius} L 0 ${rc.Radius / 2}`,
+        pathIndex
       );
     }
 
-    if (knuthType === 2) {
-      return closeDragonPath(
-        buf,
-        `M ${rc.Radius / 2} ${rc.Radius} L ${rc.Radius} ${rc.Radius / 2}`
+    if (geometryType === 2) {
+      return dragonPath(
+        `M ${rc.Radius / 2} ${rc.Radius} L ${rc.Radius} ${rc.Radius / 2}`,
+        pathIndex
       );
     }
 
-    if (knuthType === 3) {
-      return closeDragonPath(
-        buf,
-        `M ${rc.Radius / 2} 0 L ${rc.Radius} ${rc.Radius / 2}`
+    if (geometryType === 3) {
+      return dragonPath(
+        `M ${rc.Radius / 2} 0 L ${rc.Radius} ${rc.Radius / 2}`,
+        pathIndex
       );
     }
 
-    if (knuthType === 4) {
-      return closeDragonPath(buf, `M 0 ${rc.Radius / 2} L ${rc.Radius / 2} 0`);
-    }
-
-    if (knuthType === 5) {
-      return (
-        closeDragonPath(
-          buf,
-          `M ${rc.Radius / 2} ${rc.Radius} L 0 ${rc.Radius / 2}`
-        ) +
-        `<path class="dragon" d="M ${rc.Radius / 2} 0 L ${rc.Radius} ${
-          rc.Radius / 2
-        }" />`
-      );
-    }
-
-    if (knuthType === 6) {
-      return (
-        closeDragonPath(
-          buf,
-          `M ${rc.Radius / 2} ${rc.Radius} L ${rc.Radius} ${rc.Radius / 2}`
-        ) +
-        `<path class="dragon" d="M 0 ${rc.Radius / 2} L ${
-          rc.Radius / 2
-        } 0" />`
+    if (geometryType === 4) {
+      return dragonPath(
+        `M 0 ${rc.Radius / 2} L ${rc.Radius / 2} 0`,
+        pathIndex
       );
     }
   }
 
   return emptyDragonPath();
+}
+
+function getComplementaryKnuthActiveCellContent(
+  cell: common.Cell,
+  rc: common.RequestConfig
+): string {
+  const segments = cell.KnuthType === 5 ? [1, 3] : [2, 4];
+  const parts = [`<g>`];
+
+  if (!rc.NoCells) {
+    parts.push(getActiveCellBackgroundTemplate(rc));
+  }
+
+  if (rc.PathStroke) {
+    for (const geometryType of segments) {
+      parts.push(
+        getKnuthPathSegment(
+          rc,
+          geometryType,
+          pathIndexForKnuthSegment(cell, geometryType)
+        )
+      );
+    }
+  }
+
+  parts.push(`</g>`);
+  return parts.join("");
+}
+
+function getDragonPathKnuthTemplate(
+  rc: common.RequestConfig,
+  knuthType: number,
+  _start: number,
+  _end: number
+): string {
+  void _start;
+  void _end;
+
+  if (knuthType === 5) {
+    return getKnuthPathSegment(rc, 1) + getKnuthPathSegment(rc, 3);
+  }
+
+  if (knuthType === 6) {
+    return getKnuthPathSegment(rc, 2) + getKnuthPathSegment(rc, 4);
+  }
+
+  return getKnuthPathSegment(rc, knuthType);
 }
 
 function getDragonPathQuadrantTemplate(
@@ -1308,18 +1325,23 @@ function createPlansSVG(
 
       const { x, y } = cellOrigin(idx, idy, ox, oy, ri, rc.Grouting);
       const turn = normalizeTurn(cell.Turn);
-      const pathIndexAttr =
-        cell.PathIndex !== undefined
-          ? ` data-path-index="${cell.PathIndex}"`
-          : "";
 
-      parts.push(`<g transform="translate(${x}, ${y})"${pathIndexAttr}>`);
+      parts.push(`<g transform="translate(${x}, ${y})">`);
 
       if (isKnuthCellType(rc.CellType)) {
-        parts.push(knuthTemplateArray[cell.KnuthType]);
+        if (isComplementaryKnuthType(cell.KnuthType)) {
+          parts.push(getComplementaryKnuthActiveCellContent(cell, rc));
+        } else {
+          parts.push(
+            injectPathIndex(knuthTemplateArray[cell.KnuthType], cell.PathIndex)
+          );
+        }
       } else {
         parts.push(
-          templateArray[common.ACTIVE][turn][cell.StartCorner][cell.EndCorner]
+          injectPathIndex(
+            templateArray[common.ACTIVE][turn][cell.StartCorner][cell.EndCorner],
+            cell.PathIndex
+          )
         );
       }
 

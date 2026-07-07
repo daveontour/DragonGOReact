@@ -66,6 +66,25 @@ describe("getDragonSVG", () => {
     expect(getDragonSVG(rc)).toBe("");
   });
 
+  it("assigns separate path indices to complementary knuth segments", () => {
+    for (let folds = 4; folds <= 20; folds++) {
+      const rc = createTestRequestConfig({ CellType: "knuth", NumberFolds: folds });
+      const svg = getDragonSVG(rc);
+      const segmentPairs = [
+        ...svg.matchAll(
+          /<g transform="translate\([^"]+\)"><g>[\s\S]*?<path class="dragon" data-path-index="(\d+)"[\s\S]*?<path class="dragon" data-path-index="(\d+)"/g
+        ),
+      ];
+      const pair = segmentPairs.find((match) => match[1] !== match[2]);
+      if (pair) {
+        expect(Number(pair[1])).not.toBe(Number(pair[2]));
+        return;
+      }
+    }
+
+    expect.fail("expected complementary knuth tile in test range");
+  });
+
   it("includes expected viewBox dimensions from getDragonSizeSVG", () => {
     const rc = createTestRequestConfig();
     const [svgWidth, svgHeight] = getDragonSizeSVG(rc);
