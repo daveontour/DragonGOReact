@@ -28,6 +28,7 @@ export interface RequestConfig {
   ActiveFill: boolean;
   ActiveStroke: boolean;
   PathStroke: boolean;
+  NoCells: boolean;
   GridLines: boolean;
   TileBlockGridSize: number;
   NumberFolds: number;
@@ -82,6 +83,8 @@ export class Cell {
   KStart!: number;
   KEnd!: number;
   Color: [number, number, number, number];
+  /** Order along the dragon path (turn sequence), set in prepareCells. */
+  PathIndex?: number;
 
   constructor() {
     this.P1 = new Point(0, 0);
@@ -591,10 +594,16 @@ export function prepareCells(
       return [null, width, height, minRow, minCol, maxRow, maxCol];
     }
 
+    let pathIndex = 0;
+
     cells.forEach((cell, idx) => {
       cell.Color = AltPalette[idx % AltPalette.length];
       cell.Row += rowOffset;
       cell.Col += colOffset;
+      if (cell.FillState === ACTIVE || cell.FillState === 1) {
+        cell.PathIndex = pathIndex;
+        pathIndex++;
+      }
       try {
         arr[cell.Row][cell.Col] = cell;
       } catch {

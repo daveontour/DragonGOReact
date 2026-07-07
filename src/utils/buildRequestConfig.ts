@@ -1,6 +1,26 @@
 import { Config } from "../Contexts";
 import { DOWN, LEFT, RequestConfig, RIGHT, UP } from "../servertsx/common";
 
+export function applyNoCellsOverrides(
+  rc: RequestConfig,
+  noCells: boolean
+): RequestConfig {
+  if (!noCells) {
+    return rc;
+  }
+  return {
+    ...rc,
+    NoCells: true,
+    Grouting: 0,
+    ActiveFill: false,
+    ActiveStroke: false,
+    InsideFill: false,
+    InsideStroke: false,
+    OutSideFill: false,
+    OutSideStroke: false,
+  };
+}
+
 export function buildRequestConfig(config: Config): RequestConfig {
   let sd = LEFT;
   if (config.pathState.startDirection === "random") {
@@ -16,7 +36,7 @@ export function buildRequestConfig(config: Config): RequestConfig {
     sd = DOWN;
   }
 
-  return {
+  const rc: RequestConfig = {
     OutSideFill: config.outsideCellState.fillEnabled,
     OutSideStroke: config.outsideCellState.borderEnabled,
     InsideFill: config.insideCellState.fillEnabled,
@@ -24,6 +44,7 @@ export function buildRequestConfig(config: Config): RequestConfig {
     ActiveFill: config.activeCellState.fillEnabled,
     ActiveStroke: config.activeCellState.borderEnabled,
     PathStroke: config.pathState.borderEnabled,
+    NoCells: false,
     GridLines: config.state.gridlines,
     TileBlockGridSize: config.state.tileBlockGridSize,
     NumberFolds: Number(config.state.folds),
@@ -55,4 +76,5 @@ export function buildRequestConfig(config: Config): RequestConfig {
     TriangleAngle: Number(config.state.triangleAngle),
     Format: "",
   };
+  return applyNoCellsOverrides(rc, config.state.noCells);
 }

@@ -13,6 +13,7 @@ function createTestRequestConfig(
     ActiveFill: true,
     ActiveStroke: false,
     PathStroke: true,
+    NoCells: false,
     GridLines: false,
     TileBlockGridSize: 0,
     NumberFolds: 2,
@@ -183,6 +184,26 @@ describe("plans display", () => {
 
     expect(w).toBeGreaterThan(0);
     expect(h).toBeGreaterThan(0);
+  });
+});
+
+describe("no cells mode", () => {
+  it("renders only the dragon path without cell rectangles", () => {
+    const rc = createTestRequestConfig({
+      NoCells: true,
+      Grouting: 0,
+      ActiveFill: false,
+      InsideFill: false,
+      OutSideFill: false,
+      PathStroke: true,
+      NumberFolds: 3,
+    });
+    const svg = getDragonSVG(rc);
+
+    expect(svg).toContain('class="dragon"');
+    expect(svg).not.toContain('class="inside"');
+    expect(svg).not.toContain('class="outside"');
+    expect(svg).not.toContain('class="active"');
   });
 });
 

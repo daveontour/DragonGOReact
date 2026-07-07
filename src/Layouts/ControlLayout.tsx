@@ -147,6 +147,8 @@ import {
 } from "../types";
 import { downloadSVG, downloadJSON } from "../utils/downloadUtils";
 import { buildSavedConfig } from "../utils/savedConfig";
+import { applyNoCellsOverrides } from "../utils/buildRequestConfig";
+import { schedulePathAnimation } from "../utils/pathAnimation";
 
 export default function ControlLayout({
   setSlideShowRandomFunction,
@@ -298,6 +300,7 @@ export default function ControlLayout({
       ActiveFill: active.fillEnabled,
       ActiveStroke: active.borderEnabled,
       PathStroke: path.borderEnabled,
+      NoCells: false,
       GridLines: curveState.gridlines,
       TileBlockGridSize: curveState.tileBlockGridSize,
       NumberFolds: Number(curveState.folds),
@@ -323,6 +326,7 @@ export default function ControlLayout({
       TriangleAngle: Number(curveState.triangleAngle),
       Format: "",
     };
+    rc = applyNoCellsOverrides(rc, curveState.noCells);
 
     let size: [number, number];
     let svgContent: string;
@@ -378,6 +382,15 @@ export default function ControlLayout({
       window.innerWidth,
       window.innerHeight
     );
+
+    if (
+      config.settingsConfig.animatePath &&
+      !usePlanView &&
+      !config.slideShow
+    ) {
+      schedulePathAnimation(imgElement);
+      schedulePathAnimation(imgElementFS);
+    }
 
     // Auto-download if slideshow is running and auto-download is enabled
     // Use refs to check state (more reliable than Context state due to async updates)
@@ -947,6 +960,62 @@ export default function ControlLayout({
                           planView,
                         });
                         generate(undefined, planView);
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={6}>
+                    <FormLabel>No Cells</FormLabel>
+                  </Col>
+                  <Col xs={6}>
+                    <Form.Check
+                      type="checkbox"
+                      checked={config.state.noCells}
+                      disabled={config.slideShow}
+                      onChange={(e) => {
+                        const noCells = e.target.checked;
+                        const newState = {
+                          ...config.state,
+                          noCells,
+                        };
+                        config.setState(newState);
+                        generate([
+                          newState,
+                          config.pathState,
+                          config.activeCellState,
+                          config.insideCellState,
+                          config.outsideCellState,
+                        ]);
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={6}>
+                    <FormLabel>Animate Path</FormLabel>
+                  </Col>
+                  <Col xs={6}>
+                    <Form.Check
+                      type="checkbox"
+                      checked={config.settingsConfig.animatePath}
+                      disabled={config.slideShow || config.settingsConfig.planView}
+                      onChange={(e) => {
+                        const animatePath = e.target.checked;
+                        config.setSettingsConfig({
+                          ...config.settingsConfig,
+                          animatePath,
+                        });
+                        if (animatePath) {
+                          schedulePathAnimation(
+                            document.getElementById(MAIN_IMAGE_ID)
+                          );
+                          schedulePathAnimation(
+                            document.getElementById(FULLSCREEN_IMAGE_ID)
+                          );
+                        } else {
+                          generate();
+                        }
                       }}
                     />
                   </Col>

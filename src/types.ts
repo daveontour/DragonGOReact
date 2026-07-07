@@ -16,6 +16,7 @@ export interface DragonCurveState {
   grouting: string;
   gridlines: boolean;
   tileBlockGridSize: number;
+  noCells: boolean;
   groutingColor: string;
   pallette: string;
 }
@@ -72,6 +73,7 @@ export interface SettingsConfig {
   slideShowInterval: number;
   background: string;
   planView: boolean;
+  animatePath: boolean;
 }
 
 // Image size configuration

@@ -37,6 +37,7 @@ export default function BodyLayout({
     background: "plain",
     slideShowInterval: 5,
     planView: false,
+    animatePath: false,
   });
 
   const [state, setState] = useState<DragonCurveState>({
@@ -48,6 +49,7 @@ export default function BodyLayout({
     grouting: "2",
     gridlines: false,
     tileBlockGridSize: 0,
+    noCells: false,
     groutingColor: "#ffffffff",
     pallette: "pastel",
   });

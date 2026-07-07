@@ -407,8 +407,12 @@ function createSVG(
 
       const { x, y } = cellOrigin(idx, idy, ox, oy, ri, rc.Grouting);
       const turn = normalizeTurn(cell.Turn);
+      const pathIndexAttr =
+        cell.PathIndex !== undefined
+          ? ` data-path-index="${cell.PathIndex}"`
+          : "";
 
-      parts.push(`<g transform="translate(${x}, ${y})">`);
+      parts.push(`<g transform="translate(${x}, ${y})"${pathIndexAttr}>`);
 
       if (isKnuthCellType(rc.CellType)) {
         parts.push(knuthTemplateArray[cell.KnuthType]);
@@ -429,6 +433,10 @@ function createSVG(
   for (const [idy, row] of cells.entries()) {
     for (const [idx, cell] of row.entries()) {
       if (isActiveFill(cell.FillState)) {
+        continue;
+      }
+
+      if (rc.NoCells) {
         continue;
       }
 
@@ -489,7 +497,11 @@ function getActiveCellTemplate(
   end: number,
   rc: common.RequestConfig
 ): string {
-  const parts = [`<g>`, getActiveCellBackgroundTemplate(rc)];
+  const parts = [`<g>`];
+
+  if (!rc.NoCells) {
+    parts.push(getActiveCellBackgroundTemplate(rc));
+  }
 
   if (rc.PathStroke) {
     parts.push(getSVGCellDrawer(rc)(rc, turn, start, end));
@@ -1177,6 +1189,7 @@ export function buildPlansConfig(base: common.RequestConfig): common.RequestConf
     OutsideStrokeWidth: 1,
     GroutingColorRaw: "#ffffff",
     GridLines: false,
+    NoCells: false,
     Margin: 10,
     Radius: 20,
   };
@@ -1295,8 +1308,12 @@ function createPlansSVG(
 
       const { x, y } = cellOrigin(idx, idy, ox, oy, ri, rc.Grouting);
       const turn = normalizeTurn(cell.Turn);
+      const pathIndexAttr =
+        cell.PathIndex !== undefined
+          ? ` data-path-index="${cell.PathIndex}"`
+          : "";
 
-      parts.push(`<g transform="translate(${x}, ${y})">`);
+      parts.push(`<g transform="translate(${x}, ${y})"${pathIndexAttr}>`);
 
       if (isKnuthCellType(rc.CellType)) {
         parts.push(knuthTemplateArray[cell.KnuthType]);

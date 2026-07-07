@@ -13,6 +13,7 @@ function createSavedConfig(overrides: Partial<SavedConfig> = {}): SavedConfig {
       grouting: "3",
       gridlines: true,
       tileBlockGridSize: 4,
+      noCells: false,
       groutingColor: "#ffffffff",
       pallette: "vibrant",
       ...overrides.state,
