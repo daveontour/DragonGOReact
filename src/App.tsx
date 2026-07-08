@@ -1,25 +1,24 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import HomePage from "./pages/HomePage";
-import DragonCurvesApp from "./visualizations/DragonCurvesApp";
-import KnightsTourApp from "./visualizations/KnightsTourApp";
-import PiNGonApp from "./visualizations/PiNGonApp";
-import CollatzApp from "./visualizations/CollatzApp";
-import MandelbrotApp from "./visualizations/MandelbrotApp";
-import PlanetaryOrbitApp from "./visualizations/PlanetaryOrbitApp";
-import LSystemApp from "./visualizations/LSystemApp";
-import GameOfLifeApp from "./visualizations/GameOfLifeApp";
-import VoronoiApp from "./visualizations/VoronoiApp";
-import NBodyApp from "./visualizations/NBodyApp";
-import NewtonFractalApp from "./visualizations/NewtonFractalApp";
-import MondrianApp from "./visualizations/MondrianApp";
-import AttractorApp from "./visualizations/AttractorApp";
-import FourierApp from "./visualizations/FourierApp";
-import BifurcationApp from "./visualizations/BifurcationApp";
-import ElementaryCAApp from "./visualizations/ElementaryCAApp";
-import PrimeSpiralApp from "./visualizations/PrimeSpiralApp";
-import PenroseApp from "./visualizations/PenroseApp";
-import { VisualizationId } from "./visualizations/registry";
+import DragonCurvesApp from "./dragon-curves/DragonCurvesApp";
+import KnightsTourApp from "./knights-tour/KnightsTourApp";
+import PiNGonApp from "./pi-n-gon/PiNGonApp";
+import CollatzApp from "./collatz/CollatzApp";
+import MandelbrotApp from "./mandelbrot/MandelbrotApp";
+import LSystemApp from "./l-systems/LSystemApp";
+import GameOfLifeApp from "./game-of-life/GameOfLifeApp";
+import VoronoiApp from "./voronoi/VoronoiApp";
+import NBodyApp from "./n-body/NBodyApp";
+import NewtonFractalApp from "./newton-fractal/NewtonFractalApp";
+import MondrianApp from "./mondrian/MondrianApp";
+import AttractorApp from "./strange-attractors/AttractorApp";
+import FourierApp from "./fourier-epicycles/FourierApp";
+import BifurcationApp from "./bifurcation/BifurcationApp";
+import ElementaryCAApp from "./elementary-ca/ElementaryCAApp";
+import PrimeSpiralApp from "./prime-spirals/PrimeSpiralApp";
+import PenroseApp from "./penrose-tiling/PenroseApp";
+import { VisualizationId } from "./registry";
 
 type AppView = "home" | VisualizationId;
 
@@ -82,15 +81,6 @@ const App: React.FC = () => {
           style={{ display: view === "mandelbrot" ? "flex" : "none" }}
         >
           <MandelbrotApp onHome={() => setView("home")} />
-        </div>
-      ) : null}
-
-      {mountedViz.has("planetary-orbits") ? (
-        <div
-          className="viz-shell"
-          style={{ display: view === "planetary-orbits" ? "flex" : "none" }}
-        >
-          <PlanetaryOrbitApp onHome={() => setView("home")} />
         </div>
       ) : null}
 

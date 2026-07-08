@@ -1,4 +1,4 @@
-import { VISUALIZATIONS, VisualizationId } from "../visualizations/registry";
+import { VISUALIZATIONS, VisualizationId } from "../registry";
 
 export default function HomePage({
   onSelect,
@@ -23,9 +23,21 @@ export default function HomePage({
             onClick={() => onSelect(viz.id)}
           >
             <div
-              className={`mathart-viz-card-preview mathart-viz-card-preview--${viz.id}`}
+              className={
+                viz.previewImage
+                  ? "mathart-viz-card-preview"
+                  : `mathart-viz-card-preview mathart-viz-card-preview--${viz.id}`
+              }
               aria-hidden="true"
-            />
+            >
+              {viz.previewImage ? (
+                <img
+                  src={viz.previewImage}
+                  alt=""
+                  className="mathart-viz-card-image"
+                />
+              ) : null}
+            </div>
             <div className="mathart-viz-card-body">
               <h2 className="mathart-viz-card-title">{viz.title}</h2>
               <p className="mathart-viz-card-description">{viz.description}</p>

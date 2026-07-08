@@ -23,6 +23,32 @@ export const MONDRIAN_PRIMARIES = [
   MONDRIAN_YELLOW,
 ] as const;
 
+export type MondrianColorId = "red" | "blue" | "yellow" | "black";
+
+export const MONDRIAN_COLOR_MAP: Record<MondrianColorId, string> = {
+  red: MONDRIAN_RED,
+  blue: MONDRIAN_BLUE,
+  yellow: MONDRIAN_YELLOW,
+  black: MONDRIAN_BLACK,
+};
+
+export const MONDRIAN_COLOR_OPTIONS: Array<{
+  id: MondrianColorId;
+  label: string;
+}> = [
+  { id: "red", label: "Red" },
+  { id: "blue", label: "Blue" },
+  { id: "yellow", label: "Yellow" },
+  { id: "black", label: "Black" },
+];
+
+export const DEFAULT_ENABLED_COLORS: MondrianColorId[] = [
+  "red",
+  "blue",
+  "yellow",
+  "black",
+];
+
 export interface MondrianRect {
   x: number;
   y: number;
@@ -41,12 +67,18 @@ export interface MondrianParams {
   lineWidth: number;
   minCellSize: number;
   colorProbability: number;
+  enabledColors?: MondrianColorId[];
   seed: number;
+}
+
+export interface ResolvedMondrianParams
+  extends Omit<MondrianParams, "enabledColors"> {
+  enabledColors: MondrianColorId[];
 }
 
 export interface MondrianArtwork {
   cells: MondrianCell[];
-  params: MondrianParams;
+  params: ResolvedMondrianParams;
 }
 
 export function clampMondrianDepth(value: number): number {
@@ -80,6 +112,29 @@ export function clampCellSize(value: number): number {
   return Math.min(MAX_CELL_SIZE, Math.max(MIN_CELL_SIZE, Math.round(value)));
 }
 
+export function normalizeEnabledColors(
+  colors: MondrianColorId[] | undefined
+): MondrianColorId[] {
+  if (!colors || colors.length === 0) {
+    return [...DEFAULT_ENABLED_COLORS];
+  }
+  const valid = colors.filter((color) => color in MONDRIAN_COLOR_MAP);
+  return valid.length > 0 ? valid : [...DEFAULT_ENABLED_COLORS];
+}
+
+export function toggleEnabledColor(
+  colors: MondrianColorId[],
+  color: MondrianColorId
+): MondrianColorId[] {
+  if (colors.includes(color)) {
+    if (colors.length === 1) {
+      return colors;
+    }
+    return colors.filter((entry) => entry !== color);
+  }
+  return [...colors, color];
+}
+
 export function createSeededRandom(seed: number): () => number {
   let state = (Math.abs(Math.trunc(seed)) || 1) >>> 0;
   return () => {
@@ -91,29 +146,37 @@ export function createSeededRandom(seed: number): () => number {
   };
 }
 
-function pickColor(rng: () => number, colorProbability: number): string {
-  if (rng() > colorProbability) {
+function pickColor(
+  rng: () => number,
+  colorProbability: number,
+  enabledColors: MondrianColorId[]
+): string {
+  if (rng() > colorProbability || enabledColors.length === 0) {
     return MONDRIAN_WHITE;
   }
-  const index = Math.floor(rng() * MONDRIAN_PRIMARIES.length);
-  return MONDRIAN_PRIMARIES[index];
+  const index = Math.floor(rng() * enabledColors.length);
+  return MONDRIAN_COLOR_MAP[enabledColors[index]];
 }
 
 function splitRect(
   rect: MondrianRect,
   depth: number,
-  params: MondrianParams,
+  params: ResolvedMondrianParams,
   rng: () => number,
   cells: MondrianCell[]
 ): void {
-  const { maxDepth, lineWidth, minCellSize, colorProbability } = params;
+  const { maxDepth, lineWidth, minCellSize, colorProbability, enabledColors } =
+    params;
 
   if (
     depth >= maxDepth ||
     rect.width < minCellSize ||
     rect.height < minCellSize
   ) {
-    cells.push({ ...rect, color: pickColor(rng, colorProbability) });
+    cells.push({
+      ...rect,
+      color: pickColor(rng, colorProbability, enabledColors),
+    });
     return;
   }
 
@@ -124,7 +187,10 @@ function splitRect(
     const minSplit = rect.x + minCellSize;
     const maxSplit = rect.x + rect.width - minCellSize - lineWidth;
     if (minSplit >= maxSplit) {
-      cells.push({ ...rect, color: pickColor(rng, colorProbability) });
+      cells.push({
+        ...rect,
+        color: pickColor(rng, colorProbability, enabledColors),
+      });
       return;
     }
     const splitX = minSplit + rng() * (maxSplit - minSplit);
@@ -154,7 +220,10 @@ function splitRect(
     const minSplit = rect.y + minCellSize;
     const maxSplit = rect.y + rect.height - minCellSize - lineWidth;
     if (minSplit >= maxSplit) {
-      cells.push({ ...rect, color: pickColor(rng, colorProbability) });
+      cells.push({
+        ...rect,
+        color: pickColor(rng, colorProbability, enabledColors),
+      });
       return;
     }
     const splitY = minSplit + rng() * (maxSplit - minSplit);
@@ -180,17 +249,18 @@ function splitRect(
     return;
   }
 
-  cells.push({ ...rect, color: pickColor(rng, colorProbability) });
+  cells.push({ ...rect, color: pickColor(rng, colorProbability, enabledColors) });
 }
 
 export function generateMondrian(params: MondrianParams): MondrianArtwork {
-  const normalized: MondrianParams = {
+  const normalized: ResolvedMondrianParams = {
     width: Math.max(1, Math.round(params.width)),
     height: Math.max(1, Math.round(params.height)),
     maxDepth: clampMondrianDepth(params.maxDepth),
     lineWidth: clampLineWidth(params.lineWidth),
     minCellSize: clampCellSize(params.minCellSize),
     colorProbability: clampColorProbability(params.colorProbability),
+    enabledColors: normalizeEnabledColors(params.enabledColors),
     seed: Math.abs(Math.trunc(params.seed)) || 1,
   };
 
@@ -230,7 +300,8 @@ export function renderMondrianScaled(
   ctx: CanvasRenderingContext2D,
   artwork: MondrianArtwork,
   targetWidth: number,
-  targetHeight: number
+  targetHeight: number,
+  options?: { showGridOverlay?: boolean }
 ): void {
   const offscreen = document.createElement("canvas");
   offscreen.width = artwork.params.width;
@@ -242,4 +313,41 @@ export function renderMondrianScaled(
   renderMondrian(offCtx, artwork);
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(offscreen, 0, 0, targetWidth, targetHeight);
+
+  if (options?.showGridOverlay) {
+    renderMondrianGridOverlay(ctx, artwork, targetWidth, targetHeight);
+  }
+}
+
+export function renderMondrianGridOverlay(
+  ctx: CanvasRenderingContext2D,
+  artwork: MondrianArtwork,
+  targetWidth: number,
+  targetHeight: number
+): void {
+  const { width, height, lineWidth } = artwork.params;
+  if (lineWidth <= 0) {
+    return;
+  }
+
+  const scaleX = targetWidth / width;
+  const scaleY = targetHeight / height;
+
+  ctx.save();
+  ctx.fillStyle = MONDRIAN_BLACK;
+  ctx.imageSmoothingEnabled = false;
+
+  for (let x = 0; x <= width; x += lineWidth) {
+    const sx = Math.round(x * scaleX);
+    if (sx < targetWidth) {
+      ctx.fillRect(sx, 0, 1, targetHeight);
+    }
+  }
+  for (let y = 0; y <= height; y += lineWidth) {
+    const sy = Math.round(y * scaleY);
+    if (sy < targetHeight) {
+      ctx.fillRect(0, sy, targetWidth, 1);
+    }
+  }
+  ctx.restore();
 }

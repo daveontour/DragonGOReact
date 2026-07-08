@@ -1,0 +1,384 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040.6408839779006" height="868" preserveAspectRatio="xMidYMid meet" viewBox="0 0 434.00 362.00">
+    
+    <style>        
+        .inside {
+            fill: #ffffff;
+            fill-opacity: 0;
+            stroke: #ffffff;
+            stroke-width: 2;
+            stroke-opacity: 0;
+        }
+        .outside {
+            fill: #7090b7;
+            fill-opacity: 0.8;
+            stroke: #000000;
+            stroke-width: 1;
+            stroke-opacity: 1;
+        }
+        .active {
+            fill: #7090B7;
+            fill-opacity: 1;
+            stroke: #000000;
+            stroke-width: 1;
+            stroke-opacity: 1;
+        }
+        .dragon {
+            stroke: #000000;
+            stroke-width: 3;
+            opacity: 1;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        .bgrect {
+            fill: #ffffff;
+            stroke: none;
+            fill-opacity: 1;
+        }    
+    </style><rect class="bgrect" x="0" y="0" height="362" width="434"></rect><g transform="translate(74, 26)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="7" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(98, 26)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="6" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(122, 26)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="3" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(146, 26)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="2" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(74, 50)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="8" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(98, 50)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="9" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="5" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(122, 50)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="4" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(146, 50)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="1" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(170, 50)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="0" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(26, 74)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="15" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(50, 74)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="14" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(74, 74)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="11" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(98, 74)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="10" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(26, 98)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="16" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(50, 98)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="17" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="13" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(74, 98)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="20" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="12" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(98, 98)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="21" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(50, 122)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="18" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(74, 122)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="23" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="19" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(98, 122)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="22" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(74, 146)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="24" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(98, 146)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="25" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(122, 146)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="44" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(146, 146)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="45" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(218, 146)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="92" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(242, 146)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="93" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(314, 146)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="108" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(338, 146)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="109" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(26, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="31" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(50, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="30" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(74, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="27" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(98, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="42" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="26" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(122, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="47" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="43" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(146, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="46" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(194, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="90" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(218, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="95" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="91" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(242, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="94" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(290, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="106" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(314, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="111" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="107" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(338, 170)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="110" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(26, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="32" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(50, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="33" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="29" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(74, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="36" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="28" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(98, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="37" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="41" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(122, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="40" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="48" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(146, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="49" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(170, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="52" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(194, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="53" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="89" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(218, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="88" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="96" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(242, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="97" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(266, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="100" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(290, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="101" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="105" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(314, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="104" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="112" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(338, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="113" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(362, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="116" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(386, 194)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="117" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(50, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="34" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(74, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="35" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(98, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="38" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(122, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="39" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(146, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="50" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(170, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="55" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="51" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(194, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="86" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="54" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(218, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="83" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="87" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(242, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="82" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="98" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(266, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="99" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(290, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="102" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(314, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="103" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(338, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="114" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(362, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="119" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="115" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(386, 218)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="118" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(170, 242)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="56" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(194, 242)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="57" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="85" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(218, 242)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="76" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="84" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(242, 242)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="77" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="81" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(266, 242)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="80" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(362, 242)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="120" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(386, 242)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="121" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(122, 266)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="63" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(146, 266)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="62" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(170, 266)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="59" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(194, 266)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="74" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="58" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(218, 266)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="75" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(242, 266)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="78" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(266, 266)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="79" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(362, 266)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="123" d="M 11 22 A 11 11 90 0 1 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(386, 266)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="122" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(122, 290)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="64" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(146, 290)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="65" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="61" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(170, 290)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="68" d="M 11 22 A 11 11 90 0 1 22 11"></path><path class="dragon" data-path-index="60" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(194, 290)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="69" d="M 11 22 A 11 11 90 0 0 0 11"></path><path class="dragon" data-path-index="73" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(218, 290)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="72" d="M 11 22 A 11 11 90 0 0 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(362, 290)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="124" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(146, 314)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="66" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(170, 314)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="67" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(194, 314)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="70" d="M 11 0 A 11 11 90 0 0 22 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(218, 314)"><g><rect class="active" x="0.5" y="0.5" height="21" width="21"></rect><path class="dragon" data-path-index="71" d="M 11 0 A 11 11 90 0 1 0 11"></path></g><rect x="-2" y="-2" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="-2" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect><rect x="-2" y="22" height="2" width="26" fill="#ffffff" stroke="none"></rect><rect x="22" y="-2" height="26" width="2" fill="#ffffff" stroke="none"></rect></g><g transform="translate(2, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(50, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(74, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(98, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(122, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(146, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(170, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(194, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(218, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(242, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 2)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(50, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(170, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(194, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(218, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(242, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 26)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(50, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(194, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(218, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(242, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 50)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(122, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(146, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(170, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(194, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(218, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(242, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 74)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(122, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(146, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(170, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(194, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(218, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(242, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 98)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(122, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(146, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(170, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(194, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(218, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(242, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 122)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(50, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(170, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(194, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 146)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 170)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(170, 170)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 170)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 170)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 170)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 170)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 194)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 194)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 218)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 218)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 218)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(50, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(74, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(98, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(122, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(146, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 242)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 266)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 266)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(50, 266)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(74, 266)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(98, 266)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 266)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 266)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 266)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 266)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(50, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(74, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(98, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(242, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 290)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(50, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(74, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(98, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(122, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(242, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 314)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(2, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(26, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(50, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(74, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(98, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(122, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(146, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(170, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(194, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(218, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(242, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(266, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(290, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(314, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(338, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(362, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(386, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g><g transform="translate(410, 338)"><g>
+        <rect class="outside" x="0.5" y="0.5" height="21" width="21"></rect>
+    </g></g></svg>

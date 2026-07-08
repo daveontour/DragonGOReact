@@ -15,6 +15,22 @@ export const DEFAULT_MANDELBROT_VIEW: MandelbrotView = {
   scale: 1.35,
 };
 
+/** Widest view allowed when zooming out. */
+export const MAX_MANDELBROT_SCALE = 2.5;
+/** Tightest view allowed before double precision degrades. */
+export const MIN_MANDELBROT_SCALE = 1e-13;
+/** Multiplier applied for a single zoom-in step. */
+export const ZOOM_IN_FACTOR = 0.5;
+/** Multiplier applied for a single zoom-out step. */
+export const ZOOM_OUT_FACTOR = 2;
+
+export function clampMandelbrotScale(scale: number): number {
+  if (!Number.isFinite(scale) || scale <= 0) {
+    return DEFAULT_MANDELBROT_VIEW.scale;
+  }
+  return Math.min(MAX_MANDELBROT_SCALE, Math.max(MIN_MANDELBROT_SCALE, scale));
+}
+
 export function mandelbrotIterations(
   cr: number,
   ci: number,
@@ -143,7 +159,37 @@ export function zoomViewAt(
   return {
     centerRe: re,
     centerIm: im,
-    scale: view.scale * factor,
+    scale: clampMandelbrotScale(view.scale * factor),
+  };
+}
+
+/**
+ * Zooms by `factor` while keeping the complex point (re, im) anchored to the
+ * same screen position, so scrolling in/out tracks the cursor.
+ */
+export function zoomViewKeepingPoint(
+  view: MandelbrotView,
+  re: number,
+  im: number,
+  factor: number
+): MandelbrotView {
+  const nextScale = clampMandelbrotScale(view.scale * factor);
+  const appliedFactor = nextScale / view.scale;
+  return {
+    centerRe: re - (re - view.centerRe) * appliedFactor,
+    centerIm: im - (im - view.centerIm) * appliedFactor,
+    scale: nextScale,
+  };
+}
+
+/** Zooms about the current view centre (used by the zoom buttons). */
+export function zoomViewCentered(
+  view: MandelbrotView,
+  factor: number
+): MandelbrotView {
+  return {
+    ...view,
+    scale: clampMandelbrotScale(view.scale * factor),
   };
 }
 
