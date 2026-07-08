@@ -1225,3 +1225,1347 @@ body {
   );
   border-top: 2px solid rgba(158, 197, 255, 0.85);
 }
+
+/* --- Mandelbrot Set --- */
+.dragon-app .mandelbrot-sidebar {
+  display: block;
+}
+
+.dragon-app .mandelbrot-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .mandelbrot-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .mandelbrot-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .mandelbrot-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .mandelbrot-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .mandelbrot-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-xs);
+  color: #fff;
+  word-break: break-all;
+}
+
+.dragon-app .mandelbrot-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .mandelbrot-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: zoom-in;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--mandelbrot {
+  background:
+    radial-gradient(circle at 35% 48%, rgba(180, 120, 255, 0.55) 0%, transparent 34%),
+    radial-gradient(circle at 62% 40%, rgba(90, 170, 255, 0.45) 0%, transparent 30%),
+    radial-gradient(circle at 48% 62%, rgba(120, 220, 255, 0.35) 0%, transparent 28%),
+    linear-gradient(145deg, #120f24 0%, #0a0d18 100%);
+}
+
+.dragon-app .mathart-viz-card-preview--mandelbrot::after {
+  content: "";
+  position: absolute;
+  inset: 28% 30% 34% 24%;
+  border-radius: 60% 55% 58% 52%;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 0 18px rgba(160, 120, 255, 0.35),
+    0 0 12px rgba(120, 180, 255, 0.25);
+}
+
+/* --- Planetary Orbits --- */
+.dragon-app .orbits-sidebar {
+  display: block;
+}
+
+.dragon-app .orbits-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .orbits-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .orbits-hint {
+  margin: 8px 0 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .orbits-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .orbits-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .orbits-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .orbits-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .orbits-thrust-button {
+  flex: 1 1 0;
+}
+
+.dragon-app .orbits-planet-label {
+  margin-bottom: 6px;
+}
+
+.dragon-app .orbits-planet-label--1 {
+  color: #7090b7;
+}
+
+.dragon-app .orbits-planet-label--2 {
+  color: #7dcea0;
+}
+
+.dragon-app .orbits-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .orbits-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+}
+
+.dragon-app .mathart-viz-card-preview--planetary-orbits::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18%;
+  height: 18%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #f6d860 0%, #d4a030 100%);
+  box-shadow: 0 0 18px rgba(246, 216, 96, 0.65);
+}
+
+.dragon-app .mathart-viz-card-preview--planetary-orbits::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  box-shadow:
+    18px -8px 0 -10px rgba(112, 144, 183, 0.95),
+    -20px 10px 0 -11px rgba(125, 206, 160, 0.95),
+    24px 14px 0 -13px rgba(246, 216, 96, 0.95);
+}
+
+/* --- L-Systems --- */
+.dragon-app .lsystem-sidebar {
+  display: block;
+}
+
+.dragon-app .lsystem-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .lsystem-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .lsystem-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .lsystem-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .lsystem-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .lsystem-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .lsystem-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .lsystem-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .lsystem-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+}
+
+.dragon-app .mathart-viz-card-preview--l-systems::before {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  background:
+    linear-gradient(90deg, transparent 48%, rgba(143, 217, 122, 0.5) 48%, rgba(143, 217, 122, 0.5) 52%, transparent 52%),
+    linear-gradient(0deg, transparent 62%, rgba(143, 217, 122, 0.4) 62%, rgba(143, 217, 122, 0.4) 66%, transparent 66%);
+  background-size: 100% 100%, 60% 40%;
+  background-position: center, 20% 100%;
+  background-repeat: no-repeat;
+}
+
+.dragon-app .mathart-viz-card-preview--l-systems::after {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  width: 40%;
+  height: 40%;
+  border-left: 2px solid rgba(127, 212, 255, 0.7);
+  border-bottom: 2px solid rgba(127, 212, 255, 0.7);
+  box-shadow:
+    10px 0 0 0 rgba(127, 212, 255, 0.4),
+    10px -10px 0 0 rgba(127, 212, 255, 0.3),
+    20px -10px 0 0 rgba(127, 212, 255, 0.5);
+}
+
+/* --- Conway's Game of Life --- */
+.dragon-app .life-sidebar {
+  display: block;
+}
+
+.dragon-app .life-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .life-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .life-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .life-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .life-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .life-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .life-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .life-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .life-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+  cursor: cell;
+}
+
+.dragon-app .mathart-viz-card-preview--game-of-life::before {
+  content: "";
+  position: absolute;
+  inset: 16%;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  background:
+    conic-gradient(rgba(127, 224, 168, 0.85) 0 25%, transparent 0 50%)
+    0 0 / 16px 16px;
+  opacity: 0.9;
+}
+
+.dragon-app .mathart-viz-card-preview--game-of-life::after {
+  content: "";
+  position: absolute;
+  top: 38%;
+  left: 42%;
+  width: 8px;
+  height: 8px;
+  background: #7fe0a8;
+  box-shadow:
+    16px 0 0 0 #7fe0a8,
+    0 16px 0 0 #7fe0a8,
+    -16px 16px 0 0 #7fe0a8,
+    16px 16px 0 0 #7fe0a8;
+}
+
+/* --- Voronoi Diagram --- */
+.dragon-app .voronoi-sidebar {
+  display: block;
+}
+
+.dragon-app .voronoi-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .voronoi-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .voronoi-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .voronoi-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .voronoi-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .voronoi-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .voronoi-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .voronoi-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .voronoi-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  cursor: grab;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .voronoi-canvas--dragging {
+  cursor: grabbing;
+}
+
+.dragon-app .mathart-viz-card-preview--voronoi {
+  background: linear-gradient(145deg, #1a2332 0%, #0f1419 100%);
+}
+
+.dragon-app .mathart-viz-card-preview--voronoi::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  background:
+    linear-gradient(105deg, transparent 45%, rgba(255, 255, 255, 0.14) 45%, rgba(255, 255, 255, 0.14) 47%, transparent 47%),
+    linear-gradient(20deg, transparent 55%, rgba(255, 255, 255, 0.14) 55%, rgba(255, 255, 255, 0.14) 57%, transparent 57%),
+    linear-gradient(150deg, transparent 30%, rgba(255, 255, 255, 0.14) 30%, rgba(255, 255, 255, 0.14) 32%, transparent 32%),
+    radial-gradient(circle at 30% 30%, rgba(246, 168, 106, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 70% 40%, rgba(90, 170, 255, 0.4) 0%, transparent 40%),
+    radial-gradient(circle at 45% 75%, rgba(125, 206, 160, 0.4) 0%, transparent 40%);
+}
+
+.dragon-app .mathart-viz-card-preview--voronoi::after {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 30%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    24px 8px 0 0 #fff,
+    10px 32px 0 0 #fff;
+}
+
+/* --- N-Body Gravity --- */
+.dragon-app .nbody-sidebar {
+  display: block;
+}
+
+.dragon-app .nbody-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .nbody-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .nbody-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .nbody-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .nbody-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .nbody-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .nbody-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .nbody-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .nbody-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+}
+
+.dragon-app .mathart-viz-card-preview--n-body::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14%;
+  height: 14%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #f6d860 0%, #d4a030 100%);
+  box-shadow: 0 0 16px rgba(246, 216, 96, 0.6);
+}
+
+.dragon-app .mathart-viz-card-preview--n-body::after {
+  content: "";
+  position: absolute;
+  top: 28%;
+  left: 65%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #7090b7;
+  box-shadow:
+    0 0 10px rgba(112, 144, 183, 0.8),
+    -34px 22px 0 -1px #7dcea0,
+    -18px -14px 0 -2px #f6a86a;
+}
+
+/* --- Newton's Fractal --- */
+.dragon-app .newton-sidebar {
+  display: block;
+}
+
+.dragon-app .newton-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .newton-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .newton-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .newton-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .newton-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .newton-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .newton-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-xs);
+  color: #fff;
+  word-break: break-all;
+}
+
+.dragon-app .newton-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .newton-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: zoom-in;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--newton-fractal {
+  background:
+    radial-gradient(circle at 30% 35%, rgba(255, 100, 110, 0.5) 0%, transparent 32%),
+    radial-gradient(circle at 68% 38%, rgba(90, 220, 140, 0.45) 0%, transparent 32%),
+    radial-gradient(circle at 50% 72%, rgba(100, 160, 255, 0.45) 0%, transparent 32%),
+    linear-gradient(145deg, #120f24 0%, #0a0d18 100%);
+}
+
+.dragon-app .mathart-viz-card-preview--newton-fractal::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
+}
+
+/* --- Mondrian Generator --- */
+.dragon-app .mondrian-sidebar {
+  display: block;
+}
+
+.dragon-app .mondrian-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .mondrian-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .mondrian-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .mondrian-hint a {
+  color: #9ec5ff;
+}
+
+.dragon-app .mondrian-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .mondrian-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .mondrian-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .mondrian-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .mondrian-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .mondrian-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  background: #000;
+}
+
+.dragon-app .mathart-viz-card-preview--mondrian {
+  background: #ffffff;
+}
+
+.dragon-app .mathart-viz-card-preview--mondrian::before {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  background:
+    linear-gradient(#000, #000) 0 0 / 100% 8% no-repeat,
+    linear-gradient(#000, #000) 0 100% / 100% 8% no-repeat,
+    linear-gradient(90deg, #000, #000) 0 0 / 8% 100% no-repeat,
+    linear-gradient(90deg, #000, #000) 100% 0 / 8% 100% no-repeat,
+    linear-gradient(#e3051c, #e3051c) 12% 12% / 28% 38% no-repeat,
+    linear-gradient(#1e52a0, #1e52a0) 52% 12% / 36% 22% no-repeat,
+    linear-gradient(#fecb00, #fecb00) 52% 42% / 36% 46% no-repeat,
+    linear-gradient(#ffffff, #ffffff) 12% 58% / 28% 30% no-repeat;
+}
+
+.dragon-app .mathart-viz-card-preview--mondrian::after {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 42%;
+  width: 8%;
+  height: 76%;
+  background: #000;
+}
+
+/* --- Strange Attractors --- */
+.dragon-app .attractor-sidebar {
+  display: block;
+}
+
+.dragon-app .attractor-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .attractor-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .attractor-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .attractor-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .attractor-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .attractor-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .attractor-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .attractor-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .attractor-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+}
+
+.dragon-app .mathart-viz-card-preview--strange-attractors {
+  background: linear-gradient(145deg, #12101f 0%, #0a0d18 100%);
+}
+
+.dragon-app .mathart-viz-card-preview--strange-attractors::before {
+  content: "";
+  position: absolute;
+  inset: 10%;
+  border: 22px solid transparent;
+  border-radius: 50%;
+  border-top-color: rgba(127, 212, 255, 0.55);
+  border-right-color: rgba(127, 212, 255, 0.25);
+  transform: rotate(35deg);
+}
+
+.dragon-app .mathart-viz-card-preview--strange-attractors::after {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border: 14px solid transparent;
+  border-radius: 50%;
+  border-bottom-color: rgba(246, 168, 106, 0.55);
+  border-left-color: rgba(246, 168, 106, 0.3);
+  transform: rotate(-25deg);
+}
+
+/* --- Fourier Epicycles --- */
+.dragon-app .fourier-sidebar {
+  display: block;
+}
+
+.dragon-app .fourier-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .fourier-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .fourier-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .fourier-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .fourier-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+}
+
+.dragon-app .mathart-viz-card-preview--fourier-epicycles::before {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  width: 34%;
+  height: 34%;
+  border-radius: 50%;
+  border: 1px solid rgba(127, 212, 255, 0.4);
+}
+
+.dragon-app .mathart-viz-card-preview--fourier-epicycles::after {
+  content: "";
+  position: absolute;
+  top: 40%;
+  left: 46%;
+  width: 16%;
+  height: 16%;
+  border-radius: 50%;
+  border: 1px solid rgba(246, 216, 96, 0.5);
+  box-shadow: 30px 6px 0 -1px rgba(255, 255, 255, 0.7);
+}
+
+/* --- Bifurcation Diagram --- */
+.dragon-app .bifurcation-sidebar {
+  display: block;
+}
+
+.dragon-app .bifurcation-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .bifurcation-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .bifurcation-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .bifurcation-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .bifurcation-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .bifurcation-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .bifurcation-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-xs);
+  color: #fff;
+  word-break: break-all;
+}
+
+.dragon-app .bifurcation-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .bifurcation-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: zoom-in;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--bifurcation::before {
+  content: "";
+  position: absolute;
+  inset: 14% 10%;
+  background:
+    linear-gradient(100deg, transparent 0%, transparent 45%, rgba(127, 212, 255, 0.7) 45%, rgba(127, 212, 255, 0.15) 60%, transparent 75%);
+}
+
+.dragon-app .mathart-viz-card-preview--bifurcation::after {
+  content: "";
+  position: absolute;
+  inset: 14% 10%;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* --- Elementary Cellular Automata --- */
+.dragon-app .elementary-ca-sidebar {
+  display: block;
+}
+
+.dragon-app .elementary-ca-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .elementary-ca-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .elementary-ca-rule-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.dragon-app .elementary-ca-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .elementary-ca-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .elementary-ca-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+}
+
+.dragon-app .mathart-viz-card-preview--elementary-ca::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  background:
+    linear-gradient(180deg, rgba(143, 217, 122, 0.9) 0 12%, transparent 12%),
+    linear-gradient(180deg, transparent 12%, rgba(143, 217, 122, 0.7) 12% 24%, transparent 24%),
+    linear-gradient(180deg, transparent 24%, rgba(143, 217, 122, 0.5) 24% 36%, transparent 36%),
+    linear-gradient(180deg, transparent 36%, rgba(143, 217, 122, 0.6) 36% 48%, transparent 48%);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+/* --- Prime Spirals --- */
+.dragon-app .primespiral-sidebar {
+  display: block;
+}
+
+.dragon-app .primespiral-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .primespiral-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .primespiral-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .primespiral-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .primespiral-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .primespiral-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .primespiral-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .primespiral-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .primespiral-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+}
+
+.dragon-app .mathart-viz-card-preview--prime-spirals::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  background: #7fd4ff;
+  box-shadow:
+    10px 4px 0 0 #7fd4ff,
+    -8px 10px 0 0 #7fd4ff,
+    16px -12px 0 0 #7fd4ff,
+    -18px -6px 0 0 #7fd4ff,
+    2px 22px 0 0 #7fd4ff,
+    24px 16px 0 0 #7fd4ff,
+    -24px 18px 0 0 #7fd4ff,
+    -2px -22px 0 0 #7fd4ff,
+    28px -8px 0 0 #7fd4ff;
+  border-radius: 50%;
+}
+
+/* --- Penrose Tiling --- */
+.dragon-app .penrose-sidebar {
+  display: block;
+}
+
+.dragon-app .penrose-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .penrose-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .penrose-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .penrose-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .penrose-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .penrose-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .penrose-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .penrose-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .penrose-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+}
+
+.dragon-app .mathart-viz-card-preview--penrose-tiling::before {
+  content: "";
+  position: absolute;
+  inset: 10%;
+  background:
+    conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(90, 160, 255, 0.55) 0deg 36deg,
+      rgba(246, 168, 106, 0.55) 36deg 72deg,
+      rgba(90, 160, 255, 0.55) 72deg 108deg,
+      rgba(246, 168, 106, 0.55) 108deg 144deg,
+      rgba(90, 160, 255, 0.55) 144deg 180deg,
+      rgba(246, 168, 106, 0.55) 180deg 216deg,
+      rgba(90, 160, 255, 0.55) 216deg 252deg,
+      rgba(246, 168, 106, 0.55) 252deg 288deg,
+      rgba(90, 160, 255, 0.55) 288deg 324deg,
+      rgba(246, 168, 106, 0.55) 324deg 360deg
+    );
+  border-radius: 50%;
+  opacity: 0.9;
+}
