@@ -18,6 +18,8 @@ import BifurcationApp from "./bifurcation/BifurcationApp";
 import ElementaryCAApp from "./elementary-ca/ElementaryCAApp";
 import PrimeSpiralApp from "./prime-spirals/PrimeSpiralApp";
 import PenroseApp from "./penrose-tiling/PenroseApp";
+import MorelletApp from "./morellet/MorelletApp";
+import MorelletTilesApp from "./morellet-tiles/MorelletTilesApp";
 import { VisualizationId } from "./registry";
 
 type AppView = "home" | VisualizationId;
@@ -189,6 +191,24 @@ const App: React.FC = () => {
           style={{ display: view === "penrose-tiling" ? "flex" : "none" }}
         >
           <PenroseApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("morellet") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "morellet" ? "flex" : "none" }}
+        >
+          <MorelletApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("morellet-tiles") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "morellet-tiles" ? "flex" : "none" }}
+        >
+          <MorelletTilesApp onHome={() => setView("home")} />
         </div>
       ) : null}
     </div>

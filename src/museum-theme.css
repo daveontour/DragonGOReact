@@ -2482,3 +2482,238 @@ body {
   border-radius: 50%;
   opacity: 0.9;
 }
+
+/* --- Morellet Patterns --- */
+.dragon-app .morellet-sidebar {
+  display: block;
+}
+
+.dragon-app .morellet-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .morellet-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .morellet-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .morellet-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .morellet-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .morellet-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .morellet-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .morellet-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .morellet-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+  background: #ffffff;
+}
+
+.dragon-app .mathart-viz-card-preview--morellet {
+  background: #ffffff;
+}
+
+.dragon-app .mathart-viz-card-preview--morellet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 10px,
+      rgba(17, 17, 17, 0.9) 10px 12px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 10px,
+      rgba(17, 17, 17, 0.9) 10px 12px
+    );
+}
+
+.dragon-app .mathart-viz-card-preview--morellet::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border: 1px solid rgba(17, 17, 17, 0.15);
+  background:
+    linear-gradient(90deg, transparent 48%, rgba(228, 0, 43, 0.85) 48%, rgba(228, 0, 43, 0.85) 52%, transparent 52%),
+    linear-gradient(0deg, transparent 48%, rgba(17, 17, 17, 0.85) 48%, rgba(17, 17, 17, 0.85) 52%, transparent 52%);
+  background-size: 100% 100%;
+  opacity: 0.95;
+}
+
+/* --- Morellet Color Grid --- */
+.dragon-app .morellet-tiles-sidebar {
+  display: block;
+}
+
+.dragon-app .morellet-tiles-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .morellet-tiles-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .morellet-tiles-color-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dragon-app .morellet-tiles-color-row {
+  display: grid;
+  grid-template-columns: minmax(108px, 1fr) minmax(0, 2fr);
+  gap: 8px 12px;
+  align-items: center;
+}
+
+.dragon-app .morellet-tiles-color-row-label {
+  margin-bottom: 0;
+}
+
+.dragon-app .morellet-tiles-color-row-control {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.dragon-app .morellet-tiles-color-value {
+  margin-top: 0;
+}
+
+.dragon-app .morellet-tiles-color-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.dragon-app .morellet-tiles-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .morellet-tiles-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .morellet-tiles-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .morellet-tiles-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .morellet-tiles-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .morellet-tiles-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 5px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .morellet-tiles-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--morellet-tiles {
+  background: #111111;
+}
+
+.dragon-app .mathart-viz-card-preview--morellet-tiles::before {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  background:
+    linear-gradient(90deg, #d62828 0 24%, #111111 24% 25%, #3d5fab 25% 49%, #111111 49% 50%, #d62828 50% 74%, #111111 74% 75%, #2a6e3f 75% 87%, #111111 87% 88%, #f77f00 88% 100%),
+    linear-gradient(0deg, #3d5fab 0 20%, #111111 20% 21%, #d62828 21% 45%, #111111 45% 46%, #f77f00 46% 58%, #111111 58% 59%, #2a6e3f 59% 72%, #111111 72% 73%, #d62828 73% 100%);
+  background-size: 12px 12px;
+  opacity: 0.95;
+}

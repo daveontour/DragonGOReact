@@ -18,7 +18,9 @@ export type VisualizationId =
   | "bifurcation"
   | "elementary-ca"
   | "prime-spirals"
-  | "penrose-tiling";
+  | "penrose-tiling"
+  | "morellet"
+  | "morellet-tiles";
 
 export interface VisualizationMeta {
   id: VisualizationId;
@@ -125,6 +127,18 @@ export const VISUALIZATIONS: VisualizationMeta[] = [
     title: "Prime Spirals",
     description:
       "Plot integers on Ulam's square spiral or the Sacks polar spiral to reveal prime patterns.",
+  },
+  {
+    id: "morellet-tiles",
+    title: "Morellet Color Grid",
+    description:
+      "Fill a fine square grid with randomly distributed red, green, blue, and orange tiles at adjustable weights.",
+  },
+  {
+    id: "morellet",
+    title: "Morellet Patterns",
+    description:
+      "Generate tiled line compositions in the spirit of François Morellet's grids, trames, and random distributions.",
   },
   {
     id: "penrose-tiling",
