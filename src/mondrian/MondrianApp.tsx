@@ -239,7 +239,7 @@ export default function MondrianApp({ onHome }: { onHome: () => void }) {
                   <FormLabel className="section-label-muted">
                     Fill colours
                   </FormLabel>
-                  <Stack direction="vertical" gap={2} className="mondrian-color-options">
+                  <Stack direction="horizontal" gap={5} className="mondrian-color-options">
                     {MONDRIAN_COLOR_OPTIONS.map((option) => (
                       <FormCheck
                         key={option.id}
@@ -260,7 +260,7 @@ export default function MondrianApp({ onHome }: { onHome: () => void }) {
                               }}
                               aria-hidden="true"
                             />
-                            {option.label}
+                            {/* {option.label} */}
                           </span>
                         }
                       />
@@ -277,10 +277,10 @@ export default function MondrianApp({ onHome }: { onHome: () => void }) {
                     <span className="mondrian-result-label">Coloured blocks</span>
                     <span className="mondrian-result-value">{stats.colored}</span>
                   </div>
-                  <div className="mondrian-result-row">
+                  {/* <div className="mondrian-result-row">
                     <span className="mondrian-result-label">Seed</span>
                     <span className="mondrian-result-value">{seed}</span>
-                  </div>
+                  </div> */}
                 </div>
 
                 <Stack direction="horizontal" gap={2}>
