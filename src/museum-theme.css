@@ -2717,3 +2717,989 @@ body {
   background-size: 12px 12px;
   opacity: 0.95;
 }
+
+/* --- Op Art / Moiré --- */
+.dragon-app .op-art-sidebar {
+  display: block;
+}
+
+.dragon-app .op-art-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .op-art-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .op-art-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .op-art-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .op-art-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+  background: #f5f4ef;
+}
+
+.dragon-app .mathart-viz-card-preview--op-art {
+  background: #f5f4ef;
+}
+
+.dragon-app .mathart-viz-card-preview--op-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    6deg,
+    #111111 0 2px,
+    transparent 2px 6px
+  );
+  opacity: 0.85;
+}
+
+.dragon-app .mathart-viz-card-preview--op-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -4deg,
+    #111111 0 2px,
+    transparent 2px 6.6px
+  );
+  opacity: 0.6;
+  mix-blend-mode: multiply;
+}
+
+/* --- Chladni Patterns --- */
+.dragon-app .chladni-patterns-sidebar {
+  display: block;
+}
+
+.dragon-app .chladni-patterns-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .chladni-patterns-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .chladni-patterns-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .chladni-patterns-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .chladni-patterns-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .chladni-patterns-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .chladni-patterns-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-xs);
+  color: #fff;
+  word-break: break-all;
+}
+
+.dragon-app .chladni-patterns-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .chladni-patterns-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--chladni-patterns {
+  background: #05070c;
+}
+
+.dragon-app .mathart-viz-card-preview--chladni-patterns::before {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent 0 8%,
+    rgba(255, 255, 255, 0.55) 8% 8.5%,
+    transparent 8.5% 16%
+  );
+}
+
+.dragon-app .mathart-viz-card-preview--chladni-patterns::after {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 62%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f6d860;
+  box-shadow:
+    0 0 6px rgba(246, 216, 96, 0.8),
+    -22px 14px 0 -1px #f6d860,
+    10px 26px 0 -1px #f6d860,
+    -8px -18px 0 -1px #f6d860;
+}
+
+/* --- Flow Fields --- */
+.dragon-app .flow-fields-sidebar {
+  display: block;
+}
+
+.dragon-app .flow-fields-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .flow-fields-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .flow-fields-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .flow-fields-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .flow-fields-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .flow-fields-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .flow-fields-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .flow-fields-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .flow-fields-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+}
+
+.dragon-app .mathart-viz-card-preview--flow-fields {
+  background: #f4f1ea;
+}
+
+.dragon-app .mathart-viz-card-preview--flow-fields::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, transparent 30%, rgba(90, 110, 200, 0.45) 45%, transparent 60%),
+    linear-gradient(70deg, transparent 20%, rgba(200, 120, 90, 0.35) 40%, transparent 55%),
+    linear-gradient(115deg, transparent 55%, rgba(90, 160, 130, 0.3) 68%, transparent 80%);
+}
+
+.dragon-app .mathart-viz-card-preview--flow-fields::after {
+  content: "";
+  position: absolute;
+  top: 40%;
+  left: 30%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(60, 60, 60, 0.5);
+  box-shadow:
+    24px 10px 0 -0.5px rgba(60, 60, 60, 0.4),
+    -18px 22px 0 -0.5px rgba(60, 60, 60, 0.4),
+    40px -14px 0 -0.5px rgba(60, 60, 60, 0.4);
+}
+
+/* --- Phyllotaxis Spirals --- */
+.dragon-app .phyllotaxis-sidebar {
+  display: block;
+}
+
+.dragon-app .phyllotaxis-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .phyllotaxis-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .phyllotaxis-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .phyllotaxis-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .phyllotaxis-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--phyllotaxis {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--phyllotaxis::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #7fd4ff;
+  box-shadow:
+    3px 1px 0 0 #7fd4ff,
+    2px -3px 0 0 #8fdcff,
+    -3px -2px 0 0 #9fe4ff,
+    -2px 4px 0 0 #afe8ff,
+    5px -4px 0 0 #c2edff,
+    -6px 2px 0 0 #d6f2ff,
+    3px 7px 0 0 #ffffff,
+    -8px -4px 0 0 #ffe8c2,
+    8px 3px 0 0 #ffd6a8,
+    -4px -9px 0 0 #ffc48f,
+    9px -6px 0 0 #ffb37a,
+    -9px 7px 0 0 #ffa368,
+    2px 11px 0 0 #ff9457,
+    -11px -2px 0 0 #ff8548;
+}
+
+/* --- Reaction-Diffusion --- */
+.dragon-app .reaction-diffusion-sidebar {
+  display: block;
+}
+
+.dragon-app .reaction-diffusion-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .reaction-diffusion-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .reaction-diffusion-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .reaction-diffusion-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .reaction-diffusion-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .reaction-diffusion-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .reaction-diffusion-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .reaction-diffusion-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .reaction-diffusion-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #f5f4ef;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.dragon-app .mathart-viz-card-preview--reaction-diffusion {
+  background: #f5f4ef;
+}
+
+.dragon-app .mathart-viz-card-preview--reaction-diffusion::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  width: 34%;
+  height: 28%;
+  border-radius: 42% 58% 63% 37% / 47% 40% 60% 53%;
+  background: #14161f;
+  opacity: 0.9;
+}
+
+.dragon-app .mathart-viz-card-preview--reaction-diffusion::after {
+  content: "";
+  position: absolute;
+  bottom: 18%;
+  right: 16%;
+  width: 40%;
+  height: 32%;
+  border-radius: 58% 42% 37% 63% / 53% 60% 40% 47%;
+  background: #14161f;
+  opacity: 0.85;
+  box-shadow: -30% 10% 0 -6% #14161f;
+}
+
+/* --- Spirograph --- */
+.dragon-app .spirograph-sidebar {
+  display: block;
+}
+
+.dragon-app .spirograph-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .spirograph-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .spirograph-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .spirograph-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .spirograph-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--spirograph {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--spirograph::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at 42% 50%,
+    transparent 0 10%,
+    rgba(127, 212, 255, 0.5) 10% 11%,
+    transparent 11% 22%
+  );
+}
+
+.dragon-app .mathart-viz-card-preview--spirograph::after {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at 58% 50%,
+    transparent 0 10%,
+    rgba(255, 209, 128, 0.4) 10% 11%,
+    transparent 11% 22%
+  );
+  mix-blend-mode: screen;
+}
+
+/* --- Lissajous Curves --- */
+.dragon-app .lissajous-sidebar {
+  display: block;
+}
+
+.dragon-app .lissajous-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .lissajous-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .lissajous-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .lissajous-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .lissajous-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--lissajous {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--lissajous::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  width: 46%;
+  height: 46%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid rgba(127, 212, 255, 0.65);
+}
+
+.dragon-app .mathart-viz-card-preview--lissajous::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 70%;
+  width: 46%;
+  height: 46%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 209, 128, 0.55);
+  mix-blend-mode: screen;
+}
+
+/* --- Harmonograph --- */
+.dragon-app .harmonograph-sidebar {
+  display: block;
+}
+
+.dragon-app .harmonograph-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .harmonograph-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .harmonograph-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .harmonograph-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .harmonograph-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--harmonograph {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--harmonograph::before {
+  content: "";
+  position: absolute;
+  inset: 8%;
+  border-radius: 46% 54% 60% 40% / 50% 45% 55% 50%;
+  background: repeating-radial-gradient(
+    circle at 50% 50%,
+    transparent 0 9%,
+    rgba(127, 212, 255, 0.45) 9% 9.6%,
+    transparent 9.6% 18%
+  );
+  opacity: 0.9;
+}
+
+/* --- Rose Curves --- */
+.dragon-app .rose-curves-sidebar {
+  display: block;
+}
+
+.dragon-app .rose-curves-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .rose-curves-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .rose-curves-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .rose-curves-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .rose-curves-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .rose-curves-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .rose-curves-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .rose-curves-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .rose-curves-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--rose-curves {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--rose-curves::before {
+  content: "";
+  position: absolute;
+  inset: 10%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    transparent 0deg 20deg,
+    rgba(255, 143, 179, 0.5) 20deg 24deg,
+    transparent 24deg 45deg
+  );
+  border-radius: 50%;
+  mask-image: radial-gradient(circle, #000 0 70%, transparent 72%);
+}
+
+/* --- Superformula --- */
+.dragon-app .superformula-sidebar {
+  display: block;
+}
+
+.dragon-app .superformula-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .superformula-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .superformula-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .superformula-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .superformula-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--superformula {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--superformula::before {
+  content: "";
+  position: absolute;
+  inset: 15%;
+  background: #7fd4ff;
+  opacity: 0.8;
+  border-radius: 38% 62% 55% 45% / 45% 40% 60% 55%;
+}
+
+.dragon-app .mathart-viz-card-preview--superformula::after {
+  content: "";
+  position: absolute;
+  inset: 15%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 62% 38% 45% 55% / 55% 60% 40% 45%;
+}
+
+/* --- Euler Spiral --- */
+.dragon-app .euler-spiral-sidebar {
+  display: block;
+}
+
+.dragon-app .euler-spiral-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .euler-spiral-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .euler-spiral-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .euler-spiral-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .euler-spiral-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--euler-spiral {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--euler-spiral::before {
+  content: "";
+  position: absolute;
+  inset: 10%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(127, 212, 255, 0.55) 90deg,
+    transparent 180deg,
+    rgba(255, 209, 128, 0.5) 270deg,
+    transparent 360deg
+  );
+  mask-image: repeating-radial-gradient(
+    circle at 50% 50%,
+    #000 0 6%,
+    transparent 6% 9%
+  );
+}
+
+/* --- Curve Stitching --- */
+.dragon-app .curve-stitching-sidebar {
+  display: block;
+}
+
+.dragon-app .curve-stitching-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .curve-stitching-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .curve-stitching-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .curve-stitching-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .curve-stitching-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--curve-stitching {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--curve-stitching::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    35deg,
+    rgba(127, 212, 255, 0.35) 0 1px,
+    transparent 1px 14px
+  );
+}
+
+.dragon-app .mathart-viz-card-preview--curve-stitching::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -35deg,
+    rgba(255, 209, 128, 0.3) 0 1px,
+    transparent 1px 14px
+  );
+  mix-blend-mode: screen;
+}

@@ -20,6 +20,18 @@ import PrimeSpiralApp from "./prime-spirals/PrimeSpiralApp";
 import PenroseApp from "./penrose-tiling/PenroseApp";
 import MorelletApp from "./morellet/MorelletApp";
 import MorelletTilesApp from "./morellet-tiles/MorelletTilesApp";
+import OpArtApp from "./op-art/OpArtApp";
+import ChladniApp from "./chladni-patterns/ChladniApp";
+import FlowFieldsApp from "./flow-fields/FlowFieldsApp";
+import PhyllotaxisApp from "./phyllotaxis/PhyllotaxisApp";
+import ReactionDiffusionApp from "./reaction-diffusion/ReactionDiffusionApp";
+import SpirographApp from "./spirograph/SpirographApp";
+import LissajousApp from "./lissajous/LissajousApp";
+import HarmonographApp from "./harmonograph/HarmonographApp";
+import RoseCurvesApp from "./rose-curves/RoseCurvesApp";
+import SuperformulaApp from "./superformula/SuperformulaApp";
+import EulerSpiralApp from "./euler-spiral/EulerSpiralApp";
+import CurveStitchingApp from "./curve-stitching/CurveStitchingApp";
 import { VisualizationId } from "./registry";
 
 type AppView = "home" | VisualizationId;
@@ -209,6 +221,114 @@ const App: React.FC = () => {
           style={{ display: view === "morellet-tiles" ? "flex" : "none" }}
         >
           <MorelletTilesApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("op-art") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "op-art" ? "flex" : "none" }}
+        >
+          <OpArtApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("chladni-patterns") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "chladni-patterns" ? "flex" : "none" }}
+        >
+          <ChladniApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("flow-fields") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "flow-fields" ? "flex" : "none" }}
+        >
+          <FlowFieldsApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("phyllotaxis") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "phyllotaxis" ? "flex" : "none" }}
+        >
+          <PhyllotaxisApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("reaction-diffusion") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "reaction-diffusion" ? "flex" : "none" }}
+        >
+          <ReactionDiffusionApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("spirograph") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "spirograph" ? "flex" : "none" }}
+        >
+          <SpirographApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("lissajous") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "lissajous" ? "flex" : "none" }}
+        >
+          <LissajousApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("harmonograph") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "harmonograph" ? "flex" : "none" }}
+        >
+          <HarmonographApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("rose-curves") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "rose-curves" ? "flex" : "none" }}
+        >
+          <RoseCurvesApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("superformula") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "superformula" ? "flex" : "none" }}
+        >
+          <SuperformulaApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("euler-spiral") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "euler-spiral" ? "flex" : "none" }}
+        >
+          <EulerSpiralApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("curve-stitching") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "curve-stitching" ? "flex" : "none" }}
+        >
+          <CurveStitchingApp onHome={() => setView("home")} />
         </div>
       ) : null}
     </div>

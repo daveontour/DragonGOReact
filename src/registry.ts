@@ -20,7 +20,19 @@ export type VisualizationId =
   | "prime-spirals"
   | "penrose-tiling"
   | "morellet"
-  | "morellet-tiles";
+  | "morellet-tiles"
+  | "op-art"
+  | "chladni-patterns"
+  | "flow-fields"
+  | "phyllotaxis"
+  | "reaction-diffusion"
+  | "spirograph"
+  | "lissajous"
+  | "harmonograph"
+  | "rose-curves"
+  | "superformula"
+  | "euler-spiral"
+  | "curve-stitching";
 
 export interface VisualizationMeta {
   id: VisualizationId;
@@ -145,5 +157,77 @@ export const VISUALIZATIONS: VisualizationMeta[] = [
     title: "Penrose Tiling",
     description:
       "Deflate golden triangles from a radial sun into an aperiodic rhombus tiling.",
+  },
+  {
+    id: "op-art",
+    title: "Op Art / Moiré",
+    description:
+      "Overlay two fine geometric layers — line gratings, concentric rings, or radial rays — at slightly different spacing or angle to conjure Bridget Riley-style moiré interference.",
+  },
+  {
+    id: "chladni-patterns",
+    title: "Chladni Patterns",
+    description:
+      "Compute the nodal lines of a vibrating square plate for any pair of modes, and scatter sand-like particles along them the way Chladni's original experiment did.",
+  },
+  {
+    id: "flow-fields",
+    title: "Flow Fields",
+    description:
+      "Thousands of particles drift along a hand-rolled Perlin-noise vector field, laying down trails that slowly build into an organic, painterly composition.",
+  },
+  {
+    id: "phyllotaxis",
+    title: "Phyllotaxis Spirals",
+    description:
+      "Scatter seeds outward from the center at a fixed turning angle, the golden-ratio packing rule sunflowers and pinecones use to arrange their florets.",
+  },
+  {
+    id: "reaction-diffusion",
+    title: "Reaction-Diffusion",
+    description:
+      "Simulate two virtual chemicals reacting and diffusing across a grid via the Gray-Scott model, growing the spots, stripes, and coral-like textures behind Turing's patterns.",
+  },
+  {
+    id: "spirograph",
+    title: "Spirograph",
+    description:
+      "Trace hypotrochoid and epitrochoid curves as a pen-fitted wheel rolls inside or outside a fixed ring, exactly like the classic Spirograph toy.",
+  },
+  {
+    id: "lissajous",
+    title: "Lissajous Curves",
+    description:
+      "Trace the looping figures formed by feeding two independent sine waves into the x and y axes, the classic oscilloscope pattern.",
+  },
+  {
+    id: "harmonograph",
+    title: "Harmonograph",
+    description:
+      "Simulate the decaying, drifting trace two pairs of damped pendulums would ink onto a swinging drawing table.",
+  },
+  {
+    id: "rose-curves",
+    title: "Rose Curves",
+    description:
+      "Sweep the polar formula r = cos(k·θ) through a full turn to bloom looping petal patterns, with a petal count set by the rational value of k.",
+  },
+  {
+    id: "superformula",
+    title: "Superformula",
+    description:
+      "Morph circles, polygons, stars, and organic leaf and flower outlines from Johan Gielis's single generalized polar formula.",
+  },
+  {
+    id: "euler-spiral",
+    title: "Euler Spiral",
+    description:
+      "Numerically integrate the Fresnel integrals to trace a clothoid, the curve of linearly increasing curvature used in road and rollercoaster design.",
+  },
+  {
+    id: "curve-stitching",
+    title: "Curve Stitching",
+    description:
+      "Draw only straight lines between points on a circle or two rays and watch a parabola, cardioid, or nephroid emerge from their envelope.",
   },
 ];
