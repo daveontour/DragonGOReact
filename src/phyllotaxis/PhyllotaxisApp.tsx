@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampAngleDeg,
   clampAnimateSpeed,
@@ -129,6 +130,16 @@ export default function PhyllotaxisApp({ onHome }: { onHome: () => void }) {
     setAngleDeg(GOLDEN_ANGLE_DEG);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `phyllotaxis.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -140,92 +151,102 @@ export default function PhyllotaxisApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel phyllotaxis-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="phyllotaxis-count">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="phyllotaxis-count">
                     Seed count
                   </FormLabel>
-                  <FormControl
-                    id="phyllotaxis-count"
-                    type="range"
-                    min={MIN_POINTS}
-                    max={MAX_POINTS}
-                    step={50}
-                    value={pointCount}
-                    onChange={(e) =>
-                      setPointCount(clampPointCount(Number(e.target.value)))
-                    }
-                  />
-                  <div className="phyllotaxis-value-readout">{pointCount}</div>
-                </div>
-
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="phyllotaxis-angle">
-                    Turning angle
-                  </FormLabel>
-                  <FormControl
-                    id="phyllotaxis-angle"
-                    type="range"
-                    min={MIN_ANGLE_DEG}
-                    max={MAX_ANGLE_DEG}
-                    step={0.01}
-                    value={angleDeg}
-                    onChange={(e) => setAngleDeg(clampAngleDeg(Number(e.target.value)))}
-                  />
-                  <div className="phyllotaxis-value-readout">
-                    {angleDeg.toFixed(3)}°
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="phyllotaxis-count"
+                      type="range"
+                      min={MIN_POINTS}
+                      max={MAX_POINTS}
+                      step={50}
+                      value={pointCount}
+                      onChange={(e) =>
+                        setPointCount(clampPointCount(Number(e.target.value)))
+                      }
+                    />
+                    <div className="phyllotaxis-value-readout">{pointCount}</div>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="phyllotaxis-scale">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="phyllotaxis-angle">
+                    Turning angle
+                  </FormLabel>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="phyllotaxis-angle"
+                      type="range"
+                      min={MIN_ANGLE_DEG}
+                      max={MAX_ANGLE_DEG}
+                      step={0.01}
+                      value={angleDeg}
+                      onChange={(e) => setAngleDeg(clampAngleDeg(Number(e.target.value)))}
+                    />
+                    <div className="phyllotaxis-value-readout">
+                      {angleDeg.toFixed(3)}°
+                                      </div>
+                  </div>
+                </div>
+
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="phyllotaxis-scale">
                     Spacing
                   </FormLabel>
-                  <FormControl
-                    id="phyllotaxis-scale"
-                    type="range"
-                    min={MIN_SCALE}
-                    max={MAX_SCALE}
-                    step={0.5}
-                    value={scale}
-                    onChange={(e) => setScale(clampScale(Number(e.target.value)))}
-                  />
-                  <div className="phyllotaxis-value-readout">{scale.toFixed(1)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="phyllotaxis-scale"
+                      type="range"
+                      min={MIN_SCALE}
+                      max={MAX_SCALE}
+                      step={0.5}
+                      value={scale}
+                      onChange={(e) => setScale(clampScale(Number(e.target.value)))}
+                    />
+                    <div className="phyllotaxis-value-readout">{scale.toFixed(1)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="phyllotaxis-dot">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="phyllotaxis-dot">
                     Seed size
                   </FormLabel>
-                  <FormControl
-                    id="phyllotaxis-dot"
-                    type="range"
-                    min={MIN_DOT_RADIUS}
-                    max={MAX_DOT_RADIUS}
-                    step={0.5}
-                    value={dotRadius}
-                    onChange={(e) =>
-                      setDotRadius(clampDotRadius(Number(e.target.value)))
-                    }
-                  />
-                  <div className="phyllotaxis-value-readout">{dotRadius.toFixed(1)}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="phyllotaxis-dot"
+                      type="range"
+                      min={MIN_DOT_RADIUS}
+                      max={MAX_DOT_RADIUS}
+                      step={0.5}
+                      value={dotRadius}
+                      onChange={(e) =>
+                        setDotRadius(clampDotRadius(Number(e.target.value)))
+                      }
+                    />
+                    <div className="phyllotaxis-value-readout">{dotRadius.toFixed(1)}px</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="phyllotaxis-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="phyllotaxis-color">
                     Color by
                   </FormLabel>
-                  <FormControl
-                    id="phyllotaxis-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) =>
-                      setColorMode(e.target.value as PhyllotaxisColorMode)
-                    }
-                  >
-                    <option value="radius">Distance from center</option>
-                    <option value="index">Seed order</option>
-                    <option value="mono">Single color</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="phyllotaxis-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) =>
+                        setColorMode(e.target.value as PhyllotaxisColorMode)
+                      }
+                    >
+                      <option value="radius">Distance from center</option>
+                      <option value="index">Seed order</option>
+                      <option value="mono">Single color</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -237,26 +258,26 @@ export default function PhyllotaxisApp({ onHome }: { onHome: () => void }) {
                 />
 
                 {animate ? (
-                  <div>
-                    <FormLabel
-                      className="section-label-muted"
-                      htmlFor="phyllotaxis-animate-speed"
-                    >
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label"
+                      htmlFor="phyllotaxis-animate-speed">
                       Animate speed
                     </FormLabel>
-                    <FormControl
-                      id="phyllotaxis-animate-speed"
-                      type="range"
-                      min={MIN_ANIMATE_SPEED}
-                      max={MAX_ANIMATE_SPEED}
-                      step={0.005}
-                      value={animateSpeed}
-                      onChange={(e) =>
-                        setAnimateSpeed(clampAnimateSpeed(Number(e.target.value)))
-                      }
-                    />
-                    <div className="phyllotaxis-value-readout">
-                      {animateSpeed.toFixed(3)}°/s
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="phyllotaxis-animate-speed"
+                        type="range"
+                        min={MIN_ANIMATE_SPEED}
+                        max={MAX_ANIMATE_SPEED}
+                        step={0.005}
+                        value={animateSpeed}
+                        onChange={(e) =>
+                          setAnimateSpeed(clampAnimateSpeed(Number(e.target.value)))
+                        }
+                      />
+                      <div className="phyllotaxis-value-readout">
+                        {animateSpeed.toFixed(3)}°/s
+                                          </div>
                     </div>
                   </div>
                 ) : null}
@@ -267,6 +288,9 @@ export default function PhyllotaxisApp({ onHome }: { onHome: () => void }) {
                   </Button>
                   <Button variant="secondary" onClick={resetView}>
                     Reset
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
                   </Button>
                 </Stack>
 

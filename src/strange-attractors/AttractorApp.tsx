@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   ATTRACTOR_PRESETS,
   AttractorId,
@@ -205,6 +206,16 @@ export default function AttractorApp({ onHome }: { onHome: () => void }) {
     setMapParams(randomMapParams());
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `strange-attractors.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -216,110 +227,126 @@ export default function AttractorApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel attractor-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="attractor-preset">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="attractor-preset">
                     Attractor
                   </FormLabel>
-                  <FormControl
-                    id="attractor-preset"
-                    as="select"
-                    value={presetId}
-                    onChange={(e) => setPresetId(e.target.value as AttractorId)}
-                  >
-                    {Object.values(ATTRACTOR_PRESETS).map((p) => (
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="attractor-preset"
+                      as="select"
+                      value={presetId}
+                      onChange={(e) => setPresetId(e.target.value as AttractorId)}
+                    >
+                      {Object.values(ATTRACTOR_PRESETS).map((p) => (
                       <option key={p.id} value={p.id}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </FormControl>
+                      {p.name}
+                    </option>
+                      ))}
+                    </FormControl>
+                  </div>
                 </div>
 
                 {presetId === "lorenz" ? (
-                  <div>
-                    <FormLabel className="section-label-muted" htmlFor="attractor-rho">
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label" htmlFor="attractor-rho">
                       Rayleigh number (ρ)
                     </FormLabel>
-                    <FormControl
-                      id="attractor-rho"
-                      type="range"
-                      min={MIN_LORENZ_RHO}
-                      max={MAX_LORENZ_RHO}
-                      step={0.5}
-                      value={rho}
-                      onChange={(e) => setRho(clampLorenzRho(Number(e.target.value)))}
-                    />
-                    <div className="attractor-value-readout">{rho.toFixed(1)}</div>
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="attractor-rho"
+                        type="range"
+                        min={MIN_LORENZ_RHO}
+                        max={MAX_LORENZ_RHO}
+                        step={0.5}
+                        value={rho}
+                        onChange={(e) => setRho(clampLorenzRho(Number(e.target.value)))}
+                      />
+                      <div className="attractor-value-readout">{rho.toFixed(1)}</div>
+                    </div>
                   </div>
                 ) : null}
 
                 {presetId === "rossler" ? (
-                  <div>
-                    <FormLabel className="section-label-muted" htmlFor="attractor-c">
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label" htmlFor="attractor-c">
                       Fold parameter (c)
                     </FormLabel>
-                    <FormControl
-                      id="attractor-c"
-                      type="range"
-                      min={MIN_ROSSLER_C}
-                      max={MAX_ROSSLER_C}
-                      step={0.1}
-                      value={rosslerC}
-                      onChange={(e) => setRosslerC(clampRosslerC(Number(e.target.value)))}
-                    />
-                    <div className="attractor-value-readout">{rosslerC.toFixed(1)}</div>
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="attractor-c"
+                        type="range"
+                        min={MIN_ROSSLER_C}
+                        max={MAX_ROSSLER_C}
+                        step={0.1}
+                        value={rosslerC}
+                        onChange={(e) => setRosslerC(clampRosslerC(Number(e.target.value)))}
+                      />
+                      <div className="attractor-value-readout">{rosslerC.toFixed(1)}</div>
+                    </div>
                   </div>
                 ) : null}
 
                 {preset.kind === "map" ? (
                   <>
                     {(["a", "b", "c", "d"] as const).map((key) => (
-                      <div key={key}>
-                        <FormLabel className="section-label-muted" htmlFor={`attractor-${key}`}>
+                      <div key={key} className="viz-control-row">
+                        <FormLabel className="section-label-muted viz-control-row-label" htmlFor={`attractor-${key}`}>
                           Parameter {key}
                         </FormLabel>
-                        <FormControl
-                          id={`attractor-${key}`}
-                          type="range"
-                          min={-3}
-                          max={3}
-                          step={0.01}
-                          value={mapParams[key]}
-                          onChange={(e) =>
-                            setMapParams({
-                              ...mapParams,
-                              [key]: Number(e.target.value),
-                            })
-                          }
-                        />
-                        <div className="attractor-value-readout">
-                          {mapParams[key].toFixed(2)}
+                        <div className="viz-control-row-control">
+                          <FormControl
+                            id={`attractor-${key}`}
+                            type="range"
+                            min={-3}
+                            max={3}
+                            step={0.01}
+                            value={mapParams[key]}
+                            onChange={(e) =>
+                              setMapParams({
+                                ...mapParams,
+                                [key]: Number(e.target.value),
+                              })
+                            }
+                          />
+                          <div className="attractor-value-readout">
+                            {mapParams[key].toFixed(2)}
+                            </div>
                         </div>
                       </div>
                     ))}
 
-                    <div>
-                      <FormLabel className="section-label-muted" htmlFor="attractor-iterations">
+                    <div className="viz-control-row">
+                      <FormLabel className="section-label-muted viz-control-row-label" htmlFor="attractor-iterations">
                         Iterations
                       </FormLabel>
-                      <FormControl
-                        id="attractor-iterations"
-                        type="range"
-                        min={MIN_MAP_ITERATIONS}
-                        max={MAX_MAP_ITERATIONS}
-                        step={10000}
-                        value={iterations}
-                        onChange={(e) =>
-                          setIterations(clampMapIterations(Number(e.target.value)))
-                        }
-                      />
-                      <div className="attractor-value-readout">
-                        {iterations.toLocaleString("en-US")}
+                      <div className="viz-control-row-control">
+                        <FormControl
+                          id="attractor-iterations"
+                          type="range"
+                          min={MIN_MAP_ITERATIONS}
+                          max={MAX_MAP_ITERATIONS}
+                          step={10000}
+                          value={iterations}
+                          onChange={(e) =>
+                            setIterations(clampMapIterations(Number(e.target.value)))
+                          }
+                        />
+                        <div className="attractor-value-readout">
+                          {iterations.toLocaleString("en-US")}
+                                              </div>
                       </div>
                     </div>
 
-                    <Button variant="secondary" onClick={randomizeMap}>
+                    <Stack direction="horizontal" gap={2}>
+                      <Button variant="secondary" onClick={randomizeMap}>
                       Randomize parameters
-                    </Button>
+                      </Button>
+                      <Button variant="secondary" onClick={downloadPng}>
+                      Download PNG
+                      </Button>
+                    </Stack>
+
                     {rendering ? (
                       <p className="attractor-hint">Rendering…</p>
                     ) : null}
@@ -335,11 +362,22 @@ export default function AttractorApp({ onHome }: { onHome: () => void }) {
                   </div>
                 )}
 
+                <p className="attractor-hint">
+                  A strange attractor is the shape a chaotic dynamical
+                  system's path settles onto: bounded — it never flies off
+                  to infinity — and never exactly periodic, yet produced by
+                  entirely deterministic equations with no randomness
+                  anywhere. Two starting points a hair's width apart
+                  diverge exponentially fast, the "butterfly effect" that
+                  makes long-range prediction impossible, while both stay
+                  confined to the same intricately folded, fractal surface
+                  forever — infinitely detailed, but never crossing itself.
+                </p>
                 <p className="attractor-hint">{preset.description}</p>
                 <p className="attractor-hint">
                   {preset.kind === "flow"
-                    ? "A single point is integrated forward through the system's differential equations; its recent path is drawn as a fading trail."
-                    : "A single point is iterated millions of times through the map; each visited pixel brightens, revealing the attractor's shape as a density cloud."}
+                    ? "A single point is integrated forward through the system's differential equations with 4th-order Runge-Kutta integration; its recent path is drawn as a fading trail, so what's on screen is one continuous trajectory threading through the attractor over time."
+                    : "A single point is iterated millions of times through the map; each visited pixel brightens, building up a density cloud that reveals the attractor's full shape all at once, rather than tracing a single moving path."}
                 </p>
               </Stack>
             </div>

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampFrequency,
   clampPhase,
@@ -104,6 +105,16 @@ export default function LissajousApp({ onHome }: { onHome: () => void }) {
     setAnimate(false);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `lissajous.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -115,83 +126,93 @@ export default function LissajousApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel lissajous-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="lissajous-freq-a">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="lissajous-freq-a">
                     Frequency a (x)
                   </FormLabel>
-                  <FormControl
-                    id="lissajous-freq-a"
-                    type="range"
-                    min={MIN_FREQUENCY}
-                    max={MAX_FREQUENCY}
-                    step={1}
-                    value={freqA}
-                    onChange={(e) => setFreqA(clampFrequency(Number(e.target.value)))}
-                  />
-                  <div className="lissajous-value-readout">{freqA}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="lissajous-freq-a"
+                      type="range"
+                      min={MIN_FREQUENCY}
+                      max={MAX_FREQUENCY}
+                      step={1}
+                      value={freqA}
+                      onChange={(e) => setFreqA(clampFrequency(Number(e.target.value)))}
+                    />
+                    <div className="lissajous-value-readout">{freqA}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="lissajous-freq-b">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="lissajous-freq-b">
                     Frequency b (y)
                   </FormLabel>
-                  <FormControl
-                    id="lissajous-freq-b"
-                    type="range"
-                    min={MIN_FREQUENCY}
-                    max={MAX_FREQUENCY}
-                    step={1}
-                    value={freqB}
-                    onChange={(e) => setFreqB(clampFrequency(Number(e.target.value)))}
-                  />
-                  <div className="lissajous-value-readout">{freqB}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="lissajous-freq-b"
+                      type="range"
+                      min={MIN_FREQUENCY}
+                      max={MAX_FREQUENCY}
+                      step={1}
+                      value={freqB}
+                      onChange={(e) => setFreqB(clampFrequency(Number(e.target.value)))}
+                    />
+                    <div className="lissajous-value-readout">{freqB}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="lissajous-phase">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="lissajous-phase">
                     Phase δ
                   </FormLabel>
-                  <FormControl
-                    id="lissajous-phase"
-                    type="range"
-                    min={MIN_PHASE}
-                    max={MAX_PHASE}
-                    step={0.01}
-                    value={phase}
-                    onChange={(e) => setPhase(clampPhase(Number(e.target.value)))}
-                  />
-                  <div className="lissajous-value-readout">{phase.toFixed(2)} rad</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="lissajous-phase"
+                      type="range"
+                      min={MIN_PHASE}
+                      max={MAX_PHASE}
+                      step={0.01}
+                      value={phase}
+                      onChange={(e) => setPhase(clampPhase(Number(e.target.value)))}
+                    />
+                    <div className="lissajous-value-readout">{phase.toFixed(2)} rad</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="lissajous-width">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="lissajous-width">
                     Line thickness
                   </FormLabel>
-                  <FormControl
-                    id="lissajous-width"
-                    type="range"
-                    min={0.5}
-                    max={4}
-                    step={0.5}
-                    value={lineWidth}
-                    onChange={(e) => setLineWidth(Number(e.target.value))}
-                  />
-                  <div className="lissajous-value-readout">{lineWidth}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="lissajous-width"
+                      type="range"
+                      min={0.5}
+                      max={4}
+                      step={0.5}
+                      value={lineWidth}
+                      onChange={(e) => setLineWidth(Number(e.target.value))}
+                    />
+                    <div className="lissajous-value-readout">{lineWidth}px</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="lissajous-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="lissajous-color">
                     Color mode
                   </FormLabel>
-                  <FormControl
-                    id="lissajous-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) => setColorMode(e.target.value as LissajousColorMode)}
-                  >
-                    <option value="mono">Single color</option>
-                    <option value="rainbow">Rainbow along curve</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="lissajous-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) => setColorMode(e.target.value as LissajousColorMode)}
+                    >
+                      <option value="mono">Single color</option>
+                      <option value="rainbow">Rainbow along curve</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -202,9 +223,15 @@ export default function LissajousApp({ onHome }: { onHome: () => void }) {
                   onChange={(e) => setAnimate(e.target.checked)}
                 />
 
-                <Button variant="secondary" onClick={resetView}>
+                <Stack direction="horizontal" gap={2}>
+                  <Button variant="secondary" onClick={resetView}>
                   Reset
-                </Button>
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                  </Button>
+                </Stack>
+
 
                 <p className="lissajous-hint">
                   Independently oscillating the x and y coordinates as sine

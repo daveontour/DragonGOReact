@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   CAInitialCondition,
   clampCARule,
@@ -54,6 +55,16 @@ export default function ElementaryCAApp({ onHome }: { onHome: () => void }) {
     return () => observer.disconnect();
   }, [draw]);
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `elementary-ca.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -65,20 +76,22 @@ export default function ElementaryCAApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel elementary-ca-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="ca-rule">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="ca-rule">
                     Wolfram rule number
                   </FormLabel>
-                  <FormControl
-                    id="ca-rule"
-                    type="range"
-                    min={MIN_CA_RULE}
-                    max={MAX_CA_RULE}
-                    step={1}
-                    value={rule}
-                    onChange={(e) => setRule(clampCARule(Number(e.target.value)))}
-                  />
-                  <div className="elementary-ca-value-readout">Rule {rule}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="ca-rule"
+                      type="range"
+                      min={MIN_CA_RULE}
+                      max={MAX_CA_RULE}
+                      step={1}
+                      value={rule}
+                      onChange={(e) => setRule(clampCARule(Number(e.target.value)))}
+                    />
+                    <div className="elementary-ca-value-readout">Rule {rule}</div>
+                  </div>
                 </div>
 
                 <div>
@@ -97,21 +110,23 @@ export default function ElementaryCAApp({ onHome }: { onHome: () => void }) {
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="ca-condition">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="ca-condition">
                     Starting row
                   </FormLabel>
-                  <FormControl
-                    id="ca-condition"
-                    as="select"
-                    value={condition}
-                    onChange={(e) =>
-                      setCondition(e.target.value as CAInitialCondition)
-                    }
-                  >
-                    <option value="single">Single cell</option>
-                    <option value="random">Random noise</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="ca-condition"
+                      as="select"
+                      value={condition}
+                      onChange={(e) =>
+                        setCondition(e.target.value as CAInitialCondition)
+                      }
+                    >
+                      <option value="single">Single cell</option>
+                      <option value="random">Random noise</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 {condition === "random" ? (
@@ -122,6 +137,11 @@ export default function ElementaryCAApp({ onHome }: { onHome: () => void }) {
                     New random seed
                   </Button>
                 ) : null}
+
+                <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                </Button>
+
 
                 <p className="elementary-ca-hint">
                   Each row is generated from the one above it: every cell

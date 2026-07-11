@@ -32,7 +32,29 @@ export type VisualizationId =
   | "rose-curves"
   | "superformula"
   | "euler-spiral"
-  | "curve-stitching";
+  | "curve-stitching"
+  | "langtons-ant"
+  | "chaos-game"
+  | "diffusion-limited-aggregation"
+  | "abelian-sandpile"
+  | "gravitational-assist"
+  | "truchet-tiles"
+  | "julia-set"
+  | "wireworld"
+  | "maze-generator"
+  | "pythagoras-tree"
+  | "apollonian-gasket"
+  | "double-pendulum"
+  | "magnetic-pendulum"
+  | "triple-pendulum"
+  | "bezier-curves"
+  | "percolation"
+  | "poisson-disk"
+  | "kaleidoscope"
+  | "boids"
+  | "astar-pathfinding"
+  | "wave-function-collapse"
+  | "fractal-terrain";
 
 export interface VisualizationMeta {
   id: VisualizationId;
@@ -229,5 +251,137 @@ export const VISUALIZATIONS: VisualizationMeta[] = [
     title: "Curve Stitching",
     description:
       "Draw only straight lines between points on a circle or two rays and watch a parabola, cardioid, or nephroid emerge from their envelope.",
+  },
+  {
+    id: "langtons-ant",
+    title: "Langton's Ant",
+    description:
+      "Watch a single ant turn left or right based on the color beneath it, its chaotic scribbling eventually resolving into an endlessly repeating diagonal highway.",
+  },
+  {
+    id: "chaos-game",
+    title: "Chaos Game",
+    description:
+      "Jump repeatedly toward random polygon vertices — or Barnsley's four weighted transforms — to watch a Sierpinski triangle, restricted-polygon lattice, or lifelike fern frond emerge from pure randomness.",
+  },
+  {
+    id: "diffusion-limited-aggregation",
+    title: "Diffusion-Limited Aggregation",
+    description:
+      "Release random-walking particles that stick the moment they touch the growing structure, building the same branching dendrites seen in frost, minerals, and lightning.",
+  },
+  {
+    id: "abelian-sandpile",
+    title: "Abelian Sandpile",
+    description:
+      "Drop a huge pile of grains on a single cell and let cascading four-grain topples relax it into an intricate, self-similar fractal — a textbook case of self-organized criticality.",
+  },
+  {
+    id: "gravitational-assist",
+    title: "Gravitational Assist",
+    description:
+      "Fly a spacecraft past a moving planet on a hyperbolic arc — adjust the encounter angle to see how a slingshot steals or donates momentum and changes the craft's speed.",
+  },
+  {
+    id: "truchet-tiles",
+    title: "Truchet Tiles",
+    description:
+      "Rotate a single simple square tile at random across a grid and watch purely local randomness weave sweeping loops, faux mazes, and moiré texture with no coordination between neighbors.",
+  },
+  {
+    id: "julia-set",
+    title: "Julia Sets",
+    description:
+      "Fix a complex constant c and test every point of the plane as its own starting value under z→z²+c, revealing the self-contained fractal companion to the Mandelbrot set.",
+  },
+  {
+    id: "wireworld",
+    title: "Wireworld / Brian's Brain",
+    description:
+      "Simulate digital logic gates from four humble cell states, or switch to Brian's Brain's unstable three-state rule that perpetually spawns gliders and sparks.",
+  },
+  {
+    id: "maze-generator",
+    title: "Maze Generation & Solving",
+    description:
+      "Carve a perfect maze with a randomized depth-first search, then watch breadth-first search's expanding frontier find the guaranteed-shortest path through it.",
+  },
+  {
+    id: "pythagoras-tree",
+    title: "Pythagoras Tree",
+    description:
+      "Erect a right triangle on a square's edge and two smaller squares on its other sides, then recurse — a visual proof of the Pythagorean theorem repeated at every scale.",
+  },
+  {
+    id: "apollonian-gasket",
+    title: "Apollonian Gasket",
+    description:
+      "Apply Descartes' Circle Theorem recursively, inscribing a tangent circle in every gap left behind, to pack infinitely many shrinking circles with zero space between them.",
+  },
+  {
+    id: "double-pendulum",
+    title: "Double Pendulum",
+    description:
+      "Couple two rigid rods under gravity and watch a textbook-simple system turn fully chaotic, with two near-identical starts visibly diverging within seconds.",
+  },
+  {
+    id: "magnetic-pendulum",
+    title: "Magnetic Pendulum",
+    description:
+      "Swing a damped pendulum over three fixed magnets and color every possible starting point by which magnet it eventually settles near, revealing fractal basins of attraction.",
+  },
+  {
+    id: "triple-pendulum",
+    title: "Triple Pendulum",
+    description:
+      "Add a third rigid rod to the double pendulum, trading its tidy closed-form equations for a 3×3 mass-matrix solve at every instant and even faster-blooming chaos.",
+  },
+  {
+    id: "bezier-curves",
+    title: "Bézier Curves",
+    description:
+      "Drag control points and watch De Casteljau's recursive lerp construction sweep out the curve, one converging level of scaffolding at a time.",
+  },
+  {
+    id: "percolation",
+    title: "Percolation Theory",
+    description:
+      "Open each cell independently at probability p and watch a spanning cluster suddenly appear as p crosses the critical threshold — a textbook phase transition.",
+  },
+  {
+    id: "poisson-disk",
+    title: "Poisson Disk Sampling",
+    description:
+      "Scatter points with Bridson's algorithm so no two ever land closer than a minimum distance, producing natural-looking 'blue noise' instead of clumpy randomness.",
+  },
+  {
+    id: "kaleidoscope",
+    title: "Kaleidoscope",
+    description:
+      "Draw with the mouse and watch every stroke reflect through N-fold rotational and mirror symmetry live, building a kaleidoscope pattern as you go.",
+  },
+  {
+    id: "boids",
+    title: "Boids (Flocking)",
+    description:
+      "Watch convincing flocking emerge from three purely local rules — separation, alignment, cohesion — with no boid aware of the flock as a whole.",
+  },
+  {
+    id: "astar-pathfinding",
+    title: "A* Pathfinding",
+    description:
+      "Paint walls and difficult terrain, then watch A* expand the lowest-cost frontier outward to find and highlight the guaranteed-optimal path.",
+  },
+  {
+    id: "wave-function-collapse",
+    title: "Wave Function Collapse",
+    description:
+      "Collapse a grid of superposed pipe-tile possibilities one cell at a time, propagating socket constraints outward until a coherent tiling emerges.",
+  },
+  {
+    id: "fractal-terrain",
+    title: "Fractal Terrain",
+    description:
+      "Grow a mountain range from four random corners with the diamond-square midpoint-displacement algorithm, tuning roughness to go from jagged peaks to rolling hills.",
   },
 ];

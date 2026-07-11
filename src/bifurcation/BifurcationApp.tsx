@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   BifurcationView,
   clampBifurcationIterations,
@@ -88,6 +89,16 @@ export default function BifurcationApp({ onHome }: { onHome: () => void }) {
     setIterations(DEFAULT_BIFURCATION_ITERATIONS);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `bifurcation.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -99,27 +110,27 @@ export default function BifurcationApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel bifurcation-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel
-                    className="section-label-muted"
-                    htmlFor="bifurcation-iterations"
-                  >
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label"
+                    htmlFor="bifurcation-iterations">
                     Plotted iterations per column
                   </FormLabel>
-                  <FormControl
-                    id="bifurcation-iterations"
-                    type="range"
-                    min={MIN_BIFURCATION_ITERATIONS}
-                    max={MAX_BIFURCATION_ITERATIONS}
-                    step={10}
-                    value={iterations}
-                    onChange={(e) =>
-                      setIterations(
-                        clampBifurcationIterations(Number(e.target.value))
-                      )
-                    }
-                  />
-                  <div className="bifurcation-value-readout">{iterations}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="bifurcation-iterations"
+                      type="range"
+                      min={MIN_BIFURCATION_ITERATIONS}
+                      max={MAX_BIFURCATION_ITERATIONS}
+                      step={10}
+                      value={iterations}
+                      onChange={(e) =>
+                        setIterations(
+                          clampBifurcationIterations(Number(e.target.value))
+                        )
+                      }
+                    />
+                    <div className="bifurcation-value-readout">{iterations}</div>
+                  </div>
                 </div>
 
                 <div className="bifurcation-results">
@@ -131,9 +142,15 @@ export default function BifurcationApp({ onHome }: { onHome: () => void }) {
                   </div>
                 </div>
 
-                <Button variant="secondary" onClick={resetView}>
-                  Reset view
-                </Button>
+                <Stack direction="horizontal" gap={2}>
+                  <Button variant="secondary" onClick={resetView}>
+                    Reset view
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
+                  </Button>
+                </Stack>
+
 
                 <p className="bifurcation-hint">
                   Each column plots where x settles after iterating the

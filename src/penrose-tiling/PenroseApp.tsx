@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FormControl, FormLabel, Stack } from "react-bootstrap";
+import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampPenroseDivisions,
   DEFAULT_PENROSE_DIVISIONS,
@@ -84,6 +85,16 @@ export default function PenroseApp({ onHome }: { onHome: () => void }) {
     return () => observer.disconnect();
   }, [draw]);
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `penrose-tiling.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -95,23 +106,25 @@ export default function PenroseApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel penrose-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="penrose-divisions">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="penrose-divisions">
                     Subdivisions
                   </FormLabel>
-                  <FormControl
-                    id="penrose-divisions"
-                    type="range"
-                    min={MIN_PENROSE_DIVISIONS}
-                    max={MAX_PENROSE_DIVISIONS}
-                    step={1}
-                    value={divisions}
-                    onChange={(e) =>
-                      setDivisions(clampPenroseDivisions(Number(e.target.value)))
-                    }
-                  />
-                  <div className="penrose-value-readout">
-                    {divisions} / {MAX_PENROSE_DIVISIONS}
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="penrose-divisions"
+                      type="range"
+                      min={MIN_PENROSE_DIVISIONS}
+                      max={MAX_PENROSE_DIVISIONS}
+                      step={1}
+                      value={divisions}
+                      onChange={(e) =>
+                        setDivisions(clampPenroseDivisions(Number(e.target.value)))
+                      }
+                    />
+                    <div className="penrose-value-readout">
+                      {divisions} / {MAX_PENROSE_DIVISIONS}
+                                      </div>
                   </div>
                 </div>
 
@@ -129,6 +142,11 @@ export default function PenroseApp({ onHome }: { onHome: () => void }) {
                     </span>
                   </div>
                 </div>
+
+                <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                </Button>
+
 
                 <p className="penrose-hint">
                   Ten golden triangles are arranged in a &quot;sun&quot; around

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampDriftSpeed,
   clampNoiseScale,
@@ -148,6 +149,16 @@ export default function FlowFieldsApp({ onHome }: { onHome: () => void }) {
     needsReseedRef.current = true;
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `flow-fields.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -159,138 +170,150 @@ export default function FlowFieldsApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel flow-fields-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="flow-fields-count">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="flow-fields-count">
                     Particle count
                   </FormLabel>
-                  <FormControl
-                    id="flow-fields-count"
-                    type="range"
-                    min={MIN_PARTICLES}
-                    max={MAX_PARTICLES}
-                    step={100}
-                    value={particleCount}
-                    onChange={(e) =>
-                      setParticleCount(clampParticleCount(Number(e.target.value)))
-                    }
-                  />
-                  <div className="flow-fields-value-readout">{particleCount}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="flow-fields-count"
+                      type="range"
+                      min={MIN_PARTICLES}
+                      max={MAX_PARTICLES}
+                      step={100}
+                      value={particleCount}
+                      onChange={(e) =>
+                        setParticleCount(clampParticleCount(Number(e.target.value)))
+                      }
+                    />
+                    <div className="flow-fields-value-readout">{particleCount}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="flow-fields-scale">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="flow-fields-scale">
                     Noise scale
                   </FormLabel>
-                  <FormControl
-                    id="flow-fields-scale"
-                    type="range"
-                    min={MIN_NOISE_SCALE}
-                    max={MAX_NOISE_SCALE}
-                    step={0.001}
-                    value={noiseScale}
-                    onChange={(e) =>
-                      setNoiseScale(clampNoiseScale(Number(e.target.value)))
-                    }
-                  />
-                  <div className="flow-fields-value-readout">
-                    {noiseScale.toFixed(3)}
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="flow-fields-scale"
+                      type="range"
+                      min={MIN_NOISE_SCALE}
+                      max={MAX_NOISE_SCALE}
+                      step={0.001}
+                      value={noiseScale}
+                      onChange={(e) =>
+                        setNoiseScale(clampNoiseScale(Number(e.target.value)))
+                      }
+                    />
+                    <div className="flow-fields-value-readout">
+                      {noiseScale.toFixed(3)}
+                                      </div>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel
-                    className="section-label-muted"
-                    htmlFor="flow-fields-turbulence"
-                  >
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label"
+                    htmlFor="flow-fields-turbulence">
                     Turbulence
                   </FormLabel>
-                  <FormControl
-                    id="flow-fields-turbulence"
-                    type="range"
-                    min={MIN_TURBULENCE}
-                    max={MAX_TURBULENCE}
-                    step={0.5}
-                    value={turbulence}
-                    onChange={(e) =>
-                      setTurbulence(clampTurbulence(Number(e.target.value)))
-                    }
-                  />
-                  <div className="flow-fields-value-readout">
-                    {turbulence.toFixed(1)}×π
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="flow-fields-turbulence"
+                      type="range"
+                      min={MIN_TURBULENCE}
+                      max={MAX_TURBULENCE}
+                      step={0.5}
+                      value={turbulence}
+                      onChange={(e) =>
+                        setTurbulence(clampTurbulence(Number(e.target.value)))
+                      }
+                    />
+                    <div className="flow-fields-value-readout">
+                      {turbulence.toFixed(1)}×π
+                                      </div>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="flow-fields-speed">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="flow-fields-speed">
                     Speed
                   </FormLabel>
-                  <FormControl
-                    id="flow-fields-speed"
-                    type="range"
-                    min={MIN_SPEED}
-                    max={MAX_SPEED}
-                    step={0.1}
-                    value={speed}
-                    onChange={(e) => setSpeed(clampSpeed(Number(e.target.value)))}
-                  />
-                  <div className="flow-fields-value-readout">{speed.toFixed(1)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="flow-fields-speed"
+                      type="range"
+                      min={MIN_SPEED}
+                      max={MAX_SPEED}
+                      step={0.1}
+                      value={speed}
+                      onChange={(e) => setSpeed(clampSpeed(Number(e.target.value)))}
+                    />
+                    <div className="flow-fields-value-readout">{speed.toFixed(1)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="flow-fields-drift">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="flow-fields-drift">
                     Drift speed
                   </FormLabel>
-                  <FormControl
-                    id="flow-fields-drift"
-                    type="range"
-                    min={MIN_DRIFT_SPEED}
-                    max={MAX_DRIFT_SPEED}
-                    step={0.05}
-                    value={driftSpeed}
-                    onChange={(e) =>
-                      setDriftSpeed(clampDriftSpeed(Number(e.target.value)))
-                    }
-                  />
-                  <div className="flow-fields-value-readout">
-                    {driftSpeed.toFixed(2)}
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="flow-fields-drift"
+                      type="range"
+                      min={MIN_DRIFT_SPEED}
+                      max={MAX_DRIFT_SPEED}
+                      step={0.05}
+                      value={driftSpeed}
+                      onChange={(e) =>
+                        setDriftSpeed(clampDriftSpeed(Number(e.target.value)))
+                      }
+                    />
+                    <div className="flow-fields-value-readout">
+                      {driftSpeed.toFixed(2)}
+                                      </div>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="flow-fields-trail">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="flow-fields-trail">
                     Trail opacity
                   </FormLabel>
-                  <FormControl
-                    id="flow-fields-trail"
-                    type="range"
-                    min={MIN_TRAIL_ALPHA}
-                    max={MAX_TRAIL_ALPHA}
-                    step={0.01}
-                    value={trailAlpha}
-                    onChange={(e) =>
-                      setTrailAlpha(clampTrailAlpha(Number(e.target.value)))
-                    }
-                  />
-                  <div className="flow-fields-value-readout">
-                    {trailAlpha.toFixed(2)}
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="flow-fields-trail"
+                      type="range"
+                      min={MIN_TRAIL_ALPHA}
+                      max={MAX_TRAIL_ALPHA}
+                      step={0.01}
+                      value={trailAlpha}
+                      onChange={(e) =>
+                        setTrailAlpha(clampTrailAlpha(Number(e.target.value)))
+                      }
+                    />
+                    <div className="flow-fields-value-readout">
+                      {trailAlpha.toFixed(2)}
+                                      </div>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="flow-fields-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="flow-fields-color">
                     Color mode
                   </FormLabel>
-                  <FormControl
-                    id="flow-fields-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) =>
-                      setColorMode(e.target.value as FlowFieldColorMode)
-                    }
-                  >
-                    <option value="ink">Ink on paper</option>
-                    <option value="angle-hue">Hue by flow angle</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="flow-fields-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) =>
+                        setColorMode(e.target.value as FlowFieldColorMode)
+                      }
+                    >
+                      <option value="ink">Ink on paper</option>
+                      <option value="angle-hue">Hue by flow angle</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <Stack direction="horizontal" gap={2}>
@@ -302,6 +325,9 @@ export default function FlowFieldsApp({ onHome }: { onHome: () => void }) {
                   </Button>
                   <Button variant="outline-light" onClick={regenerate}>
                     New random field
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
                   </Button>
                 </Stack>
 

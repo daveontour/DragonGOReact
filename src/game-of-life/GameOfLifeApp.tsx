@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampCellPixelSize,
   clampSpeed,
@@ -309,6 +310,16 @@ export default function GameOfLifeApp({ onHome }: { onHome: () => void }) {
     draw();
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `game-of-life.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -330,59 +341,68 @@ export default function GameOfLifeApp({ onHome }: { onHome: () => void }) {
                   <Button variant="outline-light" onClick={step} disabled={running}>
                     Step
                   </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
+                  </Button>
                 </Stack>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="life-speed">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="life-speed">
                     Speed (generations/sec)
                   </FormLabel>
-                  <FormControl
-                    id="life-speed"
-                    type="range"
-                    min={MIN_SPEED}
-                    max={MAX_SPEED}
-                    step={1}
-                    value={speed}
-                    onChange={(e) => setSpeed(clampSpeed(Number(e.target.value)))}
-                  />
-                  <div className="life-value-readout">{speed}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="life-speed"
+                      type="range"
+                      min={MIN_SPEED}
+                      max={MAX_SPEED}
+                      step={1}
+                      value={speed}
+                      onChange={(e) => setSpeed(clampSpeed(Number(e.target.value)))}
+                    />
+                    <div className="life-value-readout">{speed}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="life-cell-size">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="life-cell-size">
                     Cell size
                   </FormLabel>
-                  <FormControl
-                    id="life-cell-size"
-                    type="range"
-                    min={MIN_CELL_PX}
-                    max={MAX_CELL_PX}
-                    step={1}
-                    value={cellPixelSize}
-                    onChange={(e) =>
-                      setCellPixelSize(clampCellPixelSize(Number(e.target.value)))
-                    }
-                  />
-                  <div className="life-value-readout">{cellPixelSize}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="life-cell-size"
+                      type="range"
+                      min={MIN_CELL_PX}
+                      max={MAX_CELL_PX}
+                      step={1}
+                      value={cellPixelSize}
+                      onChange={(e) =>
+                        setCellPixelSize(clampCellPixelSize(Number(e.target.value)))
+                      }
+                    />
+                    <div className="life-value-readout">{cellPixelSize}px</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="life-tool">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="life-tool">
                     Click tool
                   </FormLabel>
-                  <FormControl
-                    id="life-tool"
-                    as="select"
-                    value={tool}
-                    onChange={(e) => setTool(e.target.value as DrawTool)}
-                  >
-                    <option value="toggle">Toggle single cell</option>
-                    {Object.values(LIFE_PATTERNS).map((p) => (
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="life-tool"
+                      as="select"
+                      value={tool}
+                      onChange={(e) => setTool(e.target.value as DrawTool)}
+                    >
+                      <option value="toggle">Toggle single cell</option>
+                      {Object.values(LIFE_PATTERNS).map((p) => (
                       <option key={p.id} value={p.id}>
-                        Stamp: {p.name}
-                      </option>
-                    ))}
-                  </FormControl>
+                      Stamp: {p.name}
+                    </option>
+                      ))}
+                    </FormControl>
+                  </div>
                 </div>
 
                 <Stack direction="horizontal" gap={2}>

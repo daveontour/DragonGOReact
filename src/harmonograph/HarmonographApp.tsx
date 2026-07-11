@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampDamping,
   clampFrequency,
@@ -132,6 +133,16 @@ export default function HarmonographApp({ onHome }: { onHome: () => void }) {
     setDamping(params.damping);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `harmonograph.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -143,133 +154,149 @@ export default function HarmonographApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel harmonograph-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="harmonograph-f1">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="harmonograph-f1">
                     Pendulum frequency f1 (x)
                   </FormLabel>
-                  <FormControl
-                    id="harmonograph-f1"
-                    type="range"
-                    min={MIN_FREQUENCY}
-                    max={MAX_FREQUENCY}
-                    step={0.001}
-                    value={f1}
-                    onChange={(e) => setF1(clampFrequency(Number(e.target.value)))}
-                  />
-                  <div className="harmonograph-value-readout">{f1.toFixed(3)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="harmonograph-f1"
+                      type="range"
+                      min={MIN_FREQUENCY}
+                      max={MAX_FREQUENCY}
+                      step={0.001}
+                      value={f1}
+                      onChange={(e) => setF1(clampFrequency(Number(e.target.value)))}
+                    />
+                    <div className="harmonograph-value-readout">{f1.toFixed(3)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="harmonograph-f2">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="harmonograph-f2">
                     Pendulum frequency f2 (x)
                   </FormLabel>
-                  <FormControl
-                    id="harmonograph-f2"
-                    type="range"
-                    min={MIN_FREQUENCY}
-                    max={MAX_FREQUENCY}
-                    step={0.001}
-                    value={f2}
-                    onChange={(e) => setF2(clampFrequency(Number(e.target.value)))}
-                  />
-                  <div className="harmonograph-value-readout">{f2.toFixed(3)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="harmonograph-f2"
+                      type="range"
+                      min={MIN_FREQUENCY}
+                      max={MAX_FREQUENCY}
+                      step={0.001}
+                      value={f2}
+                      onChange={(e) => setF2(clampFrequency(Number(e.target.value)))}
+                    />
+                    <div className="harmonograph-value-readout">{f2.toFixed(3)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="harmonograph-f3">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="harmonograph-f3">
                     Pendulum frequency f3 (y)
                   </FormLabel>
-                  <FormControl
-                    id="harmonograph-f3"
-                    type="range"
-                    min={MIN_FREQUENCY}
-                    max={MAX_FREQUENCY}
-                    step={0.001}
-                    value={f3}
-                    onChange={(e) => setF3(clampFrequency(Number(e.target.value)))}
-                  />
-                  <div className="harmonograph-value-readout">{f3.toFixed(3)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="harmonograph-f3"
+                      type="range"
+                      min={MIN_FREQUENCY}
+                      max={MAX_FREQUENCY}
+                      step={0.001}
+                      value={f3}
+                      onChange={(e) => setF3(clampFrequency(Number(e.target.value)))}
+                    />
+                    <div className="harmonograph-value-readout">{f3.toFixed(3)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="harmonograph-f4">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="harmonograph-f4">
                     Pendulum frequency f4 (y)
                   </FormLabel>
-                  <FormControl
-                    id="harmonograph-f4"
-                    type="range"
-                    min={MIN_FREQUENCY}
-                    max={MAX_FREQUENCY}
-                    step={0.001}
-                    value={f4}
-                    onChange={(e) => setF4(clampFrequency(Number(e.target.value)))}
-                  />
-                  <div className="harmonograph-value-readout">{f4.toFixed(3)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="harmonograph-f4"
+                      type="range"
+                      min={MIN_FREQUENCY}
+                      max={MAX_FREQUENCY}
+                      step={0.001}
+                      value={f4}
+                      onChange={(e) => setF4(clampFrequency(Number(e.target.value)))}
+                    />
+                    <div className="harmonograph-value-readout">{f4.toFixed(3)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="harmonograph-p1">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="harmonograph-p1">
                     Phase x
                   </FormLabel>
-                  <FormControl
-                    id="harmonograph-p1"
-                    type="range"
-                    min={MIN_PHASE}
-                    max={MAX_PHASE}
-                    step={0.01}
-                    value={p1}
-                    onChange={(e) => setP1(clampPhase(Number(e.target.value)))}
-                  />
-                  <div className="harmonograph-value-readout">{p1.toFixed(2)} rad</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="harmonograph-p1"
+                      type="range"
+                      min={MIN_PHASE}
+                      max={MAX_PHASE}
+                      step={0.01}
+                      value={p1}
+                      onChange={(e) => setP1(clampPhase(Number(e.target.value)))}
+                    />
+                    <div className="harmonograph-value-readout">{p1.toFixed(2)} rad</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="harmonograph-p3">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="harmonograph-p3">
                     Phase y
                   </FormLabel>
-                  <FormControl
-                    id="harmonograph-p3"
-                    type="range"
-                    min={MIN_PHASE}
-                    max={MAX_PHASE}
-                    step={0.01}
-                    value={p3}
-                    onChange={(e) => setP3(clampPhase(Number(e.target.value)))}
-                  />
-                  <div className="harmonograph-value-readout">{p3.toFixed(2)} rad</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="harmonograph-p3"
+                      type="range"
+                      min={MIN_PHASE}
+                      max={MAX_PHASE}
+                      step={0.01}
+                      value={p3}
+                      onChange={(e) => setP3(clampPhase(Number(e.target.value)))}
+                    />
+                    <div className="harmonograph-value-readout">{p3.toFixed(2)} rad</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="harmonograph-damping">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="harmonograph-damping">
                     Damping
                   </FormLabel>
-                  <FormControl
-                    id="harmonograph-damping"
-                    type="range"
-                    min={MIN_DAMPING}
-                    max={MAX_DAMPING}
-                    step={0.0001}
-                    value={damping}
-                    onChange={(e) => setDamping(clampDamping(Number(e.target.value)))}
-                  />
-                  <div className="harmonograph-value-readout">{damping.toFixed(4)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="harmonograph-damping"
+                      type="range"
+                      min={MIN_DAMPING}
+                      max={MAX_DAMPING}
+                      step={0.0001}
+                      value={damping}
+                      onChange={(e) => setDamping(clampDamping(Number(e.target.value)))}
+                    />
+                    <div className="harmonograph-value-readout">{damping.toFixed(4)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="harmonograph-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="harmonograph-color">
                     Color mode
                   </FormLabel>
-                  <FormControl
-                    id="harmonograph-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) =>
-                      setColorMode(e.target.value as HarmonographColorMode)
-                    }
-                  >
-                    <option value="mono">Single color</option>
-                    <option value="rainbow">Rainbow along curve</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="harmonograph-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) =>
+                        setColorMode(e.target.value as HarmonographColorMode)
+                      }
+                    >
+                      <option value="mono">Single color</option>
+                      <option value="rainbow">Rainbow along curve</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -286,6 +313,9 @@ export default function HarmonographApp({ onHome }: { onHome: () => void }) {
                   </Button>
                   <Button variant="secondary" onClick={resetView}>
                     Reset
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
                   </Button>
                 </Stack>
 

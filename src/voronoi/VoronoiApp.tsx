@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampPointCount,
   DEFAULT_VORONOI_POINTS,
@@ -155,6 +156,16 @@ export default function VoronoiApp({ onHome }: { onHome: () => void }) {
     draw(false);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `voronoi.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -166,27 +177,32 @@ export default function VoronoiApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel voronoi-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="voronoi-points">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="voronoi-points">
                     Seed points
                   </FormLabel>
-                  <FormControl
-                    id="voronoi-points"
-                    type="range"
-                    min={MIN_VORONOI_POINTS}
-                    max={MAX_VORONOI_POINTS}
-                    step={1}
-                    value={pointCount}
-                    onChange={(e) =>
-                      setPointCount(clampPointCount(Number(e.target.value)))
-                    }
-                  />
-                  <div className="voronoi-value-readout">{pointCount}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="voronoi-points"
+                      type="range"
+                      min={MIN_VORONOI_POINTS}
+                      max={MAX_VORONOI_POINTS}
+                      step={1}
+                      value={pointCount}
+                      onChange={(e) =>
+                        setPointCount(clampPointCount(Number(e.target.value)))
+                      }
+                    />
+                    <div className="voronoi-value-readout">{pointCount}</div>
+                  </div>
                 </div>
 
                 <Stack direction="horizontal" gap={2}>
                   <Button variant="primary" onClick={seedPoints}>
                     New random points
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
                   </Button>
                 </Stack>
 

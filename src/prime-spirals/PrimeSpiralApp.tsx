@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
+import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampSpiralN,
   DEFAULT_SPIRAL_N,
@@ -83,6 +84,16 @@ export default function PrimeSpiralApp({ onHome }: { onHome: () => void }) {
     return () => observer.disconnect();
   }, [draw]);
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `prime-spirals.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -94,36 +105,40 @@ export default function PrimeSpiralApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel primespiral-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="primespiral-type">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="primespiral-type">
                     Spiral
                   </FormLabel>
-                  <FormControl
-                    id="primespiral-type"
-                    as="select"
-                    value={spiralType}
-                    onChange={(e) => setSpiralType(e.target.value as SpiralType)}
-                  >
-                    <option value="ulam">Ulam spiral (square)</option>
-                    <option value="sacks">Sacks spiral (polar)</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="primespiral-type"
+                      as="select"
+                      value={spiralType}
+                      onChange={(e) => setSpiralType(e.target.value as SpiralType)}
+                    >
+                      <option value="ulam">Ulam spiral (square)</option>
+                      <option value="sacks">Sacks spiral (polar)</option>
+                    </FormControl>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="primespiral-n">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="primespiral-n">
                     Numbers plotted
                   </FormLabel>
-                  <FormControl
-                    id="primespiral-n"
-                    type="range"
-                    min={MIN_SPIRAL_N}
-                    max={MAX_SPIRAL_N}
-                    step={100}
-                    value={maxN}
-                    onChange={(e) => setMaxN(clampSpiralN(Number(e.target.value)))}
-                  />
-                  <div className="primespiral-value-readout">
-                    {maxN.toLocaleString("en-US")}
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="primespiral-n"
+                      type="range"
+                      min={MIN_SPIRAL_N}
+                      max={MAX_SPIRAL_N}
+                      step={100}
+                      value={maxN}
+                      onChange={(e) => setMaxN(clampSpiralN(Number(e.target.value)))}
+                    />
+                    <div className="primespiral-value-readout">
+                      {maxN.toLocaleString("en-US")}
+                                      </div>
                   </div>
                 </div>
 
@@ -149,6 +164,11 @@ export default function PrimeSpiralApp({ onHome }: { onHome: () => void }) {
                     </span>
                   </div>
                 </div>
+
+                <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                </Button>
+
 
                 <p className="primespiral-hint">
                   {spiralType === "ulam"

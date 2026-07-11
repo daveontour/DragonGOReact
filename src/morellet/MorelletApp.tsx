@@ -175,161 +175,177 @@ export default function MorelletApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel morellet-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="morellet-pattern">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="morellet-pattern">
                     Pattern style
                   </FormLabel>
-                  <FormControl
-                    id="morellet-pattern"
-                    as="select"
-                    value={pattern}
-                    onChange={(e) =>
-                      setPattern(e.target.value as MorelletPatternId)
-                    }
-                  >
-                    {MORELLET_PATTERNS.map((entry) => (
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="morellet-pattern"
+                      as="select"
+                      value={pattern}
+                      onChange={(e) =>
+                        setPattern(e.target.value as MorelletPatternId)
+                      }
+                    >
+                      {MORELLET_PATTERNS.map((entry) => (
                       <option key={entry.id} value={entry.id}>
-                        {entry.label}
-                      </option>
-                    ))}
-                  </FormControl>
+                      {entry.label}
+                    </option>
+                      ))}
+                    </FormControl>
+                  </div>
                 </div>
 
                 {!isTrames ? (
                   <>
-                    <div>
-                      <FormLabel className="section-label-muted" htmlFor="morellet-cols">
+                    <div className="viz-control-row">
+                      <FormLabel className="section-label-muted viz-control-row-label" htmlFor="morellet-cols">
                         Columns
                       </FormLabel>
-                      <FormControl
-                        id="morellet-cols"
-                        type="range"
-                        min={MIN_GRID_COUNT}
-                        max={MAX_GRID_COUNT}
-                        step={1}
-                        value={cols}
-                        onChange={(e) =>
-                          setCols(clampGridCount(Number(e.target.value)))
-                        }
-                      />
-                      <div className="morellet-value-readout">{cols}</div>
+                      <div className="viz-control-row-control">
+                        <FormControl
+                          id="morellet-cols"
+                          type="range"
+                          min={MIN_GRID_COUNT}
+                          max={MAX_GRID_COUNT}
+                          step={1}
+                          value={cols}
+                          onChange={(e) =>
+                            setCols(clampGridCount(Number(e.target.value)))
+                          }
+                        />
+                        <div className="morellet-value-readout">{cols}</div>
+                      </div>
                     </div>
 
-                    <div>
-                      <FormLabel className="section-label-muted" htmlFor="morellet-rows">
+                    <div className="viz-control-row">
+                      <FormLabel className="section-label-muted viz-control-row-label" htmlFor="morellet-rows">
                         Rows
                       </FormLabel>
-                      <FormControl
-                        id="morellet-rows"
-                        type="range"
-                        min={MIN_GRID_COUNT}
-                        max={MAX_GRID_COUNT}
-                        step={1}
-                        value={rows}
-                        onChange={(e) =>
-                          setRows(clampGridCount(Number(e.target.value)))
-                        }
-                      />
-                      <div className="morellet-value-readout">{rows}</div>
+                      <div className="viz-control-row-control">
+                        <FormControl
+                          id="morellet-rows"
+                          type="range"
+                          min={MIN_GRID_COUNT}
+                          max={MAX_GRID_COUNT}
+                          step={1}
+                          value={rows}
+                          onChange={(e) =>
+                            setRows(clampGridCount(Number(e.target.value)))
+                          }
+                        />
+                        <div className="morellet-value-readout">{rows}</div>
+                      </div>
                     </div>
 
-                    <div>
-                      <FormLabel className="section-label-muted" htmlFor="morellet-empty">
+                    <div className="viz-control-row">
+                      <FormLabel className="section-label-muted viz-control-row-label" htmlFor="morellet-empty">
                         Empty cells
                       </FormLabel>
-                      <FormControl
-                        id="morellet-empty"
-                        type="range"
-                        min={MIN_EMPTY_PROBABILITY}
-                        max={MAX_EMPTY_PROBABILITY}
-                        step={0.01}
-                        value={emptyProbability}
-                        onChange={(e) =>
-                          setEmptyProbability(
-                            clampEmptyProbability(Number(e.target.value))
-                          )
-                        }
-                      />
-                      <div className="morellet-value-readout">
-                        {(emptyProbability * 100).toFixed(0)}%
+                      <div className="viz-control-row-control">
+                        <FormControl
+                          id="morellet-empty"
+                          type="range"
+                          min={MIN_EMPTY_PROBABILITY}
+                          max={MAX_EMPTY_PROBABILITY}
+                          step={0.01}
+                          value={emptyProbability}
+                          onChange={(e) =>
+                            setEmptyProbability(
+                              clampEmptyProbability(Number(e.target.value))
+                            )
+                          }
+                        />
+                        <div className="morellet-value-readout">
+                          {(emptyProbability * 100).toFixed(0)}%
+                                              </div>
                       </div>
                     </div>
                   </>
                 ) : (
-                  <div>
-                    <FormLabel className="section-label-muted" htmlFor="morellet-spacing">
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label" htmlFor="morellet-spacing">
                       Line spacing
                     </FormLabel>
-                    <FormControl
-                      id="morellet-spacing"
-                      type="range"
-                      min={MIN_LINE_SPACING}
-                      max={MAX_LINE_SPACING}
-                      step={1}
-                      value={lineSpacing}
-                      onChange={(e) =>
-                        setLineSpacing(clampLineSpacing(Number(e.target.value)))
-                      }
-                    />
-                    <div className="morellet-value-readout">{lineSpacing}px</div>
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="morellet-spacing"
+                        type="range"
+                        min={MIN_LINE_SPACING}
+                        max={MAX_LINE_SPACING}
+                        step={1}
+                        value={lineSpacing}
+                        onChange={(e) =>
+                          setLineSpacing(clampLineSpacing(Number(e.target.value)))
+                        }
+                      />
+                      <div className="morellet-value-readout">{lineSpacing}px</div>
+                    </div>
                   </div>
                 )}
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="morellet-line">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="morellet-line">
                     Line thickness
                   </FormLabel>
-                  <FormControl
-                    id="morellet-line"
-                    type="range"
-                    min={MIN_LINE_WIDTH}
-                    max={MAX_LINE_WIDTH}
-                    step={1}
-                    value={lineWidth}
-                    onChange={(e) =>
-                      setLineWidth(clampLineWidth(Number(e.target.value)))
-                    }
-                  />
-                  <div className="morellet-value-readout">{lineWidth}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="morellet-line"
+                      type="range"
+                      min={MIN_LINE_WIDTH}
+                      max={MAX_LINE_WIDTH}
+                      step={1}
+                      value={lineWidth}
+                      onChange={(e) =>
+                        setLineWidth(clampLineWidth(Number(e.target.value)))
+                      }
+                    />
+                    <div className="morellet-value-readout">{lineWidth}px</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="morellet-angle">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="morellet-angle">
                     {isTrames ? "First field angle" : "Reference angle"}
                   </FormLabel>
-                  <FormControl
-                    id="morellet-angle"
-                    type="range"
-                    min={MIN_ANGLE}
-                    max={MAX_ANGLE}
-                    step={1}
-                    value={primaryAngle}
-                    onChange={(e) =>
-                      setPrimaryAngle(clampAngle(Number(e.target.value)))
-                    }
-                  />
-                  <div className="morellet-value-readout">{primaryAngle}°</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="morellet-angle"
+                      type="range"
+                      min={MIN_ANGLE}
+                      max={MAX_ANGLE}
+                      step={1}
+                      value={primaryAngle}
+                      onChange={(e) =>
+                        setPrimaryAngle(clampAngle(Number(e.target.value)))
+                      }
+                    />
+                    <div className="morellet-value-readout">{primaryAngle}°</div>
+                  </div>
                 </div>
 
                 {isTrames ? (
-                  <div>
-                    <FormLabel className="section-label-muted" htmlFor="morellet-offset">
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label" htmlFor="morellet-offset">
                       Angle between fields
                     </FormLabel>
-                    <FormControl
-                      id="morellet-offset"
-                      type="range"
-                      min={MIN_SECONDARY_OFFSET}
-                      max={MAX_SECONDARY_OFFSET}
-                      step={1}
-                      value={secondaryOffset}
-                      onChange={(e) =>
-                        setSecondaryOffset(
-                          clampSecondaryOffset(Number(e.target.value))
-                        )
-                      }
-                    />
-                    <div className="morellet-value-readout">{secondaryOffset}°</div>
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="morellet-offset"
+                        type="range"
+                        min={MIN_SECONDARY_OFFSET}
+                        max={MAX_SECONDARY_OFFSET}
+                        step={1}
+                        value={secondaryOffset}
+                        onChange={(e) =>
+                          setSecondaryOffset(
+                            clampSecondaryOffset(Number(e.target.value))
+                          )
+                        }
+                      />
+                      <div className="morellet-value-readout">{secondaryOffset}°</div>
+                    </div>
                   </div>
                 ) : null}
 

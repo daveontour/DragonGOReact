@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadSvgAsPng } from "../downloadViz";
 import {
   buildCollatzChartPoints,
   buildRangeLengthChartPoints,
@@ -23,6 +24,7 @@ const CHART_HEIGHT = 420;
 const CHART_PADDING = { top: 24, right: 24, bottom: 48, left: 56 };
 
 export default function CollatzApp({ onHome }: { onHome: () => void }) {
+  const svgRef = useRef<SVGSVGElement>(null);
   const [plotMode, setPlotMode] = useState<CollatzPlotMode>("single");
   const [inputValue, setInputValue] = useState(DEFAULT_COLLATZ_START.toString());
   const [startValue, setStartValue] = useState(DEFAULT_COLLATZ_START);
@@ -120,6 +122,16 @@ export default function CollatzApp({ onHome }: { onHome: () => void }) {
   const showSequenceList =
     plotMode === "single" && stats.sequence.length <= 64;
 
+
+  const downloadPng = () => {
+    const svg = svgRef.current;
+    if (!svg) {
+      return;
+    }
+    downloadSvgAsPng(svg, `collatz.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -131,37 +143,43 @@ export default function CollatzApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel collatz-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="collatz-plot-mode">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="collatz-plot-mode">
                     Plot mode
                   </FormLabel>
-                  <FormControl
-                    id="collatz-plot-mode"
-                    as="select"
-                    value={plotMode}
-                    onChange={(e) =>
-                      setPlotMode(e.target.value as CollatzPlotMode)
-                    }
-                  >
-                    <option value="single">Single sequence</option>
-                    <option value="range">Range: sequence lengths</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="collatz-plot-mode"
+                      as="select"
+                      value={plotMode}
+                      onChange={(e) =>
+                        setPlotMode(e.target.value as CollatzPlotMode)
+                      }
+                    >
+                      <option value="single">Single sequence</option>
+                      <option value="range">Range: sequence lengths</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 {plotMode === "single" ? (
                   <div>
-                    <FormLabel className="section-label-muted" htmlFor="collatz-start">
-                      Starting value
-                    </FormLabel>
-                    <FormControl
-                      id="collatz-start"
-                      type="text"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      value={inputValue}
-                      onChange={(e) => setInputValue(e.target.value)}
-                      onKeyDown={handleInputKeyDown}
-                    />
+                    <div className="viz-control-row">
+                      <FormLabel className="section-label-muted viz-control-row-label" htmlFor="collatz-start">
+                        Starting value
+                      </FormLabel>
+                      <div className="viz-control-row-control">
+                        <FormControl
+                          id="collatz-start"
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          value={inputValue}
+                          onChange={(e) => setInputValue(e.target.value)}
+                          onKeyDown={handleInputKeyDown}
+                        />
+                      </div>
+                    </div>
                     <Button
                       className="mt-2"
                       variant="primary"
@@ -172,33 +190,38 @@ export default function CollatzApp({ onHome }: { onHome: () => void }) {
                   </div>
                 ) : (
                   <div>
-                    <FormLabel className="section-label-muted" htmlFor="collatz-range-lower">
-                      Lower limit
-                    </FormLabel>
-                    <FormControl
-                      id="collatz-range-lower"
-                      type="text"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      value={rangeLowerInput}
-                      onChange={(e) => setRangeLowerInput(e.target.value)}
-                      onKeyDown={handleInputKeyDown}
-                    />
-                    <FormLabel
-                      className="section-label-muted mt-2"
-                      htmlFor="collatz-range-upper"
-                    >
-                      Upper limit
-                    </FormLabel>
-                    <FormControl
-                      id="collatz-range-upper"
-                      type="text"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
-                      value={rangeUpperInput}
-                      onChange={(e) => setRangeUpperInput(e.target.value)}
-                      onKeyDown={handleInputKeyDown}
-                    />
+                    <div className="viz-control-row">
+                      <FormLabel className="section-label-muted viz-control-row-label" htmlFor="collatz-range-lower">
+                        Lower limit
+                      </FormLabel>
+                      <div className="viz-control-row-control">
+                        <FormControl
+                          id="collatz-range-lower"
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          value={rangeLowerInput}
+                          onChange={(e) => setRangeLowerInput(e.target.value)}
+                          onKeyDown={handleInputKeyDown}
+                        />
+                      </div>
+                    </div>
+                    <div className="viz-control-row">
+                      <FormLabel className="section-label-muted viz-control-row-label" htmlFor="collatz-range-upper">
+                        Upper limit
+                      </FormLabel>
+                      <div className="viz-control-row-control">
+                        <FormControl
+                          id="collatz-range-upper"
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          value={rangeUpperInput}
+                          onChange={(e) => setRangeUpperInput(e.target.value)}
+                          onKeyDown={handleInputKeyDown}
+                        />
+                      </div>
+                    </div>
                     <Button
                       className="mt-2"
                       variant="primary"
@@ -211,6 +234,11 @@ export default function CollatzApp({ onHome }: { onHome: () => void }) {
                     ) : null}
                   </div>
                 )}
+
+                <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                </Button>
+
 
                 <p className="collatz-hint">
                   If n is even, divide by 2. If n is odd, compute 3n + 1. Repeat
@@ -304,6 +332,7 @@ export default function CollatzApp({ onHome }: { onHome: () => void }) {
         <div className="collatz-canvas-wrap">
           {plotMode === "single" ? (
             <svg
+              ref={svgRef}
               className="collatz-chart"
               viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
               role="img"
@@ -376,6 +405,7 @@ export default function CollatzApp({ onHome }: { onHome: () => void }) {
             </svg>
           ) : (
             <svg
+              ref={svgRef}
               className="collatz-chart"
               viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
               role="img"

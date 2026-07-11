@@ -15,28 +15,28 @@ export const ATTRACTOR_PRESETS: Record<AttractorId, AttractorPreset> = {
     name: "Lorenz Attractor",
     kind: "flow",
     description:
-      "A simplified convection model whose trajectory never repeats or settles, tracing the classic butterfly.",
+      "Edward Lorenz derived these three coupled equations in 1963 as a drastically simplified model of atmospheric convection — warm fluid rising, cooling, and sinking in a rolling loop. For realistic parameters the trajectory never settles into a fixed point or a repeating cycle; instead it spirals around one of two lobes, switching unpredictably between them, tracing the famous butterfly-wing shape that gave chaos theory its name and its most iconic image.",
   },
   rossler: {
     id: "rossler",
     name: "Rössler Attractor",
     kind: "flow",
     description:
-      "A single-scroll chaotic flow that spirals outward then folds back through itself.",
+      "Otto Rössler designed this system in the mid-1970s as a deliberately simpler, more analyzable cousin of Lorenz's: instead of two lobes switching back and forth, the trajectory forms a single spiraling scroll that stretches outward, folds back over itself, and rejoins the spiral. That 'stretch-and-fold' motion is the basic mechanism believed to underlie chaos in general, distilled about as far as it can go.",
   },
   clifford: {
     id: "clifford",
     name: "Clifford Attractor",
     kind: "map",
     description:
-      "A trigonometric iterated map: millions of visits accumulate into a smooth, organic density cloud.",
+      "Popularized by mathematician Clifford Pickover, this is a discrete map rather than a differential equation: each new point is computed directly from sines and cosines of the previous one, with no notion of continuous time to integrate. Iterated millions of times and plotted as a density image — brighter where more visits land — the same four parameters can swing between delicate wisps and dense, woven, organic-looking ribbons.",
   },
   "de-jong": {
     id: "de-jong",
     name: "De Jong Attractor",
     kind: "map",
     description:
-      "A close cousin of the Clifford map with its own family of swirling, ribbon-like densities.",
+      "Peter de Jong's map uses the same 'four sine/cosine terms, iterate a point millions of times' recipe as Clifford's, but combines the terms by subtraction instead of addition. That one small change in the formula produces a distinctly different family of looping, ribbon-like densities rather than Clifford's softer, cloudier textures — a good demonstration of how sensitively these maps' character depends on their exact equations.",
   },
 };
 

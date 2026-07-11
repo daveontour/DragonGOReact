@@ -28,7 +28,7 @@ export default function VisualizationTopBar({
     >
       <div className="top-bar-nav">
         <button type="button" className="top-bar-home-link" onClick={onHome}>
-          Home
+          &lt;- MathArt
         </button>
       </div>
       <div className="top-bar-meta">

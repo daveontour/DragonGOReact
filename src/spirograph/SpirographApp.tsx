@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampAnimateSpeed,
   clampEccentricity,
@@ -159,6 +160,16 @@ export default function SpirographApp({ onHome }: { onHome: () => void }) {
     setSmallR((current) => clampSmallR(current, R, nextMode));
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `spirograph.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -170,138 +181,154 @@ export default function SpirographApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel spirograph-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="spirograph-mode">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="spirograph-mode">
                     Mode
                   </FormLabel>
-                  <FormControl
-                    id="spirograph-mode"
-                    as="select"
-                    value={mode}
-                    onChange={(e) => handleModeChange(e.target.value as SpirographMode)}
-                  >
-                    <option value="hypotrochoid">Hypotrochoid (pen inside ring)</option>
-                    <option value="epitrochoid">Epitrochoid (pen outside ring)</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="spirograph-mode"
+                      as="select"
+                      value={mode}
+                      onChange={(e) => handleModeChange(e.target.value as SpirographMode)}
+                    >
+                      <option value="hypotrochoid">Hypotrochoid (pen inside ring)</option>
+                      <option value="epitrochoid">Epitrochoid (pen outside ring)</option>
+                    </FormControl>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="spirograph-R">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="spirograph-R">
                     Ring radius (R)
                   </FormLabel>
-                  <FormControl
-                    id="spirograph-R"
-                    type="range"
-                    min={MIN_R}
-                    max={MAX_R}
-                    step={1}
-                    value={R}
-                    onChange={(e) => {
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="spirograph-R"
+                      type="range"
+                      min={MIN_R}
+                      max={MAX_R}
+                      step={1}
+                      value={R}
+                      onChange={(e) => {
                       const nextR = clampR(Number(e.target.value));
                       setR(nextR);
                       setSmallR((current) => clampSmallR(current, nextR, mode));
-                    }}
-                  />
-                  <div className="spirograph-value-readout">{R}</div>
+                      }}
+                    />
+                    <div className="spirograph-value-readout">{R}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="spirograph-r">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="spirograph-r">
                     Wheel radius (r)
                   </FormLabel>
-                  <FormControl
-                    id="spirograph-r"
-                    type="range"
-                    min={MIN_SMALL_R}
-                    max={MAX_SMALL_R}
-                    step={1}
-                    value={r}
-                    onChange={(e) =>
-                      setSmallR(clampSmallR(Number(e.target.value), R, mode))
-                    }
-                  />
-                  <div className="spirograph-value-readout">{r}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="spirograph-r"
+                      type="range"
+                      min={MIN_SMALL_R}
+                      max={MAX_SMALL_R}
+                      step={1}
+                      value={r}
+                      onChange={(e) =>
+                        setSmallR(clampSmallR(Number(e.target.value), R, mode))
+                      }
+                    />
+                    <div className="spirograph-value-readout">{r}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="spirograph-d">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="spirograph-d">
                     Pen offset (d)
                   </FormLabel>
-                  <FormControl
-                    id="spirograph-d"
-                    type="range"
-                    min={0}
-                    max={r * 1.5}
-                    step={0.5}
-                    value={d}
-                    onChange={(e) => setD(clampPenOffset(Number(e.target.value), r))}
-                  />
-                  <div className="spirograph-value-readout">{d.toFixed(1)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="spirograph-d"
+                      type="range"
+                      min={0}
+                      max={r * 1.5}
+                      step={0.5}
+                      value={d}
+                      onChange={(e) => setD(clampPenOffset(Number(e.target.value), r))}
+                    />
+                    <div className="spirograph-value-readout">{d.toFixed(1)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="spirograph-e-ring">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="spirograph-e-ring">
                     Ring eccentricity
                   </FormLabel>
-                  <FormControl
-                    id="spirograph-e-ring"
-                    type="range"
-                    min={MIN_ECCENTRICITY}
-                    max={MAX_ECCENTRICITY}
-                    step={0.01}
-                    value={eRing}
-                    onChange={(e) => setERing(clampEccentricity(Number(e.target.value)))}
-                  />
-                  <div className="spirograph-value-readout">{eRing.toFixed(2)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="spirograph-e-ring"
+                      type="range"
+                      min={MIN_ECCENTRICITY}
+                      max={MAX_ECCENTRICITY}
+                      step={0.01}
+                      value={eRing}
+                      onChange={(e) => setERing(clampEccentricity(Number(e.target.value)))}
+                    />
+                    <div className="spirograph-value-readout">{eRing.toFixed(2)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="spirograph-e-wheel">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="spirograph-e-wheel">
                     Wheel eccentricity
                   </FormLabel>
-                  <FormControl
-                    id="spirograph-e-wheel"
-                    type="range"
-                    min={MIN_ECCENTRICITY}
-                    max={MAX_ECCENTRICITY}
-                    step={0.01}
-                    value={eWheel}
-                    onChange={(e) => setEWheel(clampEccentricity(Number(e.target.value)))}
-                  />
-                  <div className="spirograph-value-readout">{eWheel.toFixed(2)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="spirograph-e-wheel"
+                      type="range"
+                      min={MIN_ECCENTRICITY}
+                      max={MAX_ECCENTRICITY}
+                      step={0.01}
+                      value={eWheel}
+                      onChange={(e) => setEWheel(clampEccentricity(Number(e.target.value)))}
+                    />
+                    <div className="spirograph-value-readout">{eWheel.toFixed(2)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="spirograph-width">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="spirograph-width">
                     Line thickness
                   </FormLabel>
-                  <FormControl
-                    id="spirograph-width"
-                    type="range"
-                    min={0.5}
-                    max={3}
-                    step={0.5}
-                    value={lineWidth}
-                    onChange={(e) => setLineWidth(Number(e.target.value))}
-                  />
-                  <div className="spirograph-value-readout">{lineWidth}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="spirograph-width"
+                      type="range"
+                      min={0.5}
+                      max={3}
+                      step={0.5}
+                      value={lineWidth}
+                      onChange={(e) => setLineWidth(Number(e.target.value))}
+                    />
+                    <div className="spirograph-value-readout">{lineWidth}px</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="spirograph-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="spirograph-color">
                     Color mode
                   </FormLabel>
-                  <FormControl
-                    id="spirograph-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) =>
-                      setColorMode(e.target.value as SpirographColorMode)
-                    }
-                  >
-                    <option value="mono">Single color</option>
-                    <option value="rainbow">Rainbow along curve</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="spirograph-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) =>
+                        setColorMode(e.target.value as SpirographColorMode)
+                      }
+                    >
+                      <option value="mono">Single color</option>
+                      <option value="rainbow">Rainbow along curve</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -321,33 +348,39 @@ export default function SpirographApp({ onHome }: { onHome: () => void }) {
                 />
 
                 {animate ? (
-                  <div>
-                    <FormLabel
-                      className="section-label-muted"
-                      htmlFor="spirograph-animate-speed"
-                    >
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label"
+                      htmlFor="spirograph-animate-speed">
                       Animate speed
                     </FormLabel>
-                    <FormControl
-                      id="spirograph-animate-speed"
-                      type="range"
-                      min={MIN_ANIMATE_SPEED}
-                      max={MAX_ANIMATE_SPEED}
-                      step={0.25}
-                      value={animateSpeed}
-                      onChange={(e) =>
-                        setAnimateSpeed(clampAnimateSpeed(Number(e.target.value)))
-                      }
-                    />
-                    <div className="spirograph-value-readout">
-                      {animateSpeed.toFixed(2)}×
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="spirograph-animate-speed"
+                        type="range"
+                        min={MIN_ANIMATE_SPEED}
+                        max={MAX_ANIMATE_SPEED}
+                        step={0.25}
+                        value={animateSpeed}
+                        onChange={(e) =>
+                          setAnimateSpeed(clampAnimateSpeed(Number(e.target.value)))
+                        }
+                      />
+                      <div className="spirograph-value-readout">
+                        {animateSpeed.toFixed(2)}×
+                                          </div>
                     </div>
                   </div>
                 ) : null}
 
-                <Button variant="secondary" onClick={resetView}>
+                <Stack direction="horizontal" gap={2}>
+                  <Button variant="secondary" onClick={resetView}>
                   Reset
-                </Button>
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                  </Button>
+                </Stack>
+
 
                 <p className="spirograph-hint">
                   A pen offset by distance d from the center of a wheel of

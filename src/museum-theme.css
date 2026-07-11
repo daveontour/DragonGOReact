@@ -261,6 +261,31 @@ body {
   color: var(--color-text-muted);
 }
 
+/* Shared two-column sidebar control: label left, slider/select right */
+.dragon-app .viz-control-row {
+  display: grid;
+  grid-template-columns: minmax(108px, 1fr) minmax(0, 2fr);
+  gap: 8px 12px;
+  align-items: center;
+  width: 100%;
+}
+
+.dragon-app .viz-control-row-label {
+  margin-bottom: 0;
+}
+
+.dragon-app .viz-control-row-control {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.dragon-app .viz-control-row-control .form-control,
+.dragon-app .viz-control-row-control .form-select {
+  width: 100%;
+}
+
 /* --- Form controls (app shell + portaled modals) --- */
 .dragon-app .form-control,
 .dragon-app .form-select,
@@ -295,6 +320,12 @@ body {
   color: var(--color-text);
   font-size: var(--text-sm);
   margin-bottom: 0.35rem;
+}
+
+.dragon-app .form-check-label {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: 400;
 }
 
 /* --- Buttons (app shell + portaled modals) --- */
@@ -464,6 +495,7 @@ body {
 
 .modal.dragon-modal .form-check-label {
   color: var(--color-text);
+  font-size: var(--text-sm);
 }
 
 .modal.dragon-modal .form-check-input {
@@ -2613,24 +2645,6 @@ body {
   gap: 8px;
 }
 
-.dragon-app .morellet-tiles-color-row {
-  display: grid;
-  grid-template-columns: minmax(108px, 1fr) minmax(0, 2fr);
-  gap: 8px 12px;
-  align-items: center;
-}
-
-.dragon-app .morellet-tiles-color-row-label {
-  margin-bottom: 0;
-}
-
-.dragon-app .morellet-tiles-color-row-control {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
 .dragon-app .morellet-tiles-color-value {
   margin-top: 0;
 }
@@ -3702,4 +3716,1906 @@ body {
     transparent 1px 14px
   );
   mix-blend-mode: screen;
+}
+
+/* --- Langton's Ant --- */
+.dragon-app .langtons-ant-sidebar {
+  display: block;
+}
+
+.dragon-app .langtons-ant-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .langtons-ant-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .langtons-ant-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .langtons-ant-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .langtons-ant-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .langtons-ant-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .langtons-ant-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .langtons-ant-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .langtons-ant-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  image-rendering: pixelated;
+}
+
+.dragon-app .mathart-viz-card-preview--langtons-ant {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--langtons-ant::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 15%;
+  width: 70%;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(127, 212, 255, 0.9) 0 6px,
+    transparent 6px 11px
+  );
+  transform: rotate(45deg);
+  transform-origin: left center;
+}
+
+.dragon-app .mathart-viz-card-preview--langtons-ant::after {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  width: 30%;
+  height: 30%;
+  background-image:
+    radial-gradient(circle, rgba(255, 209, 128, 0.7) 1.5px, transparent 1.5px);
+  background-size: 8px 8px;
+  opacity: 0.8;
+}
+
+/* --- Chaos Game --- */
+.dragon-app .chaos-game-sidebar {
+  display: block;
+}
+
+.dragon-app .chaos-game-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .chaos-game-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .chaos-game-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .chaos-game-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .chaos-game-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--chaos-game {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--chaos-game::before {
+  content: "";
+  position: absolute;
+  inset: 15%;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background: rgba(127, 212, 255, 0.18);
+  border: 1px solid rgba(127, 212, 255, 0.5);
+}
+
+.dragon-app .mathart-viz-card-preview--chaos-game::after {
+  content: "";
+  position: absolute;
+  inset: 15%;
+  clip-path: polygon(50% 25%, 25% 100%, 75% 100%);
+  background: rgba(255, 209, 128, 0.25);
+  border: 1px solid rgba(255, 209, 128, 0.55);
+}
+
+/* --- Diffusion-Limited Aggregation --- */
+.dragon-app .diffusion-limited-aggregation-sidebar {
+  display: block;
+}
+
+.dragon-app .diffusion-limited-aggregation-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .diffusion-limited-aggregation-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .diffusion-limited-aggregation-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .diffusion-limited-aggregation-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .diffusion-limited-aggregation-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .diffusion-limited-aggregation-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .diffusion-limited-aggregation-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .diffusion-limited-aggregation-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .diffusion-limited-aggregation-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--diffusion-limited-aggregation {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--diffusion-limited-aggregation::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #7fd4ff;
+  box-shadow:
+    0 0 6px rgba(127, 212, 255, 0.9),
+    10px -6px 0 -1px #7fd4ff,
+    18px -10px 0 -2px #a0ddff,
+    -12px 8px 0 -1px #7fd4ff,
+    -20px 15px 0 -2px #a0ddff,
+    6px 16px 0 -1px #7fd4ff,
+    12px 24px 0 -2px #a0ddff,
+    -8px -14px 0 -1px #7fd4ff,
+    -16px -22px 0 -2px #a0ddff;
+}
+
+/* --- Abelian Sandpile --- */
+.dragon-app .abelian-sandpile-sidebar {
+  display: block;
+}
+
+.dragon-app .abelian-sandpile-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .abelian-sandpile-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .abelian-sandpile-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .abelian-sandpile-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .abelian-sandpile-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .abelian-sandpile-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .abelian-sandpile-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: #fff;
+}
+
+.dragon-app .abelian-sandpile-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .abelian-sandpile-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--abelian-sandpile {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--abelian-sandpile::before {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  background:
+    conic-gradient(
+      from 0deg,
+      #d65454 0deg 45deg,
+      #e6a844 45deg 90deg,
+      #3a82a8 90deg 135deg,
+      #d65454 135deg 180deg,
+      #e6a844 180deg 225deg,
+      #3a82a8 225deg 270deg,
+      #d65454 270deg 315deg,
+      #e6a844 315deg 360deg
+    );
+  border-radius: 50%;
+  opacity: 0.85;
+}
+
+.dragon-app .mathart-viz-card-preview--abelian-sandpile::after {
+  content: "";
+  position: absolute;
+  inset: 38%;
+  background: #0a0d18;
+  border-radius: 50%;
+}
+
+/* --- Gravitational Assist --- */
+.dragon-app .gravassist-sidebar {
+  display: block;
+}
+
+.dragon-app .gravassist-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .gravassist-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .gravassist-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .gravassist-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .gravassist-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .gravassist-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .gravassist-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dragon-app .gravassist-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .gravassist-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  background: radial-gradient(
+    circle at 50% 50%,
+    #0f1424 0%,
+    #060810 70%,
+    #030408 100%
+  );
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--gravitational-assist {
+  background: radial-gradient(circle at 55% 45%, #1a2848 0%, #060810 75%);
+}
+
+.dragon-app .mathart-viz-card-preview--gravitational-assist::before {
+  content: "";
+  position: absolute;
+  top: 42%;
+  left: 18%;
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #5a8fd4 0%, #2a4a7a 70%, #1a3050 100%);
+  box-shadow: 0 0 12px rgba(90, 143, 212, 0.5);
+}
+
+.dragon-app .mathart-viz-card-preview--gravitational-assist::after {
+  content: "";
+  position: absolute;
+  top: 28%;
+  left: 8%;
+  width: 75%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 209, 128, 0.2) 15%,
+    rgba(255, 209, 128, 0.9) 45%,
+    rgba(255, 209, 128, 0.3) 70%,
+    transparent 100%
+  );
+  transform: rotate(-18deg);
+  transform-origin: left center;
+  border-radius: 2px;
+}
+
+/* --- Truchet Tiles --- */
+.dragon-app .truchet-tiles-sidebar {
+  display: block;
+}
+
+.dragon-app .truchet-tiles-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .truchet-tiles-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .truchet-tiles-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .truchet-tiles-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .truchet-tiles-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--truchet-tiles {
+  background: #0a0d18;
+  background-image:
+    repeating-conic-gradient(
+      from 0deg at 0% 0%,
+      rgba(127, 212, 255, 0.5) 0deg 90deg,
+      transparent 90deg 360deg
+    ),
+    repeating-conic-gradient(
+      from 180deg at 100% 100%,
+      rgba(127, 212, 255, 0.5) 0deg 90deg,
+      transparent 90deg 360deg
+    );
+  background-size: 25% 25%;
+}
+
+/* --- Julia Sets --- */
+.dragon-app .julia-set-sidebar {
+  display: block;
+}
+
+.dragon-app .julia-set-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .julia-set-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .julia-set-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .julia-set-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .julia-set-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .julia-set-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .julia-set-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dragon-app .julia-set-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .julia-set-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: zoom-in;
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--julia-set {
+  background:
+    radial-gradient(circle at 68% 30%, rgba(255, 140, 200, 0.5) 0%, transparent 32%),
+    radial-gradient(circle at 30% 65%, rgba(140, 120, 255, 0.45) 0%, transparent 30%),
+    radial-gradient(circle at 55% 55%, rgba(120, 200, 255, 0.3) 0%, transparent 26%),
+    linear-gradient(145deg, #1a0f24 0%, #0a0d18 100%);
+}
+
+.dragon-app .mathart-viz-card-preview--julia-set::after {
+  content: "";
+  position: absolute;
+  inset: 22% 34% 30% 20%;
+  border-radius: 45% 60% 50% 55%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    inset 0 0 16px rgba(255, 140, 200, 0.3),
+    0 0 12px rgba(140, 120, 255, 0.25);
+}
+
+/* --- Wireworld / Brian's Brain --- */
+.dragon-app .wireworld-sidebar {
+  display: block;
+}
+
+.dragon-app .wireworld-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .wireworld-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .wireworld-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .wireworld-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .wireworld-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .wireworld-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .wireworld-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dragon-app .wireworld-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .wireworld-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  cursor: crosshair;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--wireworld {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--wireworld::before {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 10%;
+  width: 80%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    rgba(200, 140, 50, 0.8) 0%,
+    rgba(200, 140, 50, 0.8) 55%,
+    rgba(80, 140, 230, 0.9) 55%,
+    rgba(80, 140, 230, 0.9) 70%,
+    rgba(255, 255, 140, 1) 70%,
+    rgba(255, 255, 140, 1) 78%,
+    rgba(200, 140, 50, 0.8) 78%,
+    rgba(200, 140, 50, 0.8) 100%
+  );
+  transform: rotate(-8deg);
+  box-shadow: 0 0 8px rgba(255, 255, 140, 0.6);
+}
+
+.dragon-app .mathart-viz-card-preview--wireworld::after {
+  content: "";
+  position: absolute;
+  inset: 55% 15% 15% 55%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.9) 0 6%, transparent 7%),
+    radial-gradient(circle at 60% 60%, rgba(80, 150, 255, 0.7) 0 6%, transparent 7%),
+    radial-gradient(circle at 80% 20%, rgba(80, 150, 255, 0.4) 0 5%, transparent 6%);
+}
+
+/* --- Maze Generation & Solving --- */
+.dragon-app .maze-generator-sidebar {
+  display: block;
+}
+
+.dragon-app .maze-generator-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .maze-generator-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .maze-generator-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .maze-generator-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .maze-generator-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--maze-generator {
+  background: #0a0d18;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(127, 212, 255, 0.4) 0 1.5px,
+      transparent 1.5px 20%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(127, 212, 255, 0.4) 0 1.5px,
+      transparent 1.5px 20%
+    );
+}
+
+.dragon-app .mathart-viz-card-preview--maze-generator::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 8%;
+  width: 84%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(230, 168, 68, 0.9) 20%,
+    rgba(230, 168, 68, 0.9) 80%,
+    transparent 100%
+  );
+  transform: rotate(18deg);
+  box-shadow: 0 0 8px rgba(230, 168, 68, 0.6);
+}
+
+/* --- Pythagoras Tree --- */
+.dragon-app .pythagoras-tree-sidebar {
+  display: block;
+}
+
+.dragon-app .pythagoras-tree-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .pythagoras-tree-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .pythagoras-tree-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .pythagoras-tree-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .pythagoras-tree-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--pythagoras-tree {
+  background: linear-gradient(180deg, #0f2418 0%, #0a0d18 70%);
+}
+
+.dragon-app .mathart-viz-card-preview--pythagoras-tree::before {
+  content: "";
+  position: absolute;
+  bottom: 15%;
+  left: 42%;
+  width: 16%;
+  height: 20%;
+  background: hsl(40, 55%, 45%);
+  transform: rotate(3deg);
+}
+
+.dragon-app .mathart-viz-card-preview--pythagoras-tree::after {
+  content: "";
+  position: absolute;
+  bottom: 32%;
+  left: 30%;
+  width: 40%;
+  height: 40%;
+  background:
+    linear-gradient(70deg, transparent 47%, hsl(120, 45%, 40%) 47% 53%, transparent 53%),
+    linear-gradient(-70deg, transparent 47%, hsl(150, 50%, 45%) 47% 53%, transparent 53%);
+}
+
+/* --- Apollonian Gasket --- */
+.dragon-app .apollonian-gasket-sidebar {
+  display: block;
+}
+
+.dragon-app .apollonian-gasket-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .apollonian-gasket-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .apollonian-gasket-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .apollonian-gasket-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .apollonian-gasket-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .apollonian-gasket-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .apollonian-gasket-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dragon-app .apollonian-gasket-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .apollonian-gasket-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--apollonian-gasket {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--apollonian-gasket::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  border: 2px solid rgba(180, 140, 255, 0.5);
+}
+
+.dragon-app .mathart-viz-card-preview--apollonian-gasket::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 35% 50%, transparent 13%, rgba(90, 170, 255, 0.6) 13% 14%, transparent 14%),
+    radial-gradient(circle at 65% 50%, transparent 13%, rgba(90, 170, 255, 0.6) 13% 14%, transparent 14%),
+    radial-gradient(circle at 50% 32%, transparent 7%, rgba(230, 168, 68, 0.7) 7% 8%, transparent 8%),
+    radial-gradient(circle at 50% 68%, transparent 7%, rgba(230, 168, 68, 0.7) 7% 8%, transparent 8%);
+}
+
+/* --- Double Pendulum --- */
+.dragon-app .double-pendulum-sidebar {
+  display: block;
+}
+
+.dragon-app .double-pendulum-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .double-pendulum-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .double-pendulum-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .double-pendulum-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .double-pendulum-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--double-pendulum {
+  background: linear-gradient(160deg, #101226 0%, #0a0d18 70%);
+}
+
+.dragon-app .mathart-viz-card-preview--double-pendulum::before {
+  content: "";
+  position: absolute;
+  top: 18%;
+  left: 48%;
+  width: 2px;
+  height: 32%;
+  background: rgba(255, 255, 255, 0.6);
+  transform: rotate(35deg);
+  transform-origin: top center;
+}
+
+.dragon-app .mathart-viz-card-preview--double-pendulum::after {
+  content: "";
+  position: absolute;
+  top: 44%;
+  left: 58%;
+  width: 2px;
+  height: 30%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: rotate(-50deg);
+  transform-origin: top center;
+  box-shadow: 0 26px 8px -6px rgba(127, 212, 255, 0.9);
+}
+
+/* --- Magnetic Pendulum --- */
+.dragon-app .magnetic-pendulum-sidebar {
+  display: block;
+}
+
+.dragon-app .magnetic-pendulum-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .magnetic-pendulum-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .magnetic-pendulum-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .magnetic-pendulum-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .magnetic-pendulum-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: crosshair;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--magnetic-pendulum {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--magnetic-pendulum::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 70%, transparent 8%, rgba(230, 84, 90, 0.85) 8% 9%, transparent 9%),
+    radial-gradient(circle at 70% 70%, transparent 8%, rgba(74, 201, 110, 0.85) 8% 9%, transparent 9%),
+    radial-gradient(circle at 50% 28%, transparent 8%, rgba(90, 143, 212, 0.85) 8% 9%, transparent 9%);
+}
+
+.dragon-app .mathart-viz-card-preview--magnetic-pendulum::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 45%;
+  height: 45%;
+  background: conic-gradient(
+    from 90deg,
+    rgba(255, 255, 255, 0.7),
+    transparent 60%
+  );
+  border-radius: 50%;
+  mask: radial-gradient(circle, transparent 55%, black 58%, black 62%, transparent 65%);
+  -webkit-mask: radial-gradient(circle, transparent 55%, black 58%, black 62%, transparent 65%);
+}
+
+/* --- Triple Pendulum --- */
+.dragon-app .triple-pendulum-sidebar {
+  display: block;
+}
+
+.dragon-app .triple-pendulum-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .triple-pendulum-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .triple-pendulum-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .triple-pendulum-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .triple-pendulum-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--triple-pendulum {
+  background: linear-gradient(160deg, #101226 0%, #0a0d18 70%);
+}
+
+.dragon-app .mathart-viz-card-preview--triple-pendulum::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 44%;
+  width: 2px;
+  height: 26%;
+  background: rgba(255, 255, 255, 0.6);
+  transform: rotate(30deg);
+  transform-origin: top center;
+}
+
+.dragon-app .mathart-viz-card-preview--triple-pendulum::after {
+  content: "";
+  position: absolute;
+  top: 34%;
+  left: 54%;
+  width: 2px;
+  height: 24%;
+  background: rgba(255, 255, 255, 0.55);
+  transform: rotate(-40deg);
+  transform-origin: top center;
+  box-shadow: 0 44px 10px -6px rgba(230, 168, 68, 0.85);
+}
+
+/* --- Bezier Curves --- */
+.dragon-app .bezier-curves-sidebar {
+  display: block;
+}
+
+.dragon-app .bezier-curves-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .bezier-curves-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .bezier-curves-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .bezier-curves-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .bezier-curves-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .bezier-curves-canvas--dragging {
+  cursor: grabbing;
+}
+
+.dragon-app .mathart-viz-card-preview--bezier-curves {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--bezier-curves::before {
+  content: "";
+  position: absolute;
+  inset: 20% 15%;
+  border: 2px solid rgba(127, 212, 255, 0.8);
+  border-radius: 0% 100% 0% 100% / 0% 100% 0% 100%;
+  border-right: none;
+  border-bottom: none;
+}
+
+.dragon-app .mathart-viz-card-preview--bezier-curves::after {
+  content: "";
+  position: absolute;
+  inset: 20% 15%;
+  background:
+    radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.7) 0 3%, transparent 4%),
+    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.7) 0 3%, transparent 4%),
+    linear-gradient(to top right, transparent 48%, rgba(230, 168, 68, 0.5) 50%, transparent 52%);
+}
+
+/* --- Percolation --- */
+.dragon-app .percolation-sidebar {
+  display: block;
+}
+
+.dragon-app .percolation-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .percolation-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .percolation-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .percolation-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .percolation-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .percolation-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .percolation-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dragon-app .percolation-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .percolation-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--percolation {
+  background: #0a0d18;
+  background-image:
+    radial-gradient(circle at 25% 30%, rgba(90, 170, 255, 0.6) 0 8%, transparent 9%),
+    radial-gradient(circle at 45% 55%, rgba(74, 201, 110, 0.6) 0 6%, transparent 7%),
+    radial-gradient(circle at 70% 35%, rgba(230, 168, 68, 0.6) 0 7%, transparent 8%),
+    radial-gradient(circle at 60% 70%, rgba(214, 84, 84, 0.6) 0 6%, transparent 7%),
+    radial-gradient(circle at 30% 75%, rgba(180, 120, 230, 0.6) 0 5%, transparent 6%);
+}
+
+.dragon-app .mathart-viz-card-preview--percolation::after {
+  content: "";
+  position: absolute;
+  top: 8%;
+  bottom: 8%;
+  left: 48%;
+  width: 4%;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+/* --- Poisson Disk Sampling --- */
+.dragon-app .poisson-disk-sidebar {
+  display: block;
+}
+
+.dragon-app .poisson-disk-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .poisson-disk-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .poisson-disk-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .poisson-disk-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .poisson-disk-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .poisson-disk-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .poisson-disk-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dragon-app .poisson-disk-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .poisson-disk-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--poisson-disk {
+  background: #0a0d18;
+  background-image:
+    radial-gradient(circle at 5% 10%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 25% 30%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 45% 5%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 65% 35%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 85% 15%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 10% 55%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 35% 70%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 55% 60%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 75% 80%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 90% 50%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 20% 90%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%),
+    radial-gradient(circle at 60% 92%, rgba(127, 212, 255, 0.8) 0 5%, transparent 6%);
+}
+
+/* --- Kaleidoscope --- */
+.dragon-app .kaleidoscope-sidebar {
+  display: block;
+}
+
+.dragon-app .kaleidoscope-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .kaleidoscope-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .kaleidoscope-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .kaleidoscope-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .kaleidoscope-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--kaleidoscope {
+  background: #0a0d18;
+  background-image: repeating-conic-gradient(
+    from 0deg,
+    rgba(127, 212, 255, 0.65) 0deg 8deg,
+    rgba(230, 168, 68, 0.55) 8deg 16deg,
+    transparent 16deg 45deg
+  );
+  border-radius: 0;
+}
+
+.dragon-app .mathart-viz-card-preview--kaleidoscope::before {
+  content: "";
+  position: absolute;
+  inset: 38%;
+  background: #0a0d18;
+  border-radius: 50%;
+}
+
+/* --- Boids --- */
+.dragon-app .boids-sidebar {
+  display: block;
+}
+
+.dragon-app .boids-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .boids-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .boids-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .boids-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .boids-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--boids {
+  background: linear-gradient(160deg, #0f1a2e 0%, #0a0d18 70%);
+}
+
+.dragon-app .mathart-viz-card-preview--boids::before,
+.dragon-app .mathart-viz-card-preview--boids::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 10px 6px 0;
+  border-color: transparent rgba(127, 212, 255, 0.85) transparent transparent;
+}
+
+.dragon-app .mathart-viz-card-preview--boids::before {
+  top: 30%;
+  left: 25%;
+  transform: rotate(-15deg);
+}
+
+.dragon-app .mathart-viz-card-preview--boids::after {
+  top: 55%;
+  left: 55%;
+  transform: rotate(-25deg);
+  border-color: transparent rgba(230, 168, 68, 0.85) transparent transparent;
+}
+
+/* --- A* Pathfinding --- */
+.dragon-app .astar-pathfinding-sidebar {
+  display: block;
+}
+
+.dragon-app .astar-pathfinding-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .astar-pathfinding-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .astar-pathfinding-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .astar-pathfinding-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .astar-pathfinding-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  cursor: crosshair;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--astar-pathfinding {
+  background: #0a0d18;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 12.5%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.08) 0 1px, transparent 1px 12.5%);
+}
+
+.dragon-app .mathart-viz-card-preview--astar-pathfinding::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 55%;
+  width: 18%;
+  height: 45%;
+  background: rgba(26, 31, 51, 0.9);
+}
+
+.dragon-app .mathart-viz-card-preview--astar-pathfinding::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 70%;
+  height: 70%;
+  background:
+    linear-gradient(20deg, transparent 47%, rgba(230, 168, 68, 0.85) 49% 51%, transparent 53%);
+  clip-path: polygon(0% 0%, 40% 60%, 100% 100%);
+}
+
+/* --- Wave Function Collapse --- */
+.dragon-app .wave-function-collapse-sidebar {
+  display: block;
+}
+
+.dragon-app .wave-function-collapse-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .wave-function-collapse-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .wave-function-collapse-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .wave-function-collapse-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.dragon-app .wave-function-collapse-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dragon-app .wave-function-collapse-result-label {
+  font-size: var(--text-xs);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.dragon-app .wave-function-collapse-result-value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.dragon-app .wave-function-collapse-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .wave-function-collapse-canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--wave-function-collapse {
+  background: #0a0d18;
+}
+
+.dragon-app .mathart-viz-card-preview--wave-function-collapse::before {
+  content: "";
+  position: absolute;
+  inset: 15%;
+  background-image:
+    linear-gradient(rgba(230, 168, 68, 0.7) 0 100%),
+    linear-gradient(90deg, rgba(230, 168, 68, 0.7) 0 100%);
+  background-repeat: no-repeat;
+  background-size: 3px 100%, 100% 3px;
+  background-position: 50% 0%, 0% 50%;
+}
+
+.dragon-app .mathart-viz-card-preview--wave-function-collapse::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 65%;
+  width: 20%;
+  height: 3px;
+  background: rgba(230, 168, 68, 0.7);
+  box-shadow: 0 32px 0 0 rgba(230, 168, 68, 0.7);
+}
+
+/* --- Fractal Terrain --- */
+.dragon-app .fractal-terrain-sidebar {
+  display: block;
+}
+
+.dragon-app .fractal-terrain-sidebar-panel {
+  align-items: stretch;
+}
+
+.dragon-app .fractal-terrain-value-readout {
+  margin-top: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: var(--text-sm);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dragon-app .fractal-terrain-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.dragon-app .fractal-terrain-canvas-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: var(--color-bg-base);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.dragon-app .fractal-terrain-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  background: #0a0d18;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dragon-app .mathart-viz-card-preview--fractal-terrain {
+  background: linear-gradient(180deg, #0a1428 0%, #071022 55%, #0a0d18 55%);
+}
+
+.dragon-app .mathart-viz-card-preview--fractal-terrain::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 45%;
+  height: 30%;
+  background: linear-gradient(140deg, #3a2a1a 0%, #4a3826 40%, #6a5540 70%, #3a2a1a 100%);
+  clip-path: polygon(0% 100%, 8% 40%, 20% 70%, 32% 20%, 45% 55%, 58% 10%, 72% 50%, 85% 25%, 100% 60%, 100% 100%);
+}
+
+.dragon-app .mathart-viz-card-preview--fractal-terrain::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 55% 0;
+  background: #0a1830;
 }

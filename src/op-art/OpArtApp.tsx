@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampAngleOffset,
   clampCenterOffset,
@@ -126,6 +127,16 @@ export default function OpArtApp({ onHome }: { onHome: () => void }) {
 
   const showCenterOffset = pattern !== "line-grating";
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `op-art.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -137,118 +148,128 @@ export default function OpArtApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel op-art-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="op-art-pattern">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="op-art-pattern">
                     Pattern style
                   </FormLabel>
-                  <FormControl
-                    id="op-art-pattern"
-                    as="select"
-                    value={pattern}
-                    onChange={(e) => setPattern(e.target.value as OpArtPattern)}
-                  >
-                    {OP_ART_PATTERNS.map((entry) => (
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="op-art-pattern"
+                      as="select"
+                      value={pattern}
+                      onChange={(e) => setPattern(e.target.value as OpArtPattern)}
+                    >
+                      {OP_ART_PATTERNS.map((entry) => (
                       <option key={entry.id} value={entry.id}>
-                        {entry.label}
-                      </option>
-                    ))}
-                  </FormControl>
-                </div>
-
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="op-art-spacing">
-                    Layer A spacing
-                  </FormLabel>
-                  <FormControl
-                    id="op-art-spacing"
-                    type="range"
-                    min={MIN_SPACING}
-                    max={MAX_SPACING}
-                    step={1}
-                    value={spacingA}
-                    onChange={(e) => setSpacingA(clampSpacing(Number(e.target.value)))}
-                  />
-                  <div className="op-art-value-readout">{spacingA}px</div>
-                </div>
-
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="op-art-spacing-delta">
-                    Spacing delta (layer B)
-                  </FormLabel>
-                  <FormControl
-                    id="op-art-spacing-delta"
-                    type="range"
-                    min={MIN_SPACING_DELTA}
-                    max={MAX_SPACING_DELTA}
-                    step={0.5}
-                    value={spacingDelta}
-                    onChange={(e) =>
-                      setSpacingDelta(clampSpacingDelta(Number(e.target.value)))
-                    }
-                  />
-                  <div className="op-art-value-readout">
-                    {spacingDelta > 0 ? "+" : ""}
-                    {spacingDelta.toFixed(1)}px
+                      {entry.label}
+                    </option>
+                      ))}
+                    </FormControl>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="op-art-angle-offset">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="op-art-spacing">
+                    Layer A spacing
+                  </FormLabel>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="op-art-spacing"
+                      type="range"
+                      min={MIN_SPACING}
+                      max={MAX_SPACING}
+                      step={1}
+                      value={spacingA}
+                      onChange={(e) => setSpacingA(clampSpacing(Number(e.target.value)))}
+                    />
+                    <div className="op-art-value-readout">{spacingA}px</div>
+                  </div>
+                </div>
+
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="op-art-spacing-delta">
+                    Spacing delta (layer B)
+                  </FormLabel>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="op-art-spacing-delta"
+                      type="range"
+                      min={MIN_SPACING_DELTA}
+                      max={MAX_SPACING_DELTA}
+                      step={0.5}
+                      value={spacingDelta}
+                      onChange={(e) =>
+                        setSpacingDelta(clampSpacingDelta(Number(e.target.value)))
+                      }
+                    />
+                    <div className="op-art-value-readout">
+                      {spacingDelta > 0 ? "+" : ""}
+                      {spacingDelta.toFixed(1)}px
+                                      </div>
+                  </div>
+                </div>
+
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="op-art-angle-offset">
                     Angle offset (layer B)
                   </FormLabel>
-                  <FormControl
-                    id="op-art-angle-offset"
-                    type="range"
-                    min={MIN_ANGLE_OFFSET}
-                    max={MAX_ANGLE_OFFSET}
-                    step={1}
-                    value={angleOffsetDeg}
-                    onChange={(e) =>
-                      setAngleOffsetDeg(clampAngleOffset(Number(e.target.value)))
-                    }
-                  />
-                  <div className="op-art-value-readout">{angleOffsetDeg}°</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="op-art-angle-offset"
+                      type="range"
+                      min={MIN_ANGLE_OFFSET}
+                      max={MAX_ANGLE_OFFSET}
+                      step={1}
+                      value={angleOffsetDeg}
+                      onChange={(e) =>
+                        setAngleOffsetDeg(clampAngleOffset(Number(e.target.value)))
+                      }
+                    />
+                    <div className="op-art-value-readout">{angleOffsetDeg}°</div>
+                  </div>
                 </div>
 
                 {showCenterOffset ? (
-                  <div>
-                    <FormLabel
-                      className="section-label-muted"
-                      htmlFor="op-art-center-offset"
-                    >
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label"
+                      htmlFor="op-art-center-offset">
                       Center offset (layer B)
                     </FormLabel>
-                    <FormControl
-                      id="op-art-center-offset"
-                      type="range"
-                      min={MIN_CENTER_OFFSET}
-                      max={MAX_CENTER_OFFSET}
-                      step={1}
-                      value={centerOffsetPx}
-                      onChange={(e) =>
-                        setCenterOffsetPx(clampCenterOffset(Number(e.target.value)))
-                      }
-                    />
-                    <div className="op-art-value-readout">{centerOffsetPx}px</div>
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="op-art-center-offset"
+                        type="range"
+                        min={MIN_CENTER_OFFSET}
+                        max={MAX_CENTER_OFFSET}
+                        step={1}
+                        value={centerOffsetPx}
+                        onChange={(e) =>
+                          setCenterOffsetPx(clampCenterOffset(Number(e.target.value)))
+                        }
+                      />
+                      <div className="op-art-value-readout">{centerOffsetPx}px</div>
+                    </div>
                   </div>
                 ) : null}
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="op-art-line-width">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="op-art-line-width">
                     Line thickness
                   </FormLabel>
-                  <FormControl
-                    id="op-art-line-width"
-                    type="range"
-                    min={MIN_LINE_WIDTH}
-                    max={MAX_LINE_WIDTH}
-                    step={0.5}
-                    value={lineWidth}
-                    onChange={(e) =>
-                      setLineWidth(clampLineWidth(Number(e.target.value)))
-                    }
-                  />
-                  <div className="op-art-value-readout">{lineWidth}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="op-art-line-width"
+                      type="range"
+                      min={MIN_LINE_WIDTH}
+                      max={MAX_LINE_WIDTH}
+                      step={0.5}
+                      value={lineWidth}
+                      onChange={(e) =>
+                        setLineWidth(clampLineWidth(Number(e.target.value)))
+                      }
+                    />
+                    <div className="op-art-value-readout">{lineWidth}px</div>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -260,31 +281,37 @@ export default function OpArtApp({ onHome }: { onHome: () => void }) {
                 />
 
                 {autoRotate ? (
-                  <div>
-                    <FormLabel
-                      className="section-label-muted"
-                      htmlFor="op-art-rotate-speed"
-                    >
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label"
+                      htmlFor="op-art-rotate-speed">
                       Rotate speed
                     </FormLabel>
-                    <FormControl
-                      id="op-art-rotate-speed"
-                      type="range"
-                      min={MIN_ROTATE_SPEED}
-                      max={MAX_ROTATE_SPEED}
-                      step={1}
-                      value={rotateSpeed}
-                      onChange={(e) =>
-                        setRotateSpeed(clampRotateSpeed(Number(e.target.value)))
-                      }
-                    />
-                    <div className="op-art-value-readout">{rotateSpeed}°/s</div>
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="op-art-rotate-speed"
+                        type="range"
+                        min={MIN_ROTATE_SPEED}
+                        max={MAX_ROTATE_SPEED}
+                        step={1}
+                        value={rotateSpeed}
+                        onChange={(e) =>
+                          setRotateSpeed(clampRotateSpeed(Number(e.target.value)))
+                        }
+                      />
+                      <div className="op-art-value-readout">{rotateSpeed}°/s</div>
+                    </div>
                   </div>
                 ) : null}
 
-                <Button variant="secondary" onClick={resetView}>
+                <Stack direction="horizontal" gap={2}>
+                  <Button variant="secondary" onClick={resetView}>
                   Reset
-                </Button>
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                  </Button>
+                </Stack>
+
 
                 <p className="op-art-hint">
                   Two nearly identical geometric layers, one nudged slightly in

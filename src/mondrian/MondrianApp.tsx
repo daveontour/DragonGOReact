@@ -151,40 +151,44 @@ export default function MondrianApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel mondrian-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="mondrian-depth">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="mondrian-depth">
                     Complexity
                   </FormLabel>
-                  <FormControl
-                    id="mondrian-depth"
-                    type="range"
-                    min={MIN_MONDRIAN_DEPTH}
-                    max={MAX_MONDRIAN_DEPTH}
-                    step={1}
-                    value={maxDepth}
-                    onChange={(e) =>
-                      setMaxDepth(clampMondrianDepth(Number(e.target.value)))
-                    }
-                  />
-                  <div className="mondrian-value-readout">{maxDepth}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="mondrian-depth"
+                      type="range"
+                      min={MIN_MONDRIAN_DEPTH}
+                      max={MAX_MONDRIAN_DEPTH}
+                      step={1}
+                      value={maxDepth}
+                      onChange={(e) =>
+                        setMaxDepth(clampMondrianDepth(Number(e.target.value)))
+                      }
+                    />
+                    <div className="mondrian-value-readout">{maxDepth}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="mondrian-line">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="mondrian-line">
                     Line thickness
                   </FormLabel>
-                  <FormControl
-                    id="mondrian-line"
-                    type="range"
-                    min={MIN_LINE_WIDTH}
-                    max={MAX_LINE_WIDTH}
-                    step={1}
-                    value={lineWidth}
-                    onChange={(e) =>
-                      setLineWidth(clampLineWidth(Number(e.target.value)))
-                    }
-                  />
-                  <div className="mondrian-value-readout">{lineWidth}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="mondrian-line"
+                      type="range"
+                      min={MIN_LINE_WIDTH}
+                      max={MAX_LINE_WIDTH}
+                      step={1}
+                      value={lineWidth}
+                      onChange={(e) =>
+                        setLineWidth(clampLineWidth(Number(e.target.value)))
+                      }
+                    />
+                    <div className="mondrian-value-readout">{lineWidth}px</div>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -195,43 +199,47 @@ export default function MondrianApp({ onHome }: { onHome: () => void }) {
                   onChange={(e) => setShowGridOverlay(e.target.checked)}
                 />
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="mondrian-cell">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="mondrian-cell">
                     Minimum cell size
                   </FormLabel>
-                  <FormControl
-                    id="mondrian-cell"
-                    type="range"
-                    min={MIN_CELL_SIZE}
-                    max={MAX_CELL_SIZE}
-                    step={2}
-                    value={minCellSize}
-                    onChange={(e) =>
-                      setMinCellSize(clampCellSize(Number(e.target.value)))
-                    }
-                  />
-                  <div className="mondrian-value-readout">{minCellSize}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="mondrian-cell"
+                      type="range"
+                      min={MIN_CELL_SIZE}
+                      max={MAX_CELL_SIZE}
+                      step={2}
+                      value={minCellSize}
+                      onChange={(e) =>
+                        setMinCellSize(clampCellSize(Number(e.target.value)))
+                      }
+                    />
+                    <div className="mondrian-value-readout">{minCellSize}px</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="mondrian-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="mondrian-color">
                     Primary colour chance
                   </FormLabel>
-                  <FormControl
-                    id="mondrian-color"
-                    type="range"
-                    min={MIN_COLOR_PROBABILITY}
-                    max={MAX_COLOR_PROBABILITY}
-                    step={0.01}
-                    value={colorProbability}
-                    onChange={(e) =>
-                      setColorProbability(
-                        clampColorProbability(Number(e.target.value))
-                      )
-                    }
-                  />
-                  <div className="mondrian-value-readout">
-                    {(colorProbability * 100).toFixed(0)}%
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="mondrian-color"
+                      type="range"
+                      min={MIN_COLOR_PROBABILITY}
+                      max={MAX_COLOR_PROBABILITY}
+                      step={0.01}
+                      value={colorProbability}
+                      onChange={(e) =>
+                        setColorProbability(
+                          clampColorProbability(Number(e.target.value))
+                        )
+                      }
+                    />
+                    <div className="mondrian-value-readout">
+                      {(colorProbability * 100).toFixed(0)}%
+                                      </div>
                   </div>
                 </div>
 

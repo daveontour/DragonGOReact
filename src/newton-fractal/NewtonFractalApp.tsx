@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampNewtonDegree,
   clampNewtonIterations,
@@ -93,6 +94,16 @@ export default function NewtonFractalApp({ onHome }: { onHome: () => void }) {
     setMaxIterations(DEFAULT_NEWTON_ITERATIONS);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `newton-fractal.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -104,42 +115,46 @@ export default function NewtonFractalApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel newton-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="newton-degree">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="newton-degree">
                     Polynomial degree (z^n - 1)
                   </FormLabel>
-                  <FormControl
-                    id="newton-degree"
-                    type="range"
-                    min={MIN_NEWTON_DEGREE}
-                    max={MAX_NEWTON_DEGREE}
-                    step={1}
-                    value={degree}
-                    onChange={(e) =>
-                      setDegree(clampNewtonDegree(Number(e.target.value)))
-                    }
-                  />
-                  <div className="newton-value-readout">n = {degree}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="newton-degree"
+                      type="range"
+                      min={MIN_NEWTON_DEGREE}
+                      max={MAX_NEWTON_DEGREE}
+                      step={1}
+                      value={degree}
+                      onChange={(e) =>
+                        setDegree(clampNewtonDegree(Number(e.target.value)))
+                      }
+                    />
+                    <div className="newton-value-readout">n = {degree}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="newton-iterations">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="newton-iterations">
                     Max iterations
                   </FormLabel>
-                  <FormControl
-                    id="newton-iterations"
-                    type="range"
-                    min={MIN_NEWTON_ITERATIONS}
-                    max={MAX_NEWTON_ITERATIONS}
-                    step={1}
-                    value={maxIterations}
-                    onChange={(e) =>
-                      setMaxIterations(
-                        clampNewtonIterations(Number(e.target.value))
-                      )
-                    }
-                  />
-                  <div className="newton-value-readout">{maxIterations}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="newton-iterations"
+                      type="range"
+                      min={MIN_NEWTON_ITERATIONS}
+                      max={MAX_NEWTON_ITERATIONS}
+                      step={1}
+                      value={maxIterations}
+                      onChange={(e) =>
+                        setMaxIterations(
+                          clampNewtonIterations(Number(e.target.value))
+                        )
+                      }
+                    />
+                    <div className="newton-value-readout">{maxIterations}</div>
+                  </div>
                 </div>
 
                 <div className="newton-results">
@@ -157,9 +172,15 @@ export default function NewtonFractalApp({ onHome }: { onHome: () => void }) {
                   </div>
                 </div>
 
-                <Button variant="secondary" onClick={resetView}>
+                <Stack direction="horizontal" gap={2}>
+                  <Button variant="secondary" onClick={resetView}>
                   Reset view
-                </Button>
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                  </Button>
+                </Stack>
+
 
                 <p className="newton-hint">
                   Each pixel is a starting guess for Newton&apos;s method

@@ -32,6 +32,28 @@ import RoseCurvesApp from "./rose-curves/RoseCurvesApp";
 import SuperformulaApp from "./superformula/SuperformulaApp";
 import EulerSpiralApp from "./euler-spiral/EulerSpiralApp";
 import CurveStitchingApp from "./curve-stitching/CurveStitchingApp";
+import LangtonsAntApp from "./langtons-ant/LangtonsAntApp";
+import ChaosGameApp from "./chaos-game/ChaosGameApp";
+import DLAApp from "./diffusion-limited-aggregation/DLAApp";
+import SandpileApp from "./abelian-sandpile/SandpileApp";
+import GravitationalAssistApp from "./gravitational-assist/GravitationalAssistApp";
+import TruchetTilesApp from "./truchet-tiles/TruchetTilesApp";
+import JuliaSetApp from "./julia-set/JuliaSetApp";
+import WireworldApp from "./wireworld/WireworldApp";
+import MazeGeneratorApp from "./maze-generator/MazeGeneratorApp";
+import PythagorasTreeApp from "./pythagoras-tree/PythagorasTreeApp";
+import ApollonianGasketApp from "./apollonian-gasket/ApollonianGasketApp";
+import DoublePendulumApp from "./double-pendulum/DoublePendulumApp";
+import MagneticPendulumApp from "./magnetic-pendulum/MagneticPendulumApp";
+import TriplePendulumApp from "./triple-pendulum/TriplePendulumApp";
+import BezierCurvesApp from "./bezier-curves/BezierCurvesApp";
+import PercolationApp from "./percolation/PercolationApp";
+import PoissonDiskApp from "./poisson-disk/PoissonDiskApp";
+import KaleidoscopeApp from "./kaleidoscope/KaleidoscopeApp";
+import BoidsApp from "./boids/BoidsApp";
+import AStarApp from "./astar-pathfinding/AStarApp";
+import WfcApp from "./wave-function-collapse/WfcApp";
+import FractalTerrainApp from "./fractal-terrain/FractalTerrainApp";
 import { VisualizationId } from "./registry";
 
 type AppView = "home" | VisualizationId;
@@ -329,6 +351,208 @@ const App: React.FC = () => {
           style={{ display: view === "curve-stitching" ? "flex" : "none" }}
         >
           <CurveStitchingApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("langtons-ant") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "langtons-ant" ? "flex" : "none" }}
+        >
+          <LangtonsAntApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("chaos-game") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "chaos-game" ? "flex" : "none" }}
+        >
+          <ChaosGameApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("diffusion-limited-aggregation") ? (
+        <div
+          className="viz-shell"
+          style={{
+            display: view === "diffusion-limited-aggregation" ? "flex" : "none",
+          }}
+        >
+          <DLAApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("abelian-sandpile") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "abelian-sandpile" ? "flex" : "none" }}
+        >
+          <SandpileApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("gravitational-assist") ? (
+        <div
+          className="viz-shell"
+          style={{
+            display: view === "gravitational-assist" ? "flex" : "none",
+          }}
+        >
+          <GravitationalAssistApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("truchet-tiles") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "truchet-tiles" ? "flex" : "none" }}
+        >
+          <TruchetTilesApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("julia-set") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "julia-set" ? "flex" : "none" }}
+        >
+          <JuliaSetApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("wireworld") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "wireworld" ? "flex" : "none" }}
+        >
+          <WireworldApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("maze-generator") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "maze-generator" ? "flex" : "none" }}
+        >
+          <MazeGeneratorApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("pythagoras-tree") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "pythagoras-tree" ? "flex" : "none" }}
+        >
+          <PythagorasTreeApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("apollonian-gasket") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "apollonian-gasket" ? "flex" : "none" }}
+        >
+          <ApollonianGasketApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("double-pendulum") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "double-pendulum" ? "flex" : "none" }}
+        >
+          <DoublePendulumApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("magnetic-pendulum") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "magnetic-pendulum" ? "flex" : "none" }}
+        >
+          <MagneticPendulumApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("triple-pendulum") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "triple-pendulum" ? "flex" : "none" }}
+        >
+          <TriplePendulumApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("bezier-curves") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "bezier-curves" ? "flex" : "none" }}
+        >
+          <BezierCurvesApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("percolation") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "percolation" ? "flex" : "none" }}
+        >
+          <PercolationApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("poisson-disk") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "poisson-disk" ? "flex" : "none" }}
+        >
+          <PoissonDiskApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("kaleidoscope") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "kaleidoscope" ? "flex" : "none" }}
+        >
+          <KaleidoscopeApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("boids") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "boids" ? "flex" : "none" }}
+        >
+          <BoidsApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("astar-pathfinding") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "astar-pathfinding" ? "flex" : "none" }}
+        >
+          <AStarApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("wave-function-collapse") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "wave-function-collapse" ? "flex" : "none" }}
+        >
+          <WfcApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("fractal-terrain") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "fractal-terrain" ? "flex" : "none" }}
+        >
+          <FractalTerrainApp onHome={() => setView("home")} />
         </div>
       ) : null}
     </div>

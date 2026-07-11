@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
-import { FormControl, FormLabel, Stack } from "react-bootstrap";
+import { useMemo, useRef, useState } from "react";
+import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadSvgAsPng } from "../downloadViz";
 import {
   calculatePiBounds,
   clampNGonSides,
@@ -19,6 +20,7 @@ const UNIT_RADIUS = 1;
 const VIEW_PADDING = 0.1;
 
 export default function PiNGonApp({ onHome }: { onHome: () => void }) {
+  const svgRef = useRef<SVGSVGElement>(null);
   const [sides, setSides] = useState(DEFAULT_N_GON_SIDES);
 
   const n = clampNGonSides(sides);
@@ -59,6 +61,16 @@ export default function PiNGonApp({ onHome }: { onHome: () => void }) {
 
   const showVertices = n <= 120;
 
+
+  const downloadPng = () => {
+    const svg = svgRef.current;
+    if (!svg) {
+      return;
+    }
+    downloadSvgAsPng(svg, `pi-n-gon.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -70,35 +82,41 @@ export default function PiNGonApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel pi-ngon-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="pi-ngon-n">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="pi-ngon-n">
                     Number of sides (N)
                   </FormLabel>
-                  <FormControl
-                    id="pi-ngon-n"
-                    type="number"
-                    min={MIN_N_GON_SIDES}
-                    max={MAX_N_GON_SIDES}
-                    step={1}
-                    value={n}
-                    onChange={(e) => handleSidesChange(e.target.value)}
-                  />
-                  <FormControl
-                    className="mt-2"
-                    type="range"
-                    min={MIN_N_GON_SIDES}
-                    max={Math.min(MAX_N_GON_SIDES, 200)}
-                    step={1}
-                    value={Math.min(n, 200)}
-                    onChange={(e) =>
-                      setSides(clampNGonSides(Number(e.target.value)))
-                    }
-                  />
-                  <p className="pi-ngon-hint">
-                    Compare inscribed and circumscribed regular {n}-gons on a
-                    unit circle. π lies between their perimeters ÷ 2.
-                  </p>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="pi-ngon-n"
+                      type="number"
+                      min={MIN_N_GON_SIDES}
+                      max={MAX_N_GON_SIDES}
+                      step={1}
+                      value={n}
+                      onChange={(e) => handleSidesChange(e.target.value)}
+                    />
+                    <FormControl
+                      className="mt-2"
+                      type="range"
+                      min={MIN_N_GON_SIDES}
+                      max={Math.min(MAX_N_GON_SIDES, 200)}
+                      step={1}
+                      value={Math.min(n, 200)}
+                      onChange={(e) =>
+                        setSides(clampNGonSides(Number(e.target.value)))
+                      }
+                    />
+                  </div>
                 </div>
+                <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                </Button>
+
+                <p className="pi-ngon-hint">
+                  Compare inscribed and circumscribed regular {n}-gons on a
+                  unit circle. π lies between their perimeters ÷ 2.
+                </p>
 
                 <div className="pi-ngon-results">
                   <div className="pi-ngon-result-row">
@@ -152,6 +170,7 @@ export default function PiNGonApp({ onHome }: { onHome: () => void }) {
 
         <div className="pi-ngon-canvas-wrap">
           <svg
+              ref={svgRef}
             className="pi-ngon-svg"
             viewBox={`0 0 ${viewSize} ${viewSize}`}
             role="img"

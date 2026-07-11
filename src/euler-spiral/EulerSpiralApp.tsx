@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampTMax,
   DEFAULT_T_MAX,
@@ -101,6 +102,16 @@ export default function EulerSpiralApp({ onHome }: { onHome: () => void }) {
     setAnimate(false);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `euler-spiral.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -112,53 +123,59 @@ export default function EulerSpiralApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel euler-spiral-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="euler-spiral-tmax">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="euler-spiral-tmax">
                     Spiral turns
                   </FormLabel>
-                  <FormControl
-                    id="euler-spiral-tmax"
-                    type="range"
-                    min={MIN_T_MAX}
-                    max={MAX_T_MAX}
-                    step={0.1}
-                    value={tMax}
-                    onChange={(e) => setTMax(clampTMax(Number(e.target.value)))}
-                  />
-                  <div className="euler-spiral-value-readout">{tMax.toFixed(1)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="euler-spiral-tmax"
+                      type="range"
+                      min={MIN_T_MAX}
+                      max={MAX_T_MAX}
+                      step={0.1}
+                      value={tMax}
+                      onChange={(e) => setTMax(clampTMax(Number(e.target.value)))}
+                    />
+                    <div className="euler-spiral-value-readout">{tMax.toFixed(1)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="euler-spiral-width">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="euler-spiral-width">
                     Line thickness
                   </FormLabel>
-                  <FormControl
-                    id="euler-spiral-width"
-                    type="range"
-                    min={0.5}
-                    max={4}
-                    step={0.5}
-                    value={lineWidth}
-                    onChange={(e) => setLineWidth(Number(e.target.value))}
-                  />
-                  <div className="euler-spiral-value-readout">{lineWidth}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="euler-spiral-width"
+                      type="range"
+                      min={0.5}
+                      max={4}
+                      step={0.5}
+                      value={lineWidth}
+                      onChange={(e) => setLineWidth(Number(e.target.value))}
+                    />
+                    <div className="euler-spiral-value-readout">{lineWidth}px</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="euler-spiral-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="euler-spiral-color">
                     Color mode
                   </FormLabel>
-                  <FormControl
-                    id="euler-spiral-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) =>
-                      setColorMode(e.target.value as EulerSpiralColorMode)
-                    }
-                  >
-                    <option value="rainbow">Rainbow by arc length</option>
-                    <option value="mono">Single color</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="euler-spiral-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) =>
+                        setColorMode(e.target.value as EulerSpiralColorMode)
+                      }
+                    >
+                      <option value="rainbow">Rainbow by arc length</option>
+                      <option value="mono">Single color</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -169,9 +186,15 @@ export default function EulerSpiralApp({ onHome }: { onHome: () => void }) {
                   onChange={(e) => setAnimate(e.target.checked)}
                 />
 
-                <Button variant="secondary" onClick={resetView}>
+                <Stack direction="horizontal" gap={2}>
+                  <Button variant="secondary" onClick={resetView}>
                   Reset
-                </Button>
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                  </Button>
+                </Stack>
+
 
                 <p className="euler-spiral-hint">
                   Also called a clothoid or Cornu spiral, this is the curve

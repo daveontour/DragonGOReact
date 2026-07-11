@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   ChladniRenderMode,
   clampMode,
@@ -105,6 +106,16 @@ export default function ChladniApp({ onHome }: { onHome: () => void }) {
 
   const coveragePercent = useMemo(() => (coverage * 100).toFixed(1), [coverage]);
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `chladni-patterns.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -116,97 +127,103 @@ export default function ChladniApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel chladni-patterns-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="chladni-mode">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="chladni-mode">
                     Render mode
                   </FormLabel>
-                  <FormControl
-                    id="chladni-mode"
-                    as="select"
-                    value={mode}
-                    onChange={(e) => setMode(e.target.value as ChladniRenderMode)}
-                  >
-                    <option value="nodal-lines">Nodal lines</option>
-                    <option value="sand-particles">Sand particles</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="chladni-mode"
+                      as="select"
+                      value={mode}
+                      onChange={(e) => setMode(e.target.value as ChladniRenderMode)}
+                    >
+                      <option value="nodal-lines">Nodal lines</option>
+                      <option value="sand-particles">Sand particles</option>
+                    </FormControl>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="chladni-mode-n">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="chladni-mode-n">
                     Mode n
                   </FormLabel>
-                  <FormControl
-                    id="chladni-mode-n"
-                    type="range"
-                    min={MIN_MODE}
-                    max={MAX_MODE}
-                    step={1}
-                    value={modeN}
-                    onChange={(e) => setModeN(clampMode(Number(e.target.value)))}
-                  />
-                  <div className="chladni-patterns-value-readout">{modeN}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="chladni-mode-n"
+                      type="range"
+                      min={MIN_MODE}
+                      max={MAX_MODE}
+                      step={1}
+                      value={modeN}
+                      onChange={(e) => setModeN(clampMode(Number(e.target.value)))}
+                    />
+                    <div className="chladni-patterns-value-readout">{modeN}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="chladni-mode-m">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="chladni-mode-m">
                     Mode m
                   </FormLabel>
-                  <FormControl
-                    id="chladni-mode-m"
-                    type="range"
-                    min={MIN_MODE}
-                    max={MAX_MODE}
-                    step={1}
-                    value={modeM}
-                    onChange={(e) => setModeM(clampMode(Number(e.target.value)))}
-                  />
-                  <div className="chladni-patterns-value-readout">{modeM}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="chladni-mode-m"
+                      type="range"
+                      min={MIN_MODE}
+                      max={MAX_MODE}
+                      step={1}
+                      value={modeM}
+                      onChange={(e) => setModeM(clampMode(Number(e.target.value)))}
+                    />
+                    <div className="chladni-patterns-value-readout">{modeM}</div>
+                  </div>
                 </div>
 
                 {mode === "nodal-lines" ? (
-                  <div>
-                    <FormLabel
-                      className="section-label-muted"
-                      htmlFor="chladni-threshold"
-                    >
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label"
+                      htmlFor="chladni-threshold">
                       Line thickness
                     </FormLabel>
-                    <FormControl
-                      id="chladni-threshold"
-                      type="range"
-                      min={MIN_THRESHOLD}
-                      max={MAX_THRESHOLD}
-                      step={0.01}
-                      value={threshold}
-                      onChange={(e) =>
-                        setThreshold(clampThreshold(Number(e.target.value)))
-                      }
-                    />
-                    <div className="chladni-patterns-value-readout">
-                      {threshold.toFixed(2)}
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="chladni-threshold"
+                        type="range"
+                        min={MIN_THRESHOLD}
+                        max={MAX_THRESHOLD}
+                        step={0.01}
+                        value={threshold}
+                        onChange={(e) =>
+                          setThreshold(clampThreshold(Number(e.target.value)))
+                        }
+                      />
+                      <div className="chladni-patterns-value-readout">
+                        {threshold.toFixed(2)}
+                                          </div>
                     </div>
                   </div>
                 ) : (
-                  <div>
-                    <FormLabel
-                      className="section-label-muted"
-                      htmlFor="chladni-particles"
-                    >
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label"
+                      htmlFor="chladni-particles">
                       Particle count
                     </FormLabel>
-                    <FormControl
-                      id="chladni-particles"
-                      type="range"
-                      min={MIN_PARTICLES}
-                      max={MAX_PARTICLES}
-                      step={500}
-                      value={particleCount}
-                      onChange={(e) =>
-                        setParticleCount(clampParticleCount(Number(e.target.value)))
-                      }
-                    />
-                    <div className="chladni-patterns-value-readout">
-                      {particleCount}
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="chladni-particles"
+                        type="range"
+                        min={MIN_PARTICLES}
+                        max={MAX_PARTICLES}
+                        step={500}
+                        value={particleCount}
+                        onChange={(e) =>
+                          setParticleCount(clampParticleCount(Number(e.target.value)))
+                        }
+                      />
+                      <div className="chladni-patterns-value-readout">
+                        {particleCount}
+                                          </div>
                     </div>
                   </div>
                 )}
@@ -234,6 +251,9 @@ export default function ChladniApp({ onHome }: { onHome: () => void }) {
                   </Button>
                   <Button variant="secondary" onClick={resetView}>
                     Reset
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
                   </Button>
                 </Stack>
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadSvgAsPng } from "../downloadViz";
 import {
   boardToSequence,
   CellPos,
@@ -44,6 +45,7 @@ export default function KnightsTourApp({ onHome }: { onHome: () => void }) {
   const [knightPos, setKnightPos] = useState<CellPos>({ r: 0, c: 0 });
   const [showKnight, setShowKnight] = useState(true);
 
+  const svgRef = useRef<SVGSVGElement>(null);
   const animationRef = useRef<number | null>(null);
   const tourTypeRef = useRef(tourType);
   tourTypeRef.current = tourType;
@@ -195,6 +197,16 @@ export default function KnightsTourApp({ onHome }: { onHome: () => void }) {
   const isStartSquare = (r: number, c: number) =>
     r === startRow && c === startCol && !isPlaying && animationStep === 0;
 
+
+  const downloadPng = () => {
+    const svg = svgRef.current;
+    if (!svg) {
+      return;
+    }
+    downloadSvgAsPng(svg, `knights-tour.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -216,28 +228,38 @@ export default function KnightsTourApp({ onHome }: { onHome: () => void }) {
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted">Tour type</FormLabel>
-                  <FormControl
-                    as="select"
-                    value={tourType}
-                    disabled={isPlaying}
-                    onChange={(e) =>
-                      setTourType(e.target.value as TourType)
-                    }
-                  >
-                    <option value="open">Open tour</option>
-                    <option value="closed">Closed tour</option>
-                  </FormControl>
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label">
+                    Tour type
+                  </FormLabel>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      as="select"
+                      value={tourType}
+                      disabled={isPlaying}
+                      onChange={(e) =>
+                        setTourType(e.target.value as TourType)
+                      }
+                    >
+                      <option value="open">Open tour</option>
+                      <option value="closed">Closed tour</option>
+                    </FormControl>
+                  </div>
                 </div>
 
-                <Button
+                <Stack direction="horizontal" gap={2}>
+                  <Button
                   variant="primary"
                   disabled={isPlaying}
                   onClick={handleGenerate}
-                >
+                  >
                   Generate &amp; play
-                </Button>
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                  </Button>
+                </Stack>
+
 
                 {isPlaying ? (
                   <Button
@@ -295,6 +317,7 @@ export default function KnightsTourApp({ onHome }: { onHome: () => void }) {
             </div>
 
             <svg
+              ref={svgRef}
               className="knights-tour-path"
               viewBox="0 0 100 100"
               preserveAspectRatio="none"

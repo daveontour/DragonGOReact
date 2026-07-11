@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { FormControl, FormLabel, Stack } from "react-bootstrap";
+import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   buildLSystemSegments,
   clampLSystemIterations,
@@ -87,6 +88,16 @@ export default function LSystemApp({ onHome }: { onHome: () => void }) {
     setIterations(LSYSTEM_PRESETS[id].defaultIterations);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `l-systems.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -98,45 +109,49 @@ export default function LSystemApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel lsystem-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="lsystem-preset">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="lsystem-preset">
                     Fractal
                   </FormLabel>
-                  <FormControl
-                    id="lsystem-preset"
-                    as="select"
-                    value={presetId}
-                    onChange={(e) =>
-                      handlePresetChange(e.target.value as LSystemPresetId)
-                    }
-                  >
-                    {Object.values(LSYSTEM_PRESETS).map((p) => (
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="lsystem-preset"
+                      as="select"
+                      value={presetId}
+                      onChange={(e) =>
+                        handlePresetChange(e.target.value as LSystemPresetId)
+                      }
+                    >
+                      {Object.values(LSYSTEM_PRESETS).map((p) => (
                       <option key={p.id} value={p.id}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </FormControl>
+                      {p.name}
+                    </option>
+                      ))}
+                    </FormControl>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="lsystem-iterations">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="lsystem-iterations">
                     Iterations
                   </FormLabel>
-                  <FormControl
-                    id="lsystem-iterations"
-                    type="range"
-                    min={0}
-                    max={preset.maxIterations}
-                    step={1}
-                    value={iterations}
-                    onChange={(e) =>
-                      setIterations(
-                        clampLSystemIterations(presetId, Number(e.target.value))
-                      )
-                    }
-                  />
-                  <div className="lsystem-value-readout">
-                    {iterations} / {preset.maxIterations}
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="lsystem-iterations"
+                      type="range"
+                      min={0}
+                      max={preset.maxIterations}
+                      step={1}
+                      value={iterations}
+                      onChange={(e) =>
+                        setIterations(
+                          clampLSystemIterations(presetId, Number(e.target.value))
+                        )
+                      }
+                    />
+                    <div className="lsystem-value-readout">
+                      {iterations} / {preset.maxIterations}
+                                      </div>
                   </div>
                 </div>
 
@@ -152,6 +167,11 @@ export default function LSystemApp({ onHome }: { onHome: () => void }) {
                     </span>
                   </div>
                 </div>
+
+                <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                </Button>
+
 
                 <p className="lsystem-hint">{preset.description}</p>
                 <p className="lsystem-hint">

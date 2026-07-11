@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampMandelbrotIterations,
   complexFromPixel,
@@ -146,6 +147,16 @@ export default function MandelbrotApp({ onHome }: { onHome: () => void }) {
     setMaxIterations(DEFAULT_MANDELBROT_ITERATIONS);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `mandelbrot.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -157,78 +168,78 @@ export default function MandelbrotApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel mandelbrot-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel
-                    className="section-label-muted"
-                    htmlFor="mandelbrot-iterations"
-                  >
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="mandelbrot-iterations">
                     Max iterations
                   </FormLabel>
-                  <FormControl
-                    id="mandelbrot-iterations"
-                    type="number"
-                    min={MIN_MANDELBROT_ITERATIONS}
-                    max={MAX_MANDELBROT_ITERATIONS}
-                    step={1}
-                    value={maxIterations}
-                    onChange={(e) =>
-                      setMaxIterations(
-                        clampMandelbrotIterations(Number(e.target.value))
-                      )
-                    }
-                  />
-                  <FormControl
-                    className="mt-2"
-                    type="range"
-                    min={MIN_MANDELBROT_ITERATIONS}
-                    max={MAX_MANDELBROT_ITERATIONS}
-                    step={1}
-                    value={maxIterations}
-                    onChange={(e) =>
-                      setMaxIterations(
-                        clampMandelbrotIterations(Number(e.target.value))
-                      )
-                    }
-                  />
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="mandelbrot-iterations"
+                      type="number"
+                      min={MIN_MANDELBROT_ITERATIONS}
+                      max={MAX_MANDELBROT_ITERATIONS}
+                      step={1}
+                      value={maxIterations}
+                      onChange={(e) =>
+                        setMaxIterations(
+                          clampMandelbrotIterations(Number(e.target.value))
+                        )
+                      }
+                    />
+                    <FormControl
+                      className="mt-2"
+                      type="range"
+                      min={MIN_MANDELBROT_ITERATIONS}
+                      max={MAX_MANDELBROT_ITERATIONS}
+                      step={1}
+                      value={maxIterations}
+                      onChange={(e) =>
+                        setMaxIterations(
+                          clampMandelbrotIterations(Number(e.target.value))
+                        )
+                      }
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel
-                    className="section-label-muted"
-                    htmlFor="mandelbrot-center-re"
-                  >
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="mandelbrot-center-re">
                     Centre (real)
                   </FormLabel>
-                  <FormControl
-                    id="mandelbrot-center-re"
-                    type="number"
-                    step="0.0001"
-                    value={view.centerRe}
-                    onChange={(e) =>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="mandelbrot-center-re"
+                      type="number"
+                      step="0.0001"
+                      value={view.centerRe}
+                      onChange={(e) =>
                       setView((current) => ({
-                        ...current,
-                        centerRe: Number(e.target.value),
+                      ...current,
+                      centerRe: Number(e.target.value),
                       }))
-                    }
-                  />
-                  <FormLabel
-                    className="section-label-muted mt-2"
-                    htmlFor="mandelbrot-center-im"
-                  >
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="mandelbrot-center-im">
                     Centre (imaginary)
                   </FormLabel>
-                  <FormControl
-                    id="mandelbrot-center-im"
-                    type="number"
-                    step="0.0001"
-                    value={view.centerIm}
-                    onChange={(e) =>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="mandelbrot-center-im"
+                      type="number"
+                      step="0.0001"
+                      value={view.centerIm}
+                      onChange={(e) =>
                       setView((current) => ({
-                        ...current,
-                        centerIm: Number(e.target.value),
+                      ...current,
+                      centerIm: Number(e.target.value),
                       }))
-                    }
-                  />
+                      }
+                    />
+                  </div>
                 </div>
 
                 <div className="mandelbrot-results">
@@ -252,6 +263,9 @@ export default function MandelbrotApp({ onHome }: { onHome: () => void }) {
                   </Button>
                   <Button variant="outline-light" onClick={zoomIn}>
                     Zoom in
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
                   </Button>
                 </Stack>
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   circleMultiplicationChords,
   clampMultiplierK,
@@ -128,6 +129,16 @@ export default function CurveStitchingApp({ onHome }: { onHome: () => void }) {
 
   const isCircle = pattern === "circle-multiplication";
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `curve-stitching.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -139,114 +150,126 @@ export default function CurveStitchingApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel curve-stitching-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="curve-stitching-pattern">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="curve-stitching-pattern">
                     Pattern
                   </FormLabel>
-                  <FormControl
-                    id="curve-stitching-pattern"
-                    as="select"
-                    value={pattern}
-                    onChange={(e) => {
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="curve-stitching-pattern"
+                      as="select"
+                      value={pattern}
+                      onChange={(e) => {
                       const nextPattern = e.target.value as StitchPattern;
                       setPattern(nextPattern);
                       setK((current) => clampMultiplierK(current, n));
-                    }}
-                  >
-                    <option value="circle-multiplication">
+                      }}
+                    >
+                      <option value="circle-multiplication">
                       Circle multiplication (times tables)
                     </option>
-                    <option value="two-ray-parabola">Two-ray parabola</option>
-                  </FormControl>
+                      <option value="two-ray-parabola">Two-ray parabola</option>
+                    </FormControl>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="curve-stitching-n">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="curve-stitching-n">
                     Points (n)
                   </FormLabel>
-                  <FormControl
-                    id="curve-stitching-n"
-                    type="range"
-                    min={MIN_STITCH_N}
-                    max={MAX_STITCH_N}
-                    step={1}
-                    value={n}
-                    onChange={(e) => {
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="curve-stitching-n"
+                      type="range"
+                      min={MIN_STITCH_N}
+                      max={MAX_STITCH_N}
+                      step={1}
+                      value={n}
+                      onChange={(e) => {
                       const nextN = clampStitchN(Number(e.target.value));
                       setN(nextN);
                       setK((current) => clampMultiplierK(current, nextN));
-                    }}
-                  />
-                  <div className="curve-stitching-value-readout">{n}</div>
+                      }}
+                    />
+                    <div className="curve-stitching-value-readout">{n}</div>
+                  </div>
                 </div>
 
                 {isCircle ? (
-                  <div>
-                    <FormLabel className="section-label-muted" htmlFor="curve-stitching-k">
+                  <div className="viz-control-row">
+                    <FormLabel className="section-label-muted viz-control-row-label" htmlFor="curve-stitching-k">
                       Multiplier (k)
                     </FormLabel>
-                    <FormControl
-                      id="curve-stitching-k"
-                      type="range"
-                      min={MIN_MULTIPLIER_K}
-                      max={maxMultiplierFor(n)}
-                      step={0.1}
-                      value={k}
-                      onChange={(e) =>
-                        setK(clampMultiplierK(Number(e.target.value), n))
-                      }
-                    />
-                    <div className="curve-stitching-value-readout">{k.toFixed(1)}</div>
+                    <div className="viz-control-row-control">
+                      <FormControl
+                        id="curve-stitching-k"
+                        type="range"
+                        min={MIN_MULTIPLIER_K}
+                        max={maxMultiplierFor(n)}
+                        step={0.1}
+                        value={k}
+                        onChange={(e) =>
+                          setK(clampMultiplierK(Number(e.target.value), n))
+                        }
+                      />
+                      <div className="curve-stitching-value-readout">{k.toFixed(1)}</div>
+                    </div>
                   </div>
                 ) : null}
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="curve-stitching-width">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="curve-stitching-width">
                     Line thickness
                   </FormLabel>
-                  <FormControl
-                    id="curve-stitching-width"
-                    type="range"
-                    min={0.5}
-                    max={2}
-                    step={0.5}
-                    value={lineWidth}
-                    onChange={(e) => setLineWidth(Number(e.target.value))}
-                  />
-                  <div className="curve-stitching-value-readout">{lineWidth}px</div>
-                </div>
-
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="curve-stitching-alpha">
-                    Thread opacity
-                  </FormLabel>
-                  <FormControl
-                    id="curve-stitching-alpha"
-                    type="range"
-                    min={0.05}
-                    max={1}
-                    step={0.01}
-                    value={lineAlpha}
-                    onChange={(e) => setLineAlpha(Number(e.target.value))}
-                  />
-                  <div className="curve-stitching-value-readout">
-                    {lineAlpha.toFixed(2)}
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="curve-stitching-width"
+                      type="range"
+                      min={0.5}
+                      max={2}
+                      step={0.5}
+                      value={lineWidth}
+                      onChange={(e) => setLineWidth(Number(e.target.value))}
+                    />
+                    <div className="curve-stitching-value-readout">{lineWidth}px</div>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="curve-stitching-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="curve-stitching-alpha">
+                    Thread opacity
+                  </FormLabel>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="curve-stitching-alpha"
+                      type="range"
+                      min={0.05}
+                      max={1}
+                      step={0.01}
+                      value={lineAlpha}
+                      onChange={(e) => setLineAlpha(Number(e.target.value))}
+                    />
+                    <div className="curve-stitching-value-readout">
+                      {lineAlpha.toFixed(2)}
+                                      </div>
+                  </div>
+                </div>
+
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="curve-stitching-color">
                     Color mode
                   </FormLabel>
-                  <FormControl
-                    id="curve-stitching-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) => setColorMode(e.target.value as StitchColorMode)}
-                  >
-                    <option value="mono">Single color</option>
-                    <option value="rainbow">Rainbow by line index</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="curve-stitching-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) => setColorMode(e.target.value as StitchColorMode)}
+                    >
+                      <option value="mono">Single color</option>
+                      <option value="rainbow">Rainbow by line index</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -257,9 +280,15 @@ export default function CurveStitchingApp({ onHome }: { onHome: () => void }) {
                   onChange={(e) => setAnimate(e.target.checked)}
                 />
 
-                <Button variant="secondary" onClick={resetView}>
+                <Stack direction="horizontal" gap={2}>
+                  <Button variant="secondary" onClick={resetView}>
                   Reset
-                </Button>
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                  </Button>
+                </Stack>
+
 
                 <p className="curve-stitching-hint">
                   No curve is actually drawn — only straight lines.

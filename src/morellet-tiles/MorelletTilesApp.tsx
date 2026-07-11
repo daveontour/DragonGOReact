@@ -204,36 +204,40 @@ export default function MorelletTilesApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel morellet-tiles-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="tiles-cols">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="tiles-cols">
                     Width (columns)
                   </FormLabel>
-                  <FormControl
-                    id="tiles-cols"
-                    type="range"
-                    min={MIN_GRID_DIMENSION}
-                    max={MAX_GRID_DIMENSION}
-                    step={1}
-                    value={cols}
-                    onChange={(e) => handleColsChange(Number(e.target.value))}
-                  />
-                  <div className="morellet-tiles-value-readout">{cols}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="tiles-cols"
+                      type="range"
+                      min={MIN_GRID_DIMENSION}
+                      max={MAX_GRID_DIMENSION}
+                      step={1}
+                      value={cols}
+                      onChange={(e) => handleColsChange(Number(e.target.value))}
+                    />
+                    <div className="morellet-tiles-value-readout">{cols}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="tiles-rows">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="tiles-rows">
                     Height (rows)
                   </FormLabel>
-                  <FormControl
-                    id="tiles-rows"
-                    type="range"
-                    min={MIN_GRID_DIMENSION}
-                    max={MAX_GRID_DIMENSION}
-                    step={1}
-                    value={rows}
-                    onChange={(e) => handleRowsChange(Number(e.target.value))}
-                  />
-                  <div className="morellet-tiles-value-readout">{rows}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="tiles-rows"
+                      type="range"
+                      min={MIN_GRID_DIMENSION}
+                      max={MAX_GRID_DIMENSION}
+                      step={1}
+                      value={rows}
+                      onChange={(e) => handleRowsChange(Number(e.target.value))}
+                    />
+                    <div className="morellet-tiles-value-readout">{rows}</div>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -256,46 +260,50 @@ export default function MorelletTilesApp({ onHome }: { onHome: () => void }) {
                   />
                 ) : null}
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="tiles-cell-size">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="tiles-cell-size">
                     Cell size
                   </FormLabel>
-                  <FormControl
-                    id="tiles-cell-size"
-                    type="range"
-                    min={MIN_CELL_SIZE}
-                    max={MAX_CELL_SIZE}
-                    step={1}
-                    value={cellSize}
-                    onChange={(e) =>
-                      setCellSize(clampCellSize(Number(e.target.value)))
-                    }
-                  />
-                  <div className="morellet-tiles-value-readout">{cellSize}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="tiles-cell-size"
+                      type="range"
+                      min={MIN_CELL_SIZE}
+                      max={MAX_CELL_SIZE}
+                      step={1}
+                      value={cellSize}
+                      onChange={(e) =>
+                        setCellSize(clampCellSize(Number(e.target.value)))
+                      }
+                    />
+                    <div className="morellet-tiles-value-readout">{cellSize}px</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="tiles-gutter">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="tiles-gutter">
                     Black gutter
                   </FormLabel>
-                  <FormControl
-                    id="tiles-gutter"
-                    type="range"
-                    min={MIN_GUTTER}
-                    max={MAX_GUTTER}
-                    step={1}
-                    value={gutter}
-                    onChange={(e) =>
-                      setGutter(clampGutter(Number(e.target.value)))
-                    }
-                  />
-                  <div className="morellet-tiles-value-readout">{gutter}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="tiles-gutter"
+                      type="range"
+                      min={MIN_GUTTER}
+                      max={MAX_GUTTER}
+                      step={1}
+                      value={gutter}
+                      onChange={(e) =>
+                        setGutter(clampGutter(Number(e.target.value)))
+                      }
+                    />
+                    <div className="morellet-tiles-value-readout">{gutter}px</div>
+                  </div>
                 </div>
 
                 {TILE_COLOR_OPTIONS.map((option) => (
-                  <div key={option.id} className="morellet-tiles-color-row">
+                  <div key={option.id} className="viz-control-row">
                     <FormLabel
-                      className="section-label-muted morellet-tiles-color-row-label"
+                      className="section-label-muted viz-control-row-label"
                       htmlFor={`tiles-color-${option.id}`}
                     >
                       <span className="morellet-tiles-color-label">
@@ -307,7 +315,7 @@ export default function MorelletTilesApp({ onHome }: { onHome: () => void }) {
                         {option.label} weight
                       </span>
                     </FormLabel>
-                    <div className="morellet-tiles-color-row-control">
+                    <div className="viz-control-row-control">
                       <FormControl
                         id={`tiles-color-${option.id}`}
                         type="range"
@@ -319,7 +327,7 @@ export default function MorelletTilesApp({ onHome }: { onHome: () => void }) {
                           updateColorWeight(option.id, Number(e.target.value))
                         }
                       />
-                      <div className="morellet-tiles-value-readout morellet-tiles-color-value">
+                      <div className="morellet-tiles-value-readout">
                         {colorWeights[option.id]} ({percentages[option.id].toFixed(1)}%)
                       </div>
                     </div>

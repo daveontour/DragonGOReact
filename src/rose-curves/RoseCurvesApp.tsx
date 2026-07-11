@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampRoseD,
   clampRoseN,
@@ -100,6 +101,16 @@ export default function RoseCurvesApp({ onHome }: { onHome: () => void }) {
     setAnimate(false);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `rose-curves.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -111,67 +122,75 @@ export default function RoseCurvesApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel rose-curves-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="rose-curves-n">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="rose-curves-n">
                     Numerator (n)
                   </FormLabel>
-                  <FormControl
-                    id="rose-curves-n"
-                    type="range"
-                    min={MIN_ROSE_N}
-                    max={MAX_ROSE_N}
-                    step={1}
-                    value={n}
-                    onChange={(e) => setN(clampRoseN(Number(e.target.value)))}
-                  />
-                  <div className="rose-curves-value-readout">{n}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="rose-curves-n"
+                      type="range"
+                      min={MIN_ROSE_N}
+                      max={MAX_ROSE_N}
+                      step={1}
+                      value={n}
+                      onChange={(e) => setN(clampRoseN(Number(e.target.value)))}
+                    />
+                    <div className="rose-curves-value-readout">{n}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="rose-curves-d">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="rose-curves-d">
                     Denominator (d)
                   </FormLabel>
-                  <FormControl
-                    id="rose-curves-d"
-                    type="range"
-                    min={MIN_ROSE_D}
-                    max={MAX_ROSE_D}
-                    step={1}
-                    value={d}
-                    onChange={(e) => setD(clampRoseD(Number(e.target.value)))}
-                  />
-                  <div className="rose-curves-value-readout">{d}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="rose-curves-d"
+                      type="range"
+                      min={MIN_ROSE_D}
+                      max={MAX_ROSE_D}
+                      step={1}
+                      value={d}
+                      onChange={(e) => setD(clampRoseD(Number(e.target.value)))}
+                    />
+                    <div className="rose-curves-value-readout">{d}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="rose-curves-width">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="rose-curves-width">
                     Line thickness
                   </FormLabel>
-                  <FormControl
-                    id="rose-curves-width"
-                    type="range"
-                    min={0.5}
-                    max={4}
-                    step={0.5}
-                    value={lineWidth}
-                    onChange={(e) => setLineWidth(Number(e.target.value))}
-                  />
-                  <div className="rose-curves-value-readout">{lineWidth}px</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="rose-curves-width"
+                      type="range"
+                      min={0.5}
+                      max={4}
+                      step={0.5}
+                      value={lineWidth}
+                      onChange={(e) => setLineWidth(Number(e.target.value))}
+                    />
+                    <div className="rose-curves-value-readout">{lineWidth}px</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="rose-curves-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="rose-curves-color">
                     Color mode
                   </FormLabel>
-                  <FormControl
-                    id="rose-curves-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) => setColorMode(e.target.value as RoseColorMode)}
-                  >
-                    <option value="mono">Single color</option>
-                    <option value="rainbow">Rainbow along curve</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="rose-curves-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) => setColorMode(e.target.value as RoseColorMode)}
+                    >
+                      <option value="mono">Single color</option>
+                      <option value="rainbow">Rainbow along curve</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <div className="rose-curves-results">
@@ -195,9 +214,15 @@ export default function RoseCurvesApp({ onHome }: { onHome: () => void }) {
                   onChange={(e) => setAnimate(e.target.checked)}
                 />
 
-                <Button variant="secondary" onClick={resetView}>
+                <Stack direction="horizontal" gap={2}>
+                  <Button variant="secondary" onClick={resetView}>
                   Reset
-                </Button>
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                  </Button>
+                </Stack>
+
 
                 <p className="rose-curves-hint">
                   In polar coordinates, r = cos(k·θ) sweeps out looping

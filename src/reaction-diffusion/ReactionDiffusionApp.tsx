@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampFeed,
   clampKill,
@@ -124,6 +125,16 @@ export default function ReactionDiffusionApp({ onHome }: { onHome: () => void })
     }
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `reaction-diffusion.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -135,114 +146,114 @@ export default function ReactionDiffusionApp({ onHome }: { onHome: () => void })
             </div>
             <div className="dragon-sidebar-panel reaction-diffusion-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel
-                    className="section-label-muted"
-                    htmlFor="reaction-diffusion-preset"
-                  >
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label"
+                    htmlFor="reaction-diffusion-preset">
                     Quick preset
                   </FormLabel>
-                  <FormControl
-                    id="reaction-diffusion-preset"
-                    as="select"
-                    value=""
-                    onChange={(e) => applyPreset(e.target.value)}
-                  >
-                    <option value="" disabled>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="reaction-diffusion-preset"
+                      as="select"
+                      value=""
+                      onChange={(e) => applyPreset(e.target.value)}
+                    >
+                      <option value="" disabled>
                       Choose a preset…
                     </option>
-                    {REACTION_DIFFUSION_PRESETS.map((preset) => (
+                      {REACTION_DIFFUSION_PRESETS.map((preset) => (
                       <option key={preset.id} value={preset.id}>
-                        {preset.label}
-                      </option>
-                    ))}
-                  </FormControl>
+                      {preset.label}
+                    </option>
+                      ))}
+                    </FormControl>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel
-                    className="section-label-muted"
-                    htmlFor="reaction-diffusion-feed"
-                  >
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label"
+                    htmlFor="reaction-diffusion-feed">
                     Feed rate
                   </FormLabel>
-                  <FormControl
-                    id="reaction-diffusion-feed"
-                    type="range"
-                    min={MIN_FEED}
-                    max={MAX_FEED}
-                    step={0.001}
-                    value={feed}
-                    onChange={(e) => setFeed(clampFeed(Number(e.target.value)))}
-                  />
-                  <div className="reaction-diffusion-value-readout">
-                    {feed.toFixed(3)}
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="reaction-diffusion-feed"
+                      type="range"
+                      min={MIN_FEED}
+                      max={MAX_FEED}
+                      step={0.001}
+                      value={feed}
+                      onChange={(e) => setFeed(clampFeed(Number(e.target.value)))}
+                    />
+                    <div className="reaction-diffusion-value-readout">
+                      {feed.toFixed(3)}
+                                      </div>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel
-                    className="section-label-muted"
-                    htmlFor="reaction-diffusion-kill"
-                  >
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label"
+                    htmlFor="reaction-diffusion-kill">
                     Kill rate
                   </FormLabel>
-                  <FormControl
-                    id="reaction-diffusion-kill"
-                    type="range"
-                    min={MIN_KILL}
-                    max={MAX_KILL}
-                    step={0.001}
-                    value={kill}
-                    onChange={(e) => setKill(clampKill(Number(e.target.value)))}
-                  />
-                  <div className="reaction-diffusion-value-readout">
-                    {kill.toFixed(3)}
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="reaction-diffusion-kill"
+                      type="range"
+                      min={MIN_KILL}
+                      max={MAX_KILL}
+                      step={0.001}
+                      value={kill}
+                      onChange={(e) => setKill(clampKill(Number(e.target.value)))}
+                    />
+                    <div className="reaction-diffusion-value-readout">
+                      {kill.toFixed(3)}
+                                      </div>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel
-                    className="section-label-muted"
-                    htmlFor="reaction-diffusion-steps"
-                  >
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label"
+                    htmlFor="reaction-diffusion-steps">
                     Simulation speed
                   </FormLabel>
-                  <FormControl
-                    id="reaction-diffusion-steps"
-                    type="range"
-                    min={MIN_STEPS_PER_FRAME}
-                    max={MAX_STEPS_PER_FRAME}
-                    step={1}
-                    value={stepsPerFrame}
-                    onChange={(e) =>
-                      setStepsPerFrame(clampStepsPerFrame(Number(e.target.value)))
-                    }
-                  />
-                  <div className="reaction-diffusion-value-readout">
-                    {stepsPerFrame} steps/frame
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="reaction-diffusion-steps"
+                      type="range"
+                      min={MIN_STEPS_PER_FRAME}
+                      max={MAX_STEPS_PER_FRAME}
+                      step={1}
+                      value={stepsPerFrame}
+                      onChange={(e) =>
+                        setStepsPerFrame(clampStepsPerFrame(Number(e.target.value)))
+                      }
+                    />
+                    <div className="reaction-diffusion-value-readout">
+                      {stepsPerFrame} steps/frame
+                                      </div>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel
-                    className="section-label-muted"
-                    htmlFor="reaction-diffusion-color"
-                  >
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label"
+                    htmlFor="reaction-diffusion-color">
                     Color mode
                   </FormLabel>
-                  <FormControl
-                    id="reaction-diffusion-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) =>
-                      setColorMode(e.target.value as ReactionDiffusionColorMode)
-                    }
-                  >
-                    <option value="mono">Ink</option>
-                    <option value="ocean">Ocean</option>
-                    <option value="thermal">Thermal</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="reaction-diffusion-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) =>
+                        setColorMode(e.target.value as ReactionDiffusionColorMode)
+                      }
+                    >
+                      <option value="mono">Ink</option>
+                      <option value="ocean">Ocean</option>
+                      <option value="thermal">Thermal</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <Stack direction="horizontal" gap={2}>
@@ -254,6 +265,9 @@ export default function ReactionDiffusionApp({ onHome }: { onHome: () => void })
                   </Button>
                   <Button variant="outline-light" onClick={reseed}>
                     New pattern seed
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
                   </Button>
                 </Stack>
 

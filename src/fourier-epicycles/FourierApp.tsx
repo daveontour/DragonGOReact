@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
+import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampFourierSpeed,
   clampHarmonics,
@@ -174,6 +175,16 @@ export default function FourierApp({ onHome }: { onHome: () => void }) {
     return () => cancelAnimationFrame(frameId);
   }, [epicycles, showCircles]);
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `fourier-epicycles.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -185,60 +196,66 @@ export default function FourierApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel fourier-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="fourier-preset">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="fourier-preset">
                     Shape
                   </FormLabel>
-                  <FormControl
-                    id="fourier-preset"
-                    as="select"
-                    value={presetId}
-                    onChange={(e) => setPresetId(e.target.value as FourierPresetId)}
-                  >
-                    {Object.values(FOURIER_PRESETS).map((p) => (
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="fourier-preset"
+                      as="select"
+                      value={presetId}
+                      onChange={(e) => setPresetId(e.target.value as FourierPresetId)}
+                    >
+                      {Object.values(FOURIER_PRESETS).map((p) => (
                       <option key={p.id} value={p.id}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </FormControl>
-                </div>
-
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="fourier-harmonics">
-                    Harmonics (circles)
-                  </FormLabel>
-                  <FormControl
-                    id="fourier-harmonics"
-                    type="range"
-                    min={MIN_FOURIER_HARMONICS}
-                    max={epicycles.length}
-                    step={1}
-                    value={harmonics}
-                    onChange={(e) =>
-                      setHarmonics(
-                        clampHarmonics(Number(e.target.value), epicycles.length)
-                      )
-                    }
-                  />
-                  <div className="fourier-value-readout">
-                    {harmonics} / {epicycles.length}
+                      {p.name}
+                    </option>
+                      ))}
+                    </FormControl>
                   </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="fourier-speed">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="fourier-harmonics">
+                    Harmonics (circles)
+                  </FormLabel>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="fourier-harmonics"
+                      type="range"
+                      min={MIN_FOURIER_HARMONICS}
+                      max={epicycles.length}
+                      step={1}
+                      value={harmonics}
+                      onChange={(e) =>
+                        setHarmonics(
+                          clampHarmonics(Number(e.target.value), epicycles.length)
+                        )
+                      }
+                    />
+                    <div className="fourier-value-readout">
+                      {harmonics} / {epicycles.length}
+                                      </div>
+                  </div>
+                </div>
+
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="fourier-speed">
                     Speed
                   </FormLabel>
-                  <FormControl
-                    id="fourier-speed"
-                    type="range"
-                    min={MIN_FOURIER_SPEED}
-                    max={MAX_FOURIER_SPEED}
-                    step={0.1}
-                    value={speed}
-                    onChange={(e) => setSpeed(clampFourierSpeed(Number(e.target.value)))}
-                  />
-                  <div className="fourier-value-readout">{speed.toFixed(1)}×</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="fourier-speed"
+                      type="range"
+                      min={MIN_FOURIER_SPEED}
+                      max={MAX_FOURIER_SPEED}
+                      step={0.1}
+                      value={speed}
+                      onChange={(e) => setSpeed(clampFourierSpeed(Number(e.target.value)))}
+                    />
+                    <div className="fourier-value-readout">{speed.toFixed(1)}×</div>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -248,6 +265,11 @@ export default function FourierApp({ onHome }: { onHome: () => void }) {
                   checked={showCircles}
                   onChange={(e) => setShowCircles(e.target.checked)}
                 />
+
+                <Button variant="secondary" onClick={downloadPng}>
+                  Download PNG
+                </Button>
+
 
                 <p className="fourier-hint">
                   Every closed shape can be written as a sum of rotating

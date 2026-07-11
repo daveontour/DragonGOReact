@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, FormCheck, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampExponent,
   clampM,
@@ -143,6 +144,16 @@ export default function SuperformulaApp({ onHome }: { onHome: () => void }) {
     setN3(params.n3);
   };
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `superformula.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -154,106 +165,118 @@ export default function SuperformulaApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel superformula-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="superformula-preset">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="superformula-preset">
                     Quick preset
                   </FormLabel>
-                  <FormControl
-                    id="superformula-preset"
-                    as="select"
-                    value=""
-                    onChange={(e) => applyPreset(e.target.value)}
-                  >
-                    <option value="" disabled>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="superformula-preset"
+                      as="select"
+                      value=""
+                      onChange={(e) => applyPreset(e.target.value)}
+                    >
+                      <option value="" disabled>
                       Choose a preset…
                     </option>
-                    {SUPERFORMULA_PRESETS.map((preset) => (
+                      {SUPERFORMULA_PRESETS.map((preset) => (
                       <option key={preset.id} value={preset.id}>
-                        {preset.label}
-                      </option>
-                    ))}
-                  </FormControl>
+                      {preset.label}
+                    </option>
+                      ))}
+                    </FormControl>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="superformula-m">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="superformula-m">
                     Symmetry (m)
                   </FormLabel>
-                  <FormControl
-                    id="superformula-m"
-                    type="range"
-                    min={MIN_M}
-                    max={MAX_M}
-                    step={1}
-                    value={m}
-                    onChange={(e) => setM(clampM(Number(e.target.value)))}
-                  />
-                  <div className="superformula-value-readout">{m}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="superformula-m"
+                      type="range"
+                      min={MIN_M}
+                      max={MAX_M}
+                      step={1}
+                      value={m}
+                      onChange={(e) => setM(clampM(Number(e.target.value)))}
+                    />
+                    <div className="superformula-value-readout">{m}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="superformula-n1">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="superformula-n1">
                     n1
                   </FormLabel>
-                  <FormControl
-                    id="superformula-n1"
-                    type="range"
-                    min={MIN_N}
-                    max={MAX_N}
-                    step={0.1}
-                    value={n1}
-                    onChange={(e) => setN1(clampExponent(Number(e.target.value)))}
-                  />
-                  <div className="superformula-value-readout">{n1.toFixed(1)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="superformula-n1"
+                      type="range"
+                      min={MIN_N}
+                      max={MAX_N}
+                      step={0.1}
+                      value={n1}
+                      onChange={(e) => setN1(clampExponent(Number(e.target.value)))}
+                    />
+                    <div className="superformula-value-readout">{n1.toFixed(1)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="superformula-n2">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="superformula-n2">
                     n2
                   </FormLabel>
-                  <FormControl
-                    id="superformula-n2"
-                    type="range"
-                    min={MIN_N}
-                    max={MAX_N}
-                    step={0.1}
-                    value={n2}
-                    onChange={(e) => setN2(clampExponent(Number(e.target.value)))}
-                  />
-                  <div className="superformula-value-readout">{n2.toFixed(1)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="superformula-n2"
+                      type="range"
+                      min={MIN_N}
+                      max={MAX_N}
+                      step={0.1}
+                      value={n2}
+                      onChange={(e) => setN2(clampExponent(Number(e.target.value)))}
+                    />
+                    <div className="superformula-value-readout">{n2.toFixed(1)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="superformula-n3">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="superformula-n3">
                     n3
                   </FormLabel>
-                  <FormControl
-                    id="superformula-n3"
-                    type="range"
-                    min={MIN_N}
-                    max={MAX_N}
-                    step={0.1}
-                    value={n3}
-                    onChange={(e) => setN3(clampExponent(Number(e.target.value)))}
-                  />
-                  <div className="superformula-value-readout">{n3.toFixed(1)}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="superformula-n3"
+                      type="range"
+                      min={MIN_N}
+                      max={MAX_N}
+                      step={0.1}
+                      value={n3}
+                      onChange={(e) => setN3(clampExponent(Number(e.target.value)))}
+                    />
+                    <div className="superformula-value-readout">{n3.toFixed(1)}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="superformula-color">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="superformula-color">
                     Color mode
                   </FormLabel>
-                  <FormControl
-                    id="superformula-color"
-                    as="select"
-                    value={colorMode}
-                    onChange={(e) =>
-                      setColorMode(e.target.value as SuperformulaColorMode)
-                    }
-                  >
-                    <option value="mono">Single color</option>
-                    <option value="rainbow">Rainbow along curve</option>
-                  </FormControl>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="superformula-color"
+                      as="select"
+                      value={colorMode}
+                      onChange={(e) =>
+                        setColorMode(e.target.value as SuperformulaColorMode)
+                      }
+                    >
+                      <option value="mono">Single color</option>
+                      <option value="rainbow">Rainbow along curve</option>
+                    </FormControl>
+                  </div>
                 </div>
 
                 <FormCheck
@@ -278,6 +301,9 @@ export default function SuperformulaApp({ onHome }: { onHome: () => void }) {
                   </Button>
                   <Button variant="secondary" onClick={resetView}>
                     Reset
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
                   </Button>
                 </Stack>
 

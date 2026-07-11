@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, FormControl, FormLabel, Stack } from "react-bootstrap";
 import VisualizationTopBar from "../Layouts/VisualizationTopBar";
+import { downloadCanvasPng } from "../downloadViz";
 import {
   clampBodyCount,
   clampNBodyTimescale,
@@ -97,6 +98,16 @@ export default function NBodyApp({ onHome }: { onHome: () => void }) {
     return () => cancelAnimationFrame(frameId);
   }, []);
 
+
+  const downloadPng = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) {
+      return;
+    }
+    downloadCanvasPng(canvas, `n-body.png`);
+  };
+
+
   return (
     <>
       <VisualizationTopBar showFullScreen={false} onHome={onHome} />
@@ -108,40 +119,44 @@ export default function NBodyApp({ onHome }: { onHome: () => void }) {
             </div>
             <div className="dragon-sidebar-panel nbody-sidebar-panel">
               <Stack direction="vertical" gap={3}>
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="nbody-count">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="nbody-count">
                     Number of bodies
                   </FormLabel>
-                  <FormControl
-                    id="nbody-count"
-                    type="range"
-                    min={MIN_BODIES}
-                    max={MAX_BODIES}
-                    step={1}
-                    value={bodyCount}
-                    onChange={(e) =>
-                      setBodyCount(clampBodyCount(Number(e.target.value)))
-                    }
-                  />
-                  <div className="nbody-value-readout">{bodyCount}</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="nbody-count"
+                      type="range"
+                      min={MIN_BODIES}
+                      max={MAX_BODIES}
+                      step={1}
+                      value={bodyCount}
+                      onChange={(e) =>
+                        setBodyCount(clampBodyCount(Number(e.target.value)))
+                      }
+                    />
+                    <div className="nbody-value-readout">{bodyCount}</div>
+                  </div>
                 </div>
 
-                <div>
-                  <FormLabel className="section-label-muted" htmlFor="nbody-timescale">
+                <div className="viz-control-row">
+                  <FormLabel className="section-label-muted viz-control-row-label" htmlFor="nbody-timescale">
                     Time scale
                   </FormLabel>
-                  <FormControl
-                    id="nbody-timescale"
-                    type="range"
-                    min={MIN_TIMESCALE}
-                    max={MAX_TIMESCALE}
-                    step={0.1}
-                    value={timescale}
-                    onChange={(e) =>
-                      setTimescale(clampNBodyTimescale(Number(e.target.value)))
-                    }
-                  />
-                  <div className="nbody-value-readout">{timescale.toFixed(1)}×</div>
+                  <div className="viz-control-row-control">
+                    <FormControl
+                      id="nbody-timescale"
+                      type="range"
+                      min={MIN_TIMESCALE}
+                      max={MAX_TIMESCALE}
+                      step={0.1}
+                      value={timescale}
+                      onChange={(e) =>
+                        setTimescale(clampNBodyTimescale(Number(e.target.value)))
+                      }
+                    />
+                    <div className="nbody-value-readout">{timescale.toFixed(1)}×</div>
+                  </div>
                 </div>
 
                 <Stack direction="horizontal" gap={2}>
@@ -156,6 +171,9 @@ export default function NBodyApp({ onHome }: { onHome: () => void }) {
                     onClick={() => resetSimulation(bodyCount)}
                   >
                     New random system
+                  </Button>
+                  <Button variant="secondary" onClick={downloadPng}>
+                    Download PNG
                   </Button>
                 </Stack>
 
