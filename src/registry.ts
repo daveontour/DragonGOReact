@@ -54,7 +54,9 @@ export type VisualizationId =
   | "boids"
   | "astar-pathfinding"
   | "wave-function-collapse"
-  | "fractal-terrain";
+  | "fractal-terrain"
+  | "monte-carlo-pi"
+  | "elastic-collisions";
 
 export interface VisualizationMeta {
   id: VisualizationId;
@@ -383,5 +385,17 @@ export const VISUALIZATIONS: VisualizationMeta[] = [
     title: "Fractal Terrain",
     description:
       "Grow a mountain range from four random corners with the diamond-square midpoint-displacement algorithm, tuning roughness to go from jagged peaks to rolling hills.",
+  },
+  {
+    id: "monte-carlo-pi",
+    title: "Monte Carlo π",
+    description:
+      "Drop random dots into a square containing an inscribed circle and estimate π from four times the fraction that land inside.",
+  },
+  {
+    id: "elastic-collisions",
+    title: "Elastic Collisions",
+    description:
+      "Send two configurable masses sliding across a frictionless surface, conserving energy as they collide with each other and a fixed wall.",
   },
 ];

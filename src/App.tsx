@@ -54,6 +54,8 @@ import BoidsApp from "./boids/BoidsApp";
 import AStarApp from "./astar-pathfinding/AStarApp";
 import WfcApp from "./wave-function-collapse/WfcApp";
 import FractalTerrainApp from "./fractal-terrain/FractalTerrainApp";
+import MonteCarloPiApp from "./monte-carlo-pi/MonteCarloPiApp";
+import ElasticCollisionsApp from "./elastic-collisions/ElasticCollisionsApp";
 import { VisualizationId } from "./registry";
 
 type AppView = "home" | VisualizationId;
@@ -553,6 +555,24 @@ const App: React.FC = () => {
           style={{ display: view === "fractal-terrain" ? "flex" : "none" }}
         >
           <FractalTerrainApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("monte-carlo-pi") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "monte-carlo-pi" ? "flex" : "none" }}
+        >
+          <MonteCarloPiApp onHome={() => setView("home")} />
+        </div>
+      ) : null}
+
+      {mountedViz.has("elastic-collisions") ? (
+        <div
+          className="viz-shell"
+          style={{ display: view === "elastic-collisions" ? "flex" : "none" }}
+        >
+          <ElasticCollisionsApp onHome={() => setView("home")} />
         </div>
       ) : null}
     </div>
